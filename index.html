@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Bando — Decision Management in Banking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F8F7F3; --bg2:#F0EDE7; --bg3:#E6E1D9;
+  --text:#17160F; --text2:#5C5A51; --text3:#9B9888;
+  --border:#DDD8CF; --border2:#C9C3B8;
+  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147; --c-border:#A8CBBA;
+  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580; --e-border:#9AAAD4;
+  --gold:#A87828; --gold-light:#F5EDD8;
+  --font-brand:'Pacifico',cursive;
+  --font-serif:'Averia Serif Libre',Georgia,serif;
+  --font-sans:'Montserrat',sans-serif;
+  --r-sm:4px; --r-md:8px; --r-lg:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-serif);background:var(--bg);color:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.nav-brand{font-family:var(--font-brand);font-size:22px;color:var(--text);cursor:pointer;text-decoration:none;flex-shrink:0;}
+.nav-center{display:flex;align-items:center;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--bg2);}
+.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:all .2s;}
+.nav-track.consumer:hover,.nav-track.consumer.active{background:var(--c-primary);color:#fff;}
+.nav-track.executive:hover,.nav-track.executive.active{background:var(--e-primary);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:1.75rem;}
+.nav-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);text-decoration:none;cursor:pointer;transition:color .15s;}
+.nav-link:hover{color:var(--text);}
+.nav-cta{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--e-primary);border:none;padding:9px 20px;border-radius:24px;cursor:pointer;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:var(--e-mid);transform:translateY(-1px);}
+
+.page{display:none;}
+.page.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+.hero{padding:5.5rem 3rem 4.5rem;max-width:1120px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);display:inline-block;padding:5px 12px;border-radius:24px;margin-bottom:2rem;}
+.hero-h1{font-family:var(--font-serif);font-size:clamp(2.2rem,4.5vw,3.75rem);font-weight:700;line-height:1.12;letter-spacing:-.025em;max-width:820px;margin-bottom:1.1rem;}
+.hero-h1 em{font-style:italic;font-weight:300;color:var(--text2);}
+.hero-signature{font-family:var(--font-brand);font-size:1.3rem;color:var(--gold);display:block;margin-bottom:2.5rem;}
+.hero-tracks{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:900px;}
+.track-card{border-radius:var(--r-lg);padding:2rem;cursor:pointer;transition:transform .25s,box-shadow .25s,opacity .25s;position:relative;overflow:hidden;}
+.track-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;transition:width .25s;}
+.track-card:hover::before{width:6px;}
+.track-card:hover{transform:translateY(-3px);}
+.hero-tracks:has(.track-card:hover) .track-card:not(:hover){opacity:.55;}
+.track-consumer{background:var(--c-bg);border:1.5px solid var(--c-border);}
+.track-consumer::before{background:var(--c-primary);}
+.track-consumer:hover{box-shadow:0 12px 40px -8px rgba(26,66,48,.22);}
+.track-executive{background:var(--e-bg);border:1.5px solid var(--e-border);}
+.track-executive::before{background:var(--e-primary);}
+.track-executive:hover{box-shadow:0 12px 40px -8px rgba(22,32,64,.22);}
+.track-label{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:6px;}
+.track-consumer .track-label{color:var(--c-primary);}
+.track-executive .track-label{color:var(--e-primary);}
+.track-hook{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;line-height:1.35;margin-bottom:.7rem;}
+.track-sub{font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--text2);line-height:1.6;margin-bottom:1.5rem;}
+.track-btn{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;border-radius:24px;border:none;cursor:pointer;display:inline-block;transition:transform .15s;}
+.track-btn:hover{transform:translateX(3px);}
+.track-consumer .track-btn{background:var(--c-primary);color:#fff;}
+.track-executive .track-btn{background:var(--e-primary);color:#fff;}
+
+.section-wrap{max-width:1120px;margin:0 auto;padding:0 3rem;}
+
+.topics-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.875rem 0;background:var(--bg);position:sticky;top:60px;z-index:100;}
+.topics-inner{max-width:1120px;margin:0 auto;padding:0 3rem;display:flex;align-items:center;gap:.75rem;overflow-x:auto;scrollbar-width:none;}
+.topics-inner::-webkit-scrollbar{display:none;}
+.topics-label{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);flex-shrink:0;margin-right:.25rem;}
+.topic-chip{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.03em;padding:5px 13px;border-radius:24px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.topic-chip:hover{border-color:var(--text3);color:var(--text);background:var(--bg2);}
+.topic-chip.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+
+.feed-section{padding:3.5rem 0 0;}
+.feed-grid{display:grid;grid-template-columns:1fr 2px 1fr;gap:3rem;align-items:start;}
+.feed-divider{background:linear-gradient(to bottom,transparent,var(--border),var(--gold),var(--border),transparent);align-self:stretch;min-height:300px;}
+.feed-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid;}
+.feed-col-header.consumer{border-color:var(--c-primary);}
+.feed-col-header.executive{border-color:var(--e-primary);}
+.feed-col-label{display:flex;align-items:center;gap:8px;}
+.feed-col-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.feed-col-dot.consumer{background:var(--c-primary);}
+.feed-col-dot.executive{background:var(--e-primary);}
+.feed-col-title{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+.feed-col-title.consumer{color:var(--c-primary);}
+.feed-col-title.executive{color:var(--e-primary);}
+
+.article-card{padding:1.25rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s;display:block;text-decoration:none;color:inherit;}
+.article-card:last-of-type{border-bottom:none;}
+.article-card.hidden{display:none;}
+.consumer-col .article-card:hover .article-title{color:var(--c-mid);}
+.executive-col .article-card:hover .article-title{color:var(--e-mid);}
+.article-meta{display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap;}
+.pill{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;}
+.pill-product{background:var(--gold-light);color:var(--gold);}
+.pill-topic-c{background:var(--c-bg);color:var(--c-primary);}
+.pill-topic-e{background:var(--e-bg);color:var(--e-primary);}
+.article-date{font-family:var(--font-sans);font-size:11px;color:var(--text3);}
+.article-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:4px;transition:color .15s;}
+.article-excerpt{font-family:var(--font-serif);font-size:13.5px;font-weight:300;color:var(--text2);line-height:1.6;}
+
+.loading-state{padding:1.5rem 0;font-family:var(--font-sans);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:.5rem;}
+.loading-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);animation:pulse 1.2s ease infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+
+.view-all-row{display:flex;justify-content:flex-end;padding:1.25rem 0 3.5rem;}
+.view-all-link{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);cursor:pointer;padding:7px 16px;border:1px solid var(--border2);border-radius:24px;transition:all .15s;text-decoration:none;}
+.view-all-link:hover{color:var(--text2);border-color:var(--text3);background:var(--bg2);}
+
+.full-page-hero{padding:3.5rem 3rem 2.5rem;max-width:1120px;margin:0 auto;border-bottom:1px solid var(--border);}
+.full-page-hero h1{font-family:var(--font-serif);font-size:clamp(1.9rem,3.5vw,2.75rem);font-weight:700;letter-spacing:-.02em;margin-bottom:.6rem;}
+.full-page-hero p{font-family:var(--font-serif);font-size:15px;font-weight:300;color:var(--text2);max-width:520px;line-height:1.7;}
+
+.full-filter-bar{border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:60px;z-index:100;padding:.75rem 0;}
+.full-filter-inner{max-width:1120px;margin:0 auto;padding:0 3rem;display:flex;flex-direction:column;gap:.5rem;}
+.filter-row{display:flex;align-items:center;gap:.625rem;flex-wrap:wrap;}
+.filter-row-label{font-family:var(--font-sans);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);width:52px;flex-shrink:0;}
+.filter-chip{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.03em;padding:4px 12px;border-radius:24px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.filter-chip:hover{border-color:var(--text3);color:var(--text);background:var(--bg2);}
+.filter-chip.active-product{background:var(--gold);color:#fff;border-color:var(--gold);}
+.filter-chip.active-topic.consumer-page{background:var(--c-primary);color:#fff;border-color:var(--c-primary);}
+.filter-chip.active-topic.executive-page{background:var(--e-primary);color:#fff;border-color:var(--e-primary);}
+
+.article-grid{max-width:1120px;margin:0 auto;padding:2.5rem 3rem 4rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;align-items:start;}
+.article-grid-card{border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s;background:var(--bg);text-decoration:none;display:block;color:inherit;}
+.article-grid-card:hover{box-shadow:0 6px 24px -6px rgba(0,0,0,.1);transform:translateY(-2px);}
+.consumer-grid .article-grid-card:hover{border-color:var(--c-border);}
+.executive-grid .article-grid-card:hover{border-color:var(--e-border);}
+.article-grid-card.hidden{display:none;}
+.grid-card-meta{display:flex;align-items:center;gap:6px;margin-bottom:.6rem;flex-wrap:wrap;}
+.grid-card-title{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:.5rem;transition:color .15s;}
+.consumer-grid .article-grid-card:hover .grid-card-title{color:var(--c-mid);}
+.executive-grid .article-grid-card:hover .grid-card-title{color:var(--e-mid);}
+.grid-card-excerpt{font-family:var(--font-serif);font-size:13.5px;font-weight:300;color:var(--text2);line-height:1.6;}
+.empty-state{grid-column:1/-1;padding:3rem;text-align:center;color:var(--text3);font-family:var(--font-sans);font-size:13px;}
+.empty-state button{margin-top:.75rem;font-family:var(--font-sans);font-size:12px;font-weight:600;background:none;border:1px solid var(--border2);border-radius:24px;padding:6px 16px;color:var(--text2);cursor:pointer;}
+
+.consulting-wrap{padding:0 3rem 4rem;max-width:1120px;margin:0 auto;}
+.consulting-panel{background:var(--e-primary);border-radius:var(--r-lg);padding:3rem 3.5rem;display:grid;grid-template-columns:1fr auto;align-items:center;gap:3rem;}
+.consulting-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.consulting-headline{font-family:var(--font-serif);font-size:1.7rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:.75rem;}
+.consulting-sub{font-family:var(--font-serif);font-size:15px;font-weight:300;color:rgba(255,255,255,.7);line-height:1.6;max-width:500px;}
+.consulting-actions{display:flex;flex-direction:column;gap:.75rem;flex-shrink:0;}
+.consulting-btn-p{font-family:var(--font-sans);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:12px 28px;border-radius:24px;border:none;background:#fff;color:var(--e-primary);cursor:pointer;transition:transform .15s,box-shadow .15s;white-space:nowrap;}
+.consulting-btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.consulting-btn-s{font-family:var(--font-sans);font-size:11px;font-weight:600;padding:10px 28px;border-radius:24px;border:1px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.85);cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center;}
+.consulting-btn-s:hover{border-color:rgba(255,255,255,.7);color:#fff;}
+
+.about-teaser{border-top:1px solid var(--border);padding:3.5rem 3rem;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;}
+.about-avatar{width:84px;height:84px;border-radius:50%;background:var(--bg3);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;overflow:hidden;}
+.about-avatar img{width:100%;height:100%;object-fit:cover;}
+.about-name-line{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap;}
+.about-name-brand{font-family:var(--font-brand);font-size:1.4rem;color:var(--text);}
+.about-role-tag{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:3px 10px;border-radius:24px;}
+.about-bio-line{font-family:var(--font-serif);font-size:15px;font-weight:300;color:var(--text2);line-height:1.7;max-width:640px;}
+.about-bio-line strong{font-weight:700;color:var(--text);}
+.about-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);text-decoration:none;cursor:pointer;margin-top:.75rem;display:inline-block;transition:color .15s;}
+.about-link:hover{color:var(--text2);}
+
+footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(255,255,255,.9);}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s;}
+.footer-link:hover{color:rgba(255,255,255,.8);}
+.footer-copy{font-family:var(--font-sans);font-size:11px;color:rgba(255,255,255,.25);}
+
+@media(max-width:860px){
+  nav{padding:0 1.25rem;gap:1rem;}
+  .nav-center{display:none;}
+  .hero{padding:3rem 1.25rem;}
+  .hero-tracks{grid-template-columns:1fr;}
+  .section-wrap,.consulting-wrap{padding:0 1.25rem;}
+  .topics-inner,.full-filter-inner{padding:0 1.25rem;}
+  .full-page-hero{padding:2.5rem 1.25rem;}
+  .article-grid{padding:2rem 1.25rem;grid-template-columns:1fr;}
+  .feed-grid{grid-template-columns:1fr;gap:0;}
+  .feed-divider{display:none;}
+  .consulting-panel{grid-template-columns:1fr;gap:2rem;padding:2rem;}
+  .about-teaser{padding:2.5rem 1.25rem;grid-template-columns:1fr;gap:1.5rem;}
+  footer{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand" onclick="showPage('home')">Deep Bando</span>
+  <div class="nav-center">
+    <button class="nav-track consumer" onclick="showPage('consumers');setNavActive(this)">&#127974; For Consumers</button>
+    <button class="nav-track executive" onclick="showPage('leaders');setNavActive(this)">&#128202; For Leaders</button>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" onclick="showPage('home')">Home</a>
+    <a class="nav-link" href="about.html">About</a>
+    <button class="nav-cta">Work With Me</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <span class="hero-eyebrow">Decision Management &middot; Banking &amp; Finance</span>
+    <h1 class="hero-h1">I spent a decade inside the systems<br>banks use to price your money.<br><em>Now I help both sides of that table.</em></h1>
+    <span class="hero-signature">One insider. Two audiences. Pick your track.</span>
+    <div class="hero-tracks">
+      <div class="track-card track-consumer" onclick="showPage('consumers');setNavActive(document.querySelector('.nav-track.consumer'))">
+        <div class="track-label"><span>&#127974;</span> For Banking Consumers</div>
+        <div class="track-hook">Understand what your bank is actually doing — and make smarter decisions with your money.</div>
+        <div class="track-sub">GICs, TFSAs, credit cards — explained from the inside by someone who built the systems.</div>
+        <button class="track-btn">Start reading &#x2192;</button>
+      </div>
+      <div class="track-card track-executive" onclick="showPage('leaders');setNavActive(document.querySelector('.nav-track.executive'))">
+        <div class="track-label"><span>&#128202;</span> For Financial Executives</div>
+        <div class="track-hook">Build pricing systems, decision engines, and data infrastructure that actually scale.</div>
+        <div class="track-sub">AI-powered pricing, challenger bank strategy, team design — and the problems no one talks about.</div>
+        <button class="track-btn">See the thinking &#x2192;</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="topics-bar">
+    <div class="topics-inner">
+      <span class="topics-label">Filter</span>
+      <button class="topic-chip active" data-topic="all" onclick="homeFilter('all',this)">All</button>
+      <button class="topic-chip" data-topic="gic" onclick="homeFilter('gic',this)">GIC</button>
+      <button class="topic-chip" data-topic="credit-card" onclick="homeFilter('credit-card',this)">Credit Card</button>
+      <button class="topic-chip" data-topic="tfsa" onclick="homeFilter('tfsa',this)">TFSA</button>
+      <button class="topic-chip" data-topic="payroll" onclick="homeFilter('payroll',this)">Payroll</button>
+      <button class="topic-chip" data-topic="money-movement" onclick="homeFilter('money-movement',this)">Money Movement</button>
+      <button class="topic-chip" data-topic="ai-ml" onclick="homeFilter('ai-ml',this)">AI &amp; ML</button>
+      <button class="topic-chip" data-topic="team" onclick="homeFilter('team',this)">Team Building</button>
+      <button class="topic-chip" data-topic="data" onclick="homeFilter('data',this)">Data Strategy</button>
+      <button class="topic-chip" data-topic="pricing" onclick="homeFilter('pricing',this)">Pricing Strategy</button>
+    </div>
+  </div>
+
+  <section class="feed-section">
+    <div class="section-wrap">
+      <div class="feed-grid">
+        <div class="consumer-col">
+          <div class="feed-col-header consumer">
+            <div class="feed-col-label">
+              <div class="feed-col-dot consumer"></div>
+              <span class="feed-col-title consumer">Latest &middot; For Consumers</span>
+            </div>
+          </div>
+          <div id="home-consumer-articles">
+            <div class="loading-state"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+          </div>
+          <div class="view-all-row">
+            <a class="view-all-link" onclick="showPage('consumers');setNavActive(document.querySelector('.nav-track.consumer'))">View all consumer essays &#x2192;</a>
+          </div>
+        </div>
+        <div class="feed-divider"></div>
+        <div class="executive-col">
+          <div class="feed-col-header executive">
+            <div class="feed-col-label">
+              <div class="feed-col-dot executive"></div>
+              <span class="feed-col-title executive">Latest &middot; For Leaders</span>
+            </div>
+          </div>
+          <div id="home-exec-articles">
+            <div class="loading-state"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+          </div>
+          <div class="view-all-row">
+            <a class="view-all-link" onclick="showPage('leaders');setNavActive(document.querySelector('.nav-track.executive'))">View all leadership essays &#x2192;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="consulting-wrap">
+    <div class="consulting-panel">
+      <div>
+        <div class="consulting-eyebrow">For Financial Executives &amp; Institutions</div>
+        <div class="consulting-headline">Need someone who's built this from the inside?</div>
+        <div class="consulting-sub">I advise financial institutions on pricing strategy, AI-powered decision systems, and the organizational design to make them scale.</div>
+      </div>
+      <div class="consulting-actions">
+        <button class="consulting-btn-p">Let's talk &#x2192;</button>
+        <button class="consulting-btn-s">How I work</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-teaser">
+    <div class="about-avatar">&#x1F9D1;</div>
+    <div>
+      <div class="about-name-line">
+        <span class="about-name-brand">Deep Bando</span>
+        <span class="about-role-tag">Decision Management &middot; Banking</span>
+      </div>
+      <div class="about-bio-line">I led pricing and product teams at major Canadian financial institutions for over a decade. I've seen what the models do, what they miss, and what happens when the business ignores them. <strong>Now I write about both sides — and consult for teams trying to close that gap.</strong></div>
+      <a class="about-link" href="about.html">Full story &#x2192;</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-brand">Deep Bando</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+      <a class="footer-link" href="#">Twitter / X</a>
+      <a class="footer-link" href="#">Subscribe</a>
+    </div>
+    <span class="footer-copy">&copy; 2025 &middot; Decision Management</span>
+  </footer>
+</div>
+
+<!-- FOR CONSUMERS PAGE -->
+<div id="page-consumers" class="page">
+  <div class="full-page-hero">
+    <span class="hero-eyebrow" style="color:var(--c-primary);background:var(--c-bg);">&#127974; For Banking Consumers</span>
+    <h1>Know what your bank knows.</h1>
+    <p>I spent a decade building the pricing systems, credit models, and product strategies banks use. Now I explain how they work — so you can make better decisions with your money.</p>
+  </div>
+  <div class="full-filter-bar" id="consumer-filter-bar">
+    <div class="full-filter-inner">
+      <div class="filter-row">
+        <span class="filter-row-label">Product</span>
+        <button class="filter-chip consumer-page active-product" data-filter="product" data-val="all" onclick="fullFilter('consumer','product','all',this)">All</button>
+        <button class="filter-chip" data-filter="product" data-val="gic" onclick="fullFilter('consumer','product','gic',this)">GIC</button>
+        <button class="filter-chip" data-filter="product" data-val="credit-card" onclick="fullFilter('consumer','product','credit-card',this)">Credit Card</button>
+        <button class="filter-chip" data-filter="product" data-val="tfsa" onclick="fullFilter('consumer','product','tfsa',this)">TFSA</button>
+        <button class="filter-chip" data-filter="product" data-val="payroll" onclick="fullFilter('consumer','product','payroll',this)">Payroll</button>
+        <button class="filter-chip" data-filter="product" data-val="money-movement" onclick="fullFilter('consumer','product','money-movement',this)">Money Movement</button>
+      </div>
+      <div class="filter-row">
+        <span class="filter-row-label">Topic</span>
+        <button class="filter-chip consumer-page active-topic" data-filter="topic" data-val="all" onclick="fullFilter('consumer','topic','all',this)">All</button>
+        <button class="filter-chip" data-filter="topic" data-val="pricing" onclick="fullFilter('consumer','topic','pricing',this)">Pricing</button>
+        <button class="filter-chip" data-filter="topic" data-val="consumer-rights" onclick="fullFilter('consumer','topic','consumer-rights',this)">Consumer Rights</button>
+        <button class="filter-chip" data-filter="topic" data-val="investing" onclick="fullFilter('consumer','topic','investing',this)">Investing</button>
+        <button class="filter-chip" data-filter="topic" data-val="fees" onclick="fullFilter('consumer','topic','fees',this)">Fees &amp; Rates</button>
+      </div>
+    </div>
+  </div>
+  <div class="article-grid consumer-grid" id="consumer-grid">
+    <div class="loading-state" style="grid-column:1/-1"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+  </div>
+  <footer>
+    <span class="footer-brand">Deep Bando</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+      <a class="footer-link" href="#">Twitter / X</a>
+      <a class="footer-link" href="#">Subscribe</a>
+    </div>
+    <span class="footer-copy">&copy; 2025 &middot; Decision Management</span>
+  </footer>
+</div>
+
+<!-- FOR LEADERS PAGE -->
+<div id="page-leaders" class="page">
+  <div class="full-page-hero">
+    <span class="hero-eyebrow" style="color:var(--e-primary);background:var(--e-bg);">&#128202; For Financial Executives</span>
+    <h1>Build systems that actually scale.</h1>
+    <p>The gap between a pricing model that works in a notebook and one that moves NIM at institution level is organizational, not technical. I write about closing that gap.</p>
+  </div>
+  <div class="full-filter-bar" id="leader-filter-bar">
+    <div class="full-filter-inner">
+      <div class="filter-row">
+        <span class="filter-row-label">Product</span>
+        <button class="filter-chip executive-page active-product" data-filter="product" data-val="all" onclick="fullFilter('leaders','product','all',this)">All</button>
+        <button class="filter-chip" data-filter="product" data-val="gic" onclick="fullFilter('leaders','product','gic',this)">GIC</button>
+        <button class="filter-chip" data-filter="product" data-val="credit-card" onclick="fullFilter('leaders','product','credit-card',this)">Credit Card</button>
+        <button class="filter-chip" data-filter="product" data-val="tfsa" onclick="fullFilter('leaders','product','tfsa',this)">TFSA</button>
+        <button class="filter-chip" data-filter="product" data-val="payroll" onclick="fullFilter('leaders','product','payroll',this)">Payroll</button>
+        <button class="filter-chip" data-filter="product" data-val="money-movement" onclick="fullFilter('leaders','product','money-movement',this)">Money Movement</button>
+      </div>
+      <div class="filter-row">
+        <span class="filter-row-label">Topic</span>
+        <button class="filter-chip executive-page active-topic" data-filter="topic" data-val="all" onclick="fullFilter('leaders','topic','all',this)">All</button>
+        <button class="filter-chip" data-filter="topic" data-val="pricing" onclick="fullFilter('leaders','topic','pricing',this)">Pricing Strategy</button>
+        <button class="filter-chip" data-filter="topic" data-val="ai-ml" onclick="fullFilter('leaders','topic','ai-ml',this)">AI &amp; ML</button>
+        <button class="filter-chip" data-filter="topic" data-val="team" onclick="fullFilter('leaders','topic','team',this)">Team Building</button>
+        <button class="filter-chip" data-filter="topic" data-val="data" onclick="fullFilter('leaders','topic','data',this)">Data Strategy</button>
+        <button class="filter-chip" data-filter="topic" data-val="challenger" onclick="fullFilter('leaders','topic','challenger',this)">Challenger Banks</button>
+      </div>
+    </div>
+  </div>
+  <div class="article-grid executive-grid" id="leader-grid">
+    <div class="loading-state" style="grid-column:1/-1"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+  </div>
+  <footer>
+    <span class="footer-brand">Deep Bando</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+      <a class="footer-link" href="#">Twitter / X</a>
+      <a class="footer-link" href="#">Subscribe</a>
+    </div>
+    <span class="footer-copy">&copy; 2025 &middot; Decision Management</span>
+  </footer>
+</div>
+
+<script>
+/* ── LOOKUPS ──────────────────────────────────────────────────────────── */
+const PRODUCT_LABELS = {
+  "gic":"GIC","credit-card":"Credit Card","tfsa":"TFSA",
+  "payroll":"Payroll","money-movement":"Money Movement"
+};
+const TOPIC_LABELS = {
+  "pricing":"Pricing Strategy","ai-ml":"AI & ML","team":"Team Building",
+  "data":"Data Strategy","challenger":"Challenger Banks",
+  "consumer-rights":"Consumer Rights","investing":"Investing","fees":"Fees & Rates"
+};
+
+/* ── STATE ────────────────────────────────────────────────────────────── */
+let ARTICLES = [];
+const filterState = {
+  home:     { topic:"all" },
+  consumer: { product:"all", topic:"all" },
+  leaders:  { product:"all", topic:"all" },
+};
+
+/* ── RENDER HELPERS ───────────────────────────────────────────────────── */
+function pillsHtml(a, audience) {
+  let out = "";
+  if (a.product && PRODUCT_LABELS[a.product])
+    out += `<span class="pill pill-product">${PRODUCT_LABELS[a.product]}</span>`;
+  if (a.topic && TOPIC_LABELS[a.topic]) {
+    const cls = audience === "consumer" ? "pill-topic-c" : "pill-topic-e";
+    out += `<span class="pill ${cls}">${TOPIC_LABELS[a.topic]}</span>`;
+  }
+  return out;
+}
+
+function renderHomeArticles() {
+  const consumers  = ARTICLES.filter(a => a.audience === "consumer").slice(0, 3);
+  const executives = ARTICLES.filter(a => a.audience === "executive").slice(0, 3);
+  document.getElementById("home-consumer-articles").innerHTML =
+    consumers.length
+      ? consumers.map(a => `<a class="article-card" href="${a.url}" data-product="${a.product||''}" data-topic="${a.topic||''}">
+          <div class="article-meta">${pillsHtml(a,"consumer")}<span class="article-date">${a.date}</span></div>
+          <div class="article-title">${a.title}</div>
+          <div class="article-excerpt">${a.excerpt}</div>
+        </a>`).join("")
+      : '<p style="font-family:var(--font-sans);font-size:12px;color:var(--text3);padding:1rem 0;">No essays yet.</p>';
+  document.getElementById("home-exec-articles").innerHTML =
+    executives.length
+      ? executives.map(a => `<a class="article-card" href="${a.url}" data-product="${a.product||''}" data-topic="${a.topic||''}">
+          <div class="article-meta">${pillsHtml(a,"executive")}<span class="article-date">${a.date}</span></div>
+          <div class="article-title">${a.title}</div>
+          <div class="article-excerpt">${a.excerpt}</div>
+        </a>`).join("")
+      : '<p style="font-family:var(--font-sans);font-size:12px;color:var(--text3);padding:1rem 0;">No essays yet.</p>';
+}
+
+function renderFullGrid(audience, containerId) {
+  const articles = ARTICLES.filter(a => a.audience === audience);
+  document.getElementById(containerId).innerHTML = articles.length
+    ? articles.map(a => `<a class="article-grid-card" href="${a.url}" data-product="${a.product||''}" data-topic="${a.topic||''}">
+        <div class="grid-card-meta">${pillsHtml(a, audience)}<span class="article-date">${a.date}</span></div>
+        <div class="grid-card-title">${a.title}</div>
+        <div class="grid-card-excerpt">${a.excerpt}</div>
+      </a>`).join("")
+    : '<div class="empty-state">No essays yet — check back soon.</div>';
+}
+
+/* ── FILTERS ──────────────────────────────────────────────────────────── */
+function homeFilter(val, chip) {
+  filterState.home.topic = val;
+  document.querySelectorAll(".topics-bar .topic-chip").forEach(c => c.classList.remove("active"));
+  chip.classList.add("active");
+  document.querySelectorAll("#home-consumer-articles .article-card, #home-exec-articles .article-card")
+    .forEach(c => { c.classList.toggle("hidden", !(val==="all"||c.dataset.product===val||c.dataset.topic===val)); });
+}
+
+function fullFilter(page, dimension, val, chip) {
+  filterState[page][dimension] = val;
+  const barId = page==="consumer" ? "consumer-filter-bar" : "leader-filter-bar";
+  document.getElementById(barId).querySelectorAll(`.filter-chip[data-filter="${dimension}"]`)
+    .forEach(c => c.classList.remove("active-product","active-topic"));
+  chip.classList.add(dimension==="product" ? "active-product" : "active-topic");
+  const gridId   = page==="consumer" ? "consumer-grid" : "leader-grid";
+  const pf = filterState[page].product;
+  const tf = filterState[page].topic;
+  const cards = document.querySelectorAll(`#${gridId} .article-grid-card`);
+  cards.forEach(c => {
+    c.classList.toggle("hidden", !((pf==="all"||c.dataset.product===pf)&&(tf==="all"||c.dataset.topic===tf)));
+  });
+  const grid  = document.getElementById(gridId);
+  const anyVis = [...cards].some(c => !c.classList.contains("hidden"));
+  let empty = grid.querySelector(".empty-state");
+  if (!anyVis) {
+    if (!empty) {
+      empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.innerHTML = `No articles match. <button onclick="clearFilters('${page}')">Clear filters</button>`;
+      grid.appendChild(empty);
+    }
+  } else if (empty) { empty.remove(); }
+}
+
+function clearFilters(page) {
+  filterState[page].product = "all";
+  filterState[page].topic   = "all";
+  const barId = page==="consumer" ? "consumer-filter-bar" : "leader-filter-bar";
+  document.getElementById(barId).querySelectorAll(".filter-chip").forEach(c => {
+    c.classList.remove("active-product","active-topic");
+    if (c.dataset.val==="all"&&c.dataset.filter==="product") c.classList.add("active-product");
+    if (c.dataset.val==="all"&&c.dataset.filter==="topic")   c.classList.add("active-topic");
+  });
+  const gridId = page==="consumer" ? "consumer-grid" : "leader-grid";
+  document.querySelectorAll(`#${gridId} .article-grid-card`).forEach(c => c.classList.remove("hidden"));
+  const empty = document.getElementById(gridId).querySelector(".empty-state");
+  if (empty) empty.remove();
+}
+
+/* ── ROUTING ──────────────────────────────────────────────────────────── */
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if (name==="home") document.querySelectorAll(".nav-track").forEach(b => b.classList.remove("active"));
+}
+function setNavActive(btn) {
+  document.querySelectorAll(".nav-track").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+}
+
+/* ── INIT — fetch essays.json then render ─────────────────────────────── */
+async function init() {
+  try {
+    const res = await fetch("data/essays.json");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    ARTICLES = await res.json();
+  } catch(e) {
+    const errMsg = `<div style="padding:1.5rem 0;font-family:var(--font-sans);font-size:12px;color:#c0392b;line-height:1.6;">
+      &#9888; Could not load essays.<br>
+      <strong>If testing locally:</strong> open this folder in VS Code and click <em>Go Live</em> (bottom-right).<br>
+      Do not open the HTML file directly in your browser.
+    </div>`;
+    document.getElementById("home-consumer-articles").innerHTML = errMsg;
+    document.getElementById("home-exec-articles").innerHTML = "";
+    return;
+  }
+  renderHomeArticles();
+  renderFullGrid("consumer","consumer-grid");
+  renderFullGrid("executive","leader-grid");
+}
+
+init();
+</script>
+</body>
+</html>

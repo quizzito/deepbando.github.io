@@ -1,0 +1,110 @@
+[
+  {
+    "audience": "consumer",
+    "product": "gic",
+    "topic": "pricing",
+    "date": "Jun 2025",
+    "title": "Should you lock in a GIC right now? What rate models actually say",
+    "excerpt": "The factors your bank weighs before setting deposit rates \u2014 and how to use that knowledge to time your decision.",
+    "url": "essays/gic-lock-in-jun-2025.html"
+  },
+  {
+    "audience": "consumer",
+    "product": "gic",
+    "topic": "pricing",
+    "date": "May 2025",
+    "title": "How do banks actually price their GICs?",
+    "excerpt": "A plain-language breakdown of funding cost models, competitive pressure, and margin targets that set every deposit rate you see.",
+    "url": "essays/how-banks-price-gics.html"
+  },
+  {
+    "audience": "consumer",
+    "product": "credit-card",
+    "topic": "consumer-rights",
+    "date": "Apr 2025",
+    "title": "How your bank decides your credit limit \u2014 and what to do with that knowledge",
+    "excerpt": "The behavioral signals, risk models, and profitability math behind every limit decision \u2014 and why they often have nothing to do with trust.",
+    "url": "essays/credit-limit-decisions.html"
+  },
+  {
+    "audience": "consumer",
+    "product": "tfsa",
+    "topic": "investing",
+    "date": "Mar 2025",
+    "title": "The TFSA decisions most people get wrong (and why banks count on it)",
+    "excerpt": "Contribution room confusion, wrong vehicle for the wrong goal, and the behavioral traps baked into how banks design these products.",
+    "url": "essays/tfsa-common-mistakes.html"
+  },
+  {
+    "audience": "consumer",
+    "product": "money-movement",
+    "topic": "fees",
+    "date": "Feb 2025",
+    "title": "Why wire transfers still cost $25 in 2025",
+    "excerpt": "The legacy infrastructure, interbank settlement mechanics, and commercial incentives that keep payment fees high \u2014 and what's actually changing.",
+    "url": "essays/why-wire-transfers-cost.html"
+  },
+  {
+    "audience": "consumer",
+    "product": "payroll",
+    "topic": "fees",
+    "date": "Jan 2025",
+    "title": "Your paycheck hits at 12:01 AM \u2014 but your bank had it for two days",
+    "excerpt": "How float works in payroll processing, who benefits from the delay, and what early direct deposit actually costs your bank to offer.",
+    "url": "essays/payroll-float-explained.html"
+  },
+  {
+    "audience": "executive",
+    "product": "gic",
+    "topic": "ai-ml",
+    "date": "Jun 2025",
+    "title": "Machine-driven GIC pricing: the architecture that actually moves NIM",
+    "excerpt": "Most AI pricing projects die in a proof-of-concept. Here is the infrastructure, data architecture, and governance model that makes them production-ready.",
+    "url": "essays/machine-driven-gic-pricing.html"
+  },
+  {
+    "audience": "executive",
+    "product": "gic",
+    "topic": "pricing",
+    "date": "May 2025",
+    "title": "The most effective GIC pricing strategy in a rate-volatile environment",
+    "excerpt": "Why static pricing tables are costing you spread, and how dynamic segmentation models let you compete without compressing margins institution-wide.",
+    "url": "essays/gic-pricing-strategy-volatile.html"
+  },
+  {
+    "audience": "executive",
+    "product": null,
+    "topic": "data",
+    "date": "Apr 2025",
+    "title": "Challenges of building without legacy data \u2014 the challenger bank reality",
+    "excerpt": "What happens when you are building ML models with 18 months of behavioral data and no historical credit cycles. The workarounds that actually work.",
+    "url": "essays/challenger-bank-data-problem.html"
+  },
+  {
+    "audience": "executive",
+    "product": null,
+    "topic": "team",
+    "date": "Mar 2025",
+    "title": "How to build a pricing team at a challenger bank with no legacy and no excuses",
+    "excerpt": "The org design, hiring profile, and decision rights model that let a team of six outperform a 40-person legacy pricing function.",
+    "url": "essays/build-pricing-team-challenger.html"
+  },
+  {
+    "audience": "executive",
+    "product": "credit-card",
+    "topic": "pricing",
+    "date": "Feb 2025",
+    "title": "Credit limit optimization at scale: when the model is right and the business is wrong",
+    "excerpt": "The political and organizational dynamics that prevent banks from implementing what their own models recommend \u2014 and how to navigate them.",
+    "url": "essays/credit-limit-optimization-scale.html"
+  },
+  {
+    "audience": "executive",
+    "product": null,
+    "topic": "ai-ml",
+    "date": "Jan 2025",
+    "title": "Why most bank AI projects fail before they reach production",
+    "excerpt": "It is rarely the model. It is the data pipeline, model governance, interpretability requirements, and the business stakeholder who never bought in.",
+    "url": "essays/why-bank-ai-projects-fail.html"
+  }
+]

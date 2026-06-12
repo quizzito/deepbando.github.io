@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Deep Bando — Decision Management in Banking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F8F7F3; --bg2:#F0EDE7; --bg3:#E6E1D9;
+  --text:#17160F; --text2:#5C5A51; --text3:#9B9888;
+  --border:#DDD8CF; --border2:#C9C3B8;
+  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147; --c-border:#A8CBBA;
+  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580; --e-border:#9AAAD4;
+  --gold:#A87828; --gold-light:#F5EDD8; --gold-mid:#C49030;
+  --font-brand:'Pacifico',cursive;
+  --font-serif:'Averia Serif Libre',Georgia,serif;
+  --font-sans:'Montserrat',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-serif);background:var(--bg);color:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.nav-brand{font-family:var(--font-brand);font-size:22px;color:var(--text);text-decoration:none;flex-shrink:0;}
+.nav-center{display:flex;align-items:center;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--bg2);}
+.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-track.consumer:hover{background:var(--c-primary);color:#fff;}
+.nav-track.executive:hover{background:var(--e-primary);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:1.75rem;}
+.nav-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .15s;}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{color:var(--text);border-bottom:1.5px solid var(--c-primary);padding-bottom:2px;}
+.nav-cta{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--e-primary);border:none;padding:9px 20px;border-radius:24px;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+.nav-cta:hover{background:var(--e-mid);}
+
+/* HERO */
+.about-hero{max-width:1120px;margin:0 auto;padding:5rem 3rem 4rem;display:grid;grid-template-columns:210px 1fr;gap:4rem;align-items:end;border-bottom:1px solid var(--border);}
+.hero-photo{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;}
+.avatar-circle{width:180px;height:180px;border-radius:50%;background:var(--bg3);border:3px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:5rem;overflow:hidden;position:relative;}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;}
+.hero-eyebrow{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);display:inline-block;padding:5px 12px;border-radius:24px;margin-bottom:1.25rem;}
+.hero-name{font-family:var(--font-brand);font-size:clamp(2.5rem,5vw,4rem);color:var(--text);line-height:1.1;margin-bottom:.5rem;}
+.hero-title{font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:1.5rem;}
+.hero-statement{font-family:var(--font-serif);font-size:1.15rem;font-weight:300;color:var(--text2);line-height:1.8;max-width:600px;margin-bottom:2rem;}
+.hero-statement strong{font-weight:700;color:var(--text);}
+.hero-statement em{font-style:italic;color:var(--c-mid);}
+.social-row{display:flex;gap:.75rem;flex-wrap:wrap;}
+.social-btn{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.04em;padding:8px 16px;border-radius:24px;border:1px solid var(--border2);background:transparent;color:var(--text2);text-decoration:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.social-btn:hover{color:var(--text);border-color:var(--text3);background:var(--bg2);}
+.social-btn.primary{background:var(--e-primary);color:#fff;border-color:var(--e-primary);}
+.social-btn.primary:hover{background:var(--e-mid);}
+
+/* STATS */
+.stat-row{max-width:1120px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
+.stat-item{padding:0 2rem;border-right:1px solid var(--border);}
+.stat-item:first-child{padding-left:0;}
+.stat-item:last-child{border-right:none;}
+.stat-number{font-family:var(--font-serif);font-size:2.25rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.35rem;}
+.stat-number span{font-style:italic;font-weight:300;color:var(--gold);font-size:1.75rem;}
+.stat-label{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);}
+
+/* SECTION */
+.section{max-width:1120px;margin:0 auto;padding:4rem 3rem;border-bottom:1px solid var(--border);}
+.section-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:.75rem;margin-bottom:2.5rem;}
+.section-eyebrow::after{content:'';flex:1;max-width:60px;height:1px;background:var(--border2);}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2.5rem;}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold) 0%,var(--c-primary) 25%,var(--e-primary) 65%,var(--border) 100%);}
+.timeline-item{position:relative;padding-bottom:3rem;opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.timeline-item.visible{opacity:1;transform:none;}
+.timeline-item:last-child{padding-bottom:0;}
+.timeline-item::before{content:'';position:absolute;left:-2.5rem;top:6px;width:14px;height:14px;border-radius:50%;border:2px solid var(--bg);transform:translateX(-6px);z-index:1;transition:transform .2s;}
+.timeline-item.current::before{background:var(--gold);border-color:var(--gold-light);width:18px;height:18px;top:4px;box-shadow:0 0 0 4px var(--gold-light);}
+.timeline-item.past::before{background:var(--border2);border-color:var(--bg);}
+.timeline-item:hover::before{transform:translateX(-6px) scale(1.25);}
+.timeline-body{display:grid;grid-template-columns:160px 1fr;gap:1.5rem;align-items:start;}
+.timeline-year{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;}
+.timeline-item.current .timeline-year{color:var(--gold);}
+.timeline-org{font-family:var(--font-sans);font-size:12px;font-weight:600;color:var(--text2);line-height:1.35;}
+.timeline-item.current .timeline-org{color:var(--c-primary);}
+.timeline-role{font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.5rem;line-height:1.3;}
+.timeline-current-badge{display:inline-block;font-family:var(--font-sans);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:#fff;padding:2px 8px;border-radius:24px;margin-left:.5rem;vertical-align:middle;}
+.timeline-desc{font-family:var(--font-serif);font-size:15px;font-weight:300;color:var(--text2);line-height:1.7;margin-bottom:1rem;}
+.timeline-desc strong{font-weight:700;color:var(--text);}
+.timeline-bullets{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.timeline-bullets li{font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--text2);line-height:1.55;padding-left:1.25rem;position:relative;}
+.timeline-bullets li::before{content:'\2192';position:absolute;left:0;color:var(--border2);font-size:12px;}
+.timeline-item.current .timeline-bullets li::before{color:var(--c-border);}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.875rem;}
+.timeline-tag{font-family:var(--font-sans);font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 10px;border-radius:3px;background:var(--bg2);color:var(--text3);border:1px solid var(--border);}
+.award-badge{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:4px 12px;border-radius:24px;margin-top:.875rem;width:fit-content;}
+
+/* BELIEFS */
+.beliefs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;}
+.belief-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1.5rem;transition:border-color .2s,transform .2s;}
+.belief-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.belief-num{font-family:var(--font-brand);font-size:1.4rem;color:var(--gold);margin-bottom:.5rem;display:block;}
+.belief-title{font-family:var(--font-serif);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.4rem;}
+.belief-body{font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--text2);line-height:1.6;}
+
+/* BUILDING NOW */
+.building-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.building-card{padding:1.5rem;border:1px solid var(--border);border-radius:8px;background:var(--bg);transition:border-color .2s;}
+.building-card:hover{border-color:var(--border2);}
+.building-icon{font-size:1.5rem;margin-bottom:.75rem;display:block;}
+.building-label{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem;}
+.building-title{font-family:var(--font-serif);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.4rem;}
+.building-body{font-family:var(--font-serif);font-size:13.5px;font-weight:300;color:var(--text2);line-height:1.6;}
+
+/* CTA BAND */
+.cta-band{background:var(--e-primary);padding:4rem 3rem;text-align:center;}
+.cta-band-inner{max-width:600px;margin:0 auto;}
+.cta-band-eyebrow{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.75rem;}
+.cta-band-headline{font-family:var(--font-serif);font-size:1.9rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:.75rem;}
+.cta-band-sub{font-family:var(--font-serif);font-size:15px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:2rem;}
+.cta-band-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.cta-btn-w{font-family:var(--font-sans);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:12px 28px;border-radius:24px;border:none;background:#fff;color:var(--e-primary);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.cta-btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.cta-btn-ghost{font-family:var(--font-sans);font-size:12px;font-weight:600;padding:12px 28px;border-radius:24px;border:1px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.85);cursor:pointer;transition:all .15s;}
+.cta-btn-ghost:hover{border-color:rgba(255,255,255,.7);color:#fff;}
+
+/* FOOTER */
+footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(255,255,255,.9);text-decoration:none;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s;}
+.footer-link:hover{color:rgba(255,255,255,.8);}
+.footer-copy{font-family:var(--font-sans);font-size:11px;color:rgba(255,255,255,.25);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 1.25rem;}
+  .nav-center{display:none;}
+  .about-hero{grid-template-columns:1fr;gap:2rem;padding:3rem 1.25rem;}
+  .avatar-circle{width:120px;height:120px;font-size:3.5rem;}
+  .stat-row{grid-template-columns:repeat(2,1fr);padding:2rem 1.25rem;}
+  .stat-item{padding:.75rem 1rem;border-right:none;border-bottom:1px solid var(--border);}
+  .stat-item:nth-child(odd){border-right:1px solid var(--border);}
+  .stat-item:last-child,.stat-item:nth-last-child(2):nth-child(odd){border-bottom:none;}
+  .section{padding:3rem 1.25rem;}
+  .timeline-body{grid-template-columns:1fr;gap:.5rem;}
+  .beliefs-grid{grid-template-columns:1fr;}
+  .building-grid{grid-template-columns:1fr;}
+  .cta-band{padding:3rem 1.25rem;}
+  footer{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Deep Bando</a>
+  <div class="nav-center">
+    <a class="nav-track consumer" href="index.html">&#127974; For Consumers</a>
+    <a class="nav-track executive" href="index.html">&#128202; For Leaders</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link active">About</a>
+    <a class="nav-cta" href="#">Work With Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="hero-photo">
+    <div class="avatar-circle">
+      &#x1F9D1;
+      <!-- Replace with: <img src="images/deep-bando.jpg" alt="Deep Bando"> -->
+    </div>
+  </div>
+  <div class="hero-copy">
+    <span class="hero-eyebrow">Decision Management &middot; Banking &amp; Finance</span>
+    <h1 class="hero-name">Deep Bando</h1>
+    <div class="hero-title">Analytics &amp; Decision Management Leader &middot; Banking</div>
+    <p class="hero-statement">
+      I started as a structural engineer. Ended up building the analytics systems
+      banks use to set your GIC rate, approve your credit limit, and decide whether
+      to keep you as a customer. <strong>Twelve years. Two countries. $20B+ in managed portfolios.
+      Citi&rsquo;s Top 1% globally.</strong>
+      <em>Now I write about what I learned &mdash; and consult for teams trying to close
+      the gap between their models and their outcomes.</em>
+    </p>
+    <div class="social-row">
+      <a class="social-btn primary" href="#">Let&rsquo;s talk</a>
+      <a class="social-btn" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+      <a class="social-btn" href="#">Twitter / X</a>
+      <a class="social-btn" href="#">Subscribe</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stat-row">
+  <div class="stat-item">
+    <div class="stat-number">12<span>+</span></div>
+    <div class="stat-label">Years in Banking Analytics</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$20<span>B+</span></div>
+    <div class="stat-label">Card Portfolios Managed</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$3<span>B</span></div>
+    <div class="stat-label">Deposits Grown at EQ Bank</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">Top<span>&nbsp;1%</span></div>
+    <div class="stat-label">Citi Leadership in Excellence &mdash; Global</div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="section-eyebrow">Career Timeline</div>
+  <div class="timeline" id="timeline">
+
+    <!-- CURRENT -->
+    <div class="timeline-item current">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2025 &mdash; Present</div>
+          <div class="timeline-org">Independent</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">
+            Advisor &amp; Writer, Decision Management
+            <span class="timeline-current-badge">Now</span>
+          </div>
+          <p class="timeline-desc">After spending a decade inside two institutions &mdash; building the pricing systems, the analytics teams, and the decision infrastructure &mdash; I&rsquo;m now on the outside. Writing about how it works for consumers. Consulting for institutions that want to build it better.</p>
+          <ul class="timeline-bullets">
+            <li>Publishing weekly on Decision Management in banking &mdash; one perspective, two audiences</li>
+            <li>Advising financial institutions on pricing systems, AI implementation, and analytics org design</li>
+          </ul>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Advisory</span>
+            <span class="timeline-tag">Decision Management</span>
+            <span class="timeline-tag">Writing</span>
+            <span class="timeline-tag">AI Pricing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQ BANK -->
+    <div class="timeline-item past">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2022 &mdash; 2025</div>
+          <div class="timeline-org">EQ Bank<br>(Equitable Bank)<br>Toronto, Canada</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">Associate Director, Head of Analytics &amp; Insights</div>
+          <p class="timeline-desc">Hired as EQ Bank&rsquo;s first analytics leader. The mandate: <strong>build a decision-making infrastructure at a challenger bank taking on the Big Five</strong> &mdash; no legacy data, no established playbook, no template to copy from. Left with 15 people, $3B in new deposits, and a function that runs without me.</p>
+          <ul class="timeline-bullets">
+            <li>Founded a 15-member global Analytics CoE from zero. Defined roles, onboarding, and coaching for 4 direct-report managers to deliver 10+ operational goals annually</li>
+            <li><strong>$3B deposit growth</strong> through promotional and pricing optimization across Savings, GIC, TFSA, and RRSP &mdash; $100MM flat NII year-over-year in a declining rate environment</li>
+            <li>Led renewal pricing strategy on <strong>EQ Bank&rsquo;s $9B mortgage book</strong> &mdash; 30% cost reduction on $15MM discount budget with zero impact to renewal rate or NIM</li>
+            <li>Grew daily new users <strong>200 &rarr; 400</strong> with 7&ndash;10X LTV/CAC. Cut onboarding time 50%, driving $250MM incremental deposits</li>
+            <li>Built in-house Media Mix Model on $25MM omnichannel budget &mdash; 35% sign-up growth on flat spend</li>
+            <li>Partnered with Investor Relations to support a <strong>Moody&rsquo;s credit rating upgrade</strong>. NPS +10 points</li>
+            <li>$5MM Opex reduction. Established 14 A/B experiments per year across product, marketing, and call centre</li>
+          </ul>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Deposit Pricing</span>
+            <span class="timeline-tag">GIC / TFSA / RRSP</span>
+            <span class="timeline-tag">Mortgage Pricing</span>
+            <span class="timeline-tag">Analytics CoE</span>
+            <span class="timeline-tag">Media Mix Modeling</span>
+            <span class="timeline-tag">A/B Testing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CITI VP -->
+    <div class="timeline-item past">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2016 &mdash; 2021</div>
+          <div class="timeline-org">Citi Retail Services<br>Chicago, USA</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">VP, Co-brand Decision Management</div>
+          <p class="timeline-desc">Led analytics and decision strategy across <strong>$20B+ in co-brand card portfolios</strong> &mdash; Best Buy, Macy&rsquo;s, Sears, LL Bean &mdash; covering 70MM active cardholders. Primary executive interface to Fortune 500 C-suite retail partners. The job that taught me what scale actually means.</p>
+          <ul class="timeline-bullets">
+            <li><strong>$2B in incremental annual purchase volume</strong> using in-house data-driven targeting supplemented by Argus and bureau data</li>
+            <li>Grew Best Buy credit card file <strong>$7B &rarr; $15B</strong> in assets at 4.0% ROA and 12&ndash;20% RoTCE. Market share 18% &rarr; 25%</li>
+            <li>Grew Best Buy co-brand receivables <strong>$500MM &rarr; $5B</strong> over 9 years</li>
+            <li>Proactive Credit Line Increase program: <strong>$140MM+ incremental annual spend</strong>. Balance Transfer program: <strong>$500MM</strong> at 3% CAGR</li>
+            <li>Secured Global CRO approval for post-COVID risk relaxation strategy &mdash; <strong>$500MM+ incremental spend in 6 months</strong></li>
+            <li>Led global team of 18 across strategy, analytics, and partner management. Managed $20M annual analytics budget</li>
+          </ul>
+          <div class="award-badge">&#x2605; Citi Leadership in Excellence &mdash; Top 1% Global</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Credit Cards</span>
+            <span class="timeline-tag">Co-brand Strategy</span>
+            <span class="timeline-tag">Lifecycle Marketing</span>
+            <span class="timeline-tag">Credit Line Management</span>
+            <span class="timeline-tag">P&amp;L Ownership</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CITI BANGALORE -->
+    <div class="timeline-item past">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2013 &mdash; 2016</div>
+          <div class="timeline-org">Citi Retail Services<br>Bangalore, India</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">Analyst &rarr; Principal, Decision Management</div>
+          <p class="timeline-desc">Joined Citi as an analyst running credit and lifecycle models for the Best Buy card portfolio. <strong>Three years learning how a $7B card business actually runs from the bottom up</strong> &mdash; credit decisioning, spend stimulation, early months on book, retention triggers. Rose to Principal. The fastest I ever learned anything.</p>
+          <ul class="timeline-bullets">
+            <li>Built foundation in end-to-end lifecycle strategy &mdash; acquisition through retention &mdash; for a $7B card portfolio</li>
+            <li>Developed expertise in credit modelling, customer segmentation, and P&amp;L impact analysis</li>
+            <li>Earned promotion to Principal and relocation to Chicago within three years</li>
+          </ul>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Credit Decisioning</span>
+            <span class="timeline-tag">Lifecycle Strategy</span>
+            <span class="timeline-tag">Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MU SIGMA -->
+    <div class="timeline-item past">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2011 &mdash; 2013</div>
+          <div class="timeline-org">Mu Sigma<br>India</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">Business Analyst</div>
+          <p class="timeline-desc">Two years as a structural engineer. Two years as a business analyst. <strong>The pivot that changed everything.</strong> Mu Sigma is where I learned that the most important structures aren&rsquo;t made of concrete &mdash; they&rsquo;re the decision systems that sit underneath every business outcome.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Analytics</span>
+            <span class="timeline-tag">Business Analysis</span>
+            <span class="timeline-tag">Career Pivot</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="timeline-item past">
+      <div class="timeline-body">
+        <div class="timeline-left">
+          <div class="timeline-year">2007 &mdash; 2011</div>
+          <div class="timeline-org">VNIT Nagpur<br>India</div>
+        </div>
+        <div class="timeline-right">
+          <div class="timeline-role">B.Tech, Civil Engineering</div>
+          <p class="timeline-desc">The degree that taught me systems thinking, load distribution, and how structures fail. Everything else I figured out by doing.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Engineering</span>
+            <span class="timeline-tag">Systems Thinking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BELIEFS -->
+<section class="section">
+  <div class="section-eyebrow">Things I Believe</div>
+  <div class="beliefs-grid">
+    <div class="belief-card">
+      <span class="belief-num">One</span>
+      <div class="belief-title">The model is never the bottleneck</div>
+      <div class="belief-body">In 12 years across two institutions, I never saw a strategy fail because the model was wrong. It always failed because the organization couldn&rsquo;t act on what the model said. That gap is the real problem to solve.</div>
+    </div>
+    <div class="belief-card">
+      <span class="belief-num">Two</span>
+      <div class="belief-title">Building from zero is the best education</div>
+      <div class="belief-body">I built analytics functions from scratch twice &mdash; once rising through Citi, once as EQ Bank&rsquo;s first hire. There&rsquo;s no faster way to learn what actually matters than having nothing to inherit and everything to prove.</div>
+    </div>
+    <div class="belief-card">
+      <span class="belief-num">Three</span>
+      <div class="belief-title">Both sides of banking need better information</div>
+      <div class="belief-body">Banks have all the data. Consumers have almost none of it. Executives have the models but can&rsquo;t always act on them. The information asymmetry hurts everyone. I&rsquo;m trying to close it, one essay at a time.</div>
+    </div>
+    <div class="belief-card">
+      <span class="belief-num">Four</span>
+      <div class="belief-title">Pricing is a decision system, not a spreadsheet</div>
+      <div class="belief-body">Static pricing tables are a liability. The institutions that will win the next decade are the ones that build adaptive, data-driven pricing infrastructure today. I know what that looks like because I built it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDING NOW -->
+<section class="section" style="border-bottom:none;">
+  <div class="section-eyebrow">What I&rsquo;m Building Now</div>
+  <div class="building-grid">
+    <div class="building-card">
+      <span class="building-icon">&#x270D;&#xFE0F;</span>
+      <div class="building-label">Writing</div>
+      <div class="building-title">Decision Management, Weekly</div>
+      <div class="building-body">One essay a week &mdash; one topic, two angles. For consumers: what&rsquo;s actually happening when your bank makes a decision about your money. For executives: how to build systems that make those decisions better.</div>
+    </div>
+    <div class="building-card">
+      <span class="building-icon">&#x1F9ED;</span>
+      <div class="building-label">Advisory</div>
+      <div class="building-title">Pricing &amp; Analytics Systems</div>
+      <div class="building-body">Working with a small number of financial institutions at a time on pricing strategy, AI implementation, and the analytics infrastructure needed to make both stick. If you&rsquo;re building something that needs someone who&rsquo;s done it before &mdash; let&rsquo;s talk.</div>
+    </div>
+    <div class="building-card">
+      <span class="building-icon">&#x1F4E6;</span>
+      <div class="building-label">Products</div>
+      <div class="building-title">Tools for Better Decisions</div>
+      <div class="building-body">Frameworks, templates, and short courses distilled from a decade of building real pricing systems &mdash; for consumers trying to navigate banking products, and for teams trying to build the next generation of them.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <div class="cta-band-eyebrow">For Executives &amp; Institutions</div>
+    <div class="cta-band-headline">Need someone who&rsquo;s built this from the inside?</div>
+    <div class="cta-band-sub">I&rsquo;ve managed $20B+ in portfolios, built analytics CoEs from zero, and driven $3B in deposit growth. If your institution is trying to build pricing systems, AI decisioning, or analytics infrastructure that actually scales &mdash; I know the path.</div>
+    <div class="cta-band-btns">
+      <button class="cta-btn-w">Get in touch &#x2192;</button>
+      <button class="cta-btn-ghost">How I work</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-brand" href="index.html">Deep Bando</a>
+  <div class="footer-links">
+    <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+    <a class="footer-link" href="#">Twitter / X</a>
+    <a class="footer-link" href="#">Subscribe</a>
+    <a class="footer-link" href="#">RSS</a>
+  </div>
+  <span class="footer-copy">&copy; 2025 Deep Bando &middot; Decision Management</span>
+</footer>
+
+<script>
+const items = document.querySelectorAll('.timeline-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+items.forEach((item, i) => { item.style.transitionDelay = (i * 90) + 'ms'; observer.observe(item); });
+</script>
+</body>
+</html>
