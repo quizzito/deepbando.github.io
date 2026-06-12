@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ✏️  EDIT 1 — Change the title below to your essay title -->
+<!-- ✏️  EDIT 1 — Your essay title -->
 <title>Essay Title — Deep Bando</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,13 +15,13 @@
   --bg:#F8F7F3; --bg2:#F0EDE7; --bg3:#E6E1D9;
   --text:#17160F; --text2:#5C5A51; --text3:#9B9888;
   --border:#DDD8CF; --border2:#C9C3B8;
-  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147; --c-border:#A8CBBA;
-  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580; --e-border:#9AAAD4;
+  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147;
+  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580;
   --gold:#A87828; --gold-light:#F5EDD8;
   --font-brand:'Pacifico',cursive;
   --font-serif:'Averia Serif Libre',Georgia,serif;
   --font-sans:'Montserrat',sans-serif;
-  --max-prose:680px;
+  --max-prose:700px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -31,18 +31,17 @@ body{font-family:var(--font-serif);background:var(--bg);color:var(--text);font-s
 nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
 .nav-brand{font-family:var(--font-brand);font-size:22px;color:var(--text);text-decoration:none;flex-shrink:0;}
 .nav-center{display:flex;align-items:center;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--bg2);}
-.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;border:none;background:transparent;color:var(--text2);transition:all .2s;text-decoration:none;display:inline-block;}
 .nav-track.consumer:hover{background:var(--c-primary);color:#fff;}
 .nav-track.executive:hover{background:var(--e-primary);color:#fff;}
 .nav-right{display:flex;align-items:center;gap:1.75rem;}
 .nav-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .15s;}
 .nav-link:hover{color:var(--text);}
 .nav-cta{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--e-primary);border:none;padding:9px 20px;border-radius:24px;cursor:pointer;text-decoration:none;display:inline-block;}
-.nav-cta:hover{background:var(--e-mid);}
 
 /* BREADCRUMB */
 .breadcrumb{max-width:var(--max-prose);margin:0 auto;padding:1.5rem 2rem .5rem;font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text3);display:flex;align-items:center;gap:.5rem;}
-.breadcrumb a{color:var(--text3);text-decoration:none;}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .15s;}
 .breadcrumb a:hover{color:var(--text2);}
 .breadcrumb span{color:var(--border2);}
 
@@ -56,40 +55,88 @@ nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px sol
 .pill-topic{background:var(--bg3);color:var(--text2);}
 .essay-title{font-family:var(--font-serif);font-size:clamp(1.9rem,4vw,2.75rem);font-weight:700;line-height:1.15;letter-spacing:-.025em;margin-bottom:1rem;}
 .essay-subtitle{font-family:var(--font-serif);font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;}
-.essay-byline{font-family:var(--font-sans);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:1rem;}
+.essay-byline{font-family:var(--font-sans);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
 .byline-name{font-weight:600;color:var(--text2);}
 .byline-sep{color:var(--border2);}
 
 /* ESSAY BODY */
-.essay-body{max-width:var(--max-prose);margin:0 auto;padding:3rem 2rem;}
-.essay-body p{font-size:17px;font-weight:300;color:var(--text2);line-height:1.8;margin-bottom:1.5rem;}
-.essay-body p:first-child{font-size:19px;font-weight:400;color:var(--text);}
-.essay-body h2{font-size:1.4rem;font-weight:700;color:var(--text);letter-spacing:-.01em;margin:2.5rem 0 1rem;line-height:1.3;}
+.essay-body{max-width:var(--max-prose);margin:0 auto;padding:3rem 2rem 1rem;}
+
+/* Text elements */
+.essay-body p{font-size:17px;font-weight:300;color:var(--text2);line-height:1.85;margin-bottom:1.5rem;}
+.essay-body p:first-of-type{font-size:19px;font-weight:400;color:var(--text);}
+.essay-body h2{font-size:1.45rem;font-weight:700;color:var(--text);letter-spacing:-.015em;margin:3rem 0 1rem;line-height:1.3;}
 .essay-body h3{font-size:1.1rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;}
-.essay-body ul,
-.essay-body ol{padding-left:1.5rem;margin-bottom:1.5rem;}
+.essay-body ul,.essay-body ol{padding-left:1.5rem;margin-bottom:1.5rem;}
 .essay-body li{font-size:16px;font-weight:300;color:var(--text2);line-height:1.75;margin-bottom:.4rem;}
-.essay-body blockquote{border-left:3px solid var(--gold);margin:2rem 0;padding:.75rem 1.5rem;background:var(--gold-light);border-radius:0 6px 6px 0;}
-.essay-body blockquote p{font-size:1.1rem;font-weight:400;font-style:italic;color:var(--text);margin:0;}
 .essay-body strong{font-weight:700;color:var(--text);}
 .essay-body em{font-style:italic;}
-.essay-body hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
+.essay-body hr{border:none;border-top:1px solid var(--border);margin:3rem 0;}
+.essay-body a{color:var(--e-mid);text-decoration:underline;text-underline-offset:3px;}
+
+/* Pull quote / blockquote */
+.essay-body blockquote{border-left:3px solid var(--gold);margin:2.5rem 0;padding:1rem 1.5rem;background:var(--gold-light);border-radius:0 6px 6px 0;}
+.essay-body blockquote p{font-size:1.15rem;font-weight:400;font-style:italic;color:var(--text);margin:0;line-height:1.6;}
+.essay-body blockquote p:first-of-type{font-size:1.15rem;}
+
+/* Key insight callout */
+.callout{background:var(--e-bg);border:1px solid var(--e-border);border-left:3px solid var(--e-primary);border-radius:0 6px 6px 0;padding:1.25rem 1.5rem;margin:2.5rem 0;}
+.callout-label{font-family:var(--font-sans);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--e-mid);margin-bottom:.4rem;}
+.callout p{font-family:var(--font-serif);font-size:15px;font-weight:400;color:var(--e-primary);margin:0;line-height:1.65;}
+.callout p:first-of-type{font-size:15px;}
+
+/* ── IMAGE & CHART ELEMENTS ──────────────────────────────────────────
+   Use these classes to add visuals to your essay.
+   Full guide in the comments below.
+───────────────────────────────────────────────────────────────────── */
+
+/* Standard image — fits within the text column */
+figure{margin:2.5rem 0;}
+figure img{width:100%;height:auto;border-radius:6px;border:1px solid var(--border);display:block;}
+figcaption{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.6rem;line-height:1.5;letter-spacing:.02em;}
+
+/* Wide image — breaks out of the text column for impact */
+.figure-wide{max-width:900px;margin:2.5rem auto;padding:0 2rem;}
+.figure-wide img{width:100%;height:auto;border-radius:8px;border:1px solid var(--border);display:block;}
+.figure-wide figcaption{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.6rem;padding:0 2rem;}
+
+/* Two-column image comparison */
+.figure-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2.5rem 0;}
+.figure-2col figure{margin:0;}
+.figure-2col figcaption{text-align:center;}
+
+/* Chart embed wrapper — for Datawrapper or other iframe charts */
+.chart-embed{margin:2.5rem 0;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.chart-embed iframe{width:100%;border:none;display:block;}
+.chart-label{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.6rem;}
+
+/* Data table */
+.data-table{margin:2.5rem 0;overflow-x:auto;}
+.data-table table{width:100%;border-collapse:collapse;font-family:var(--font-sans);font-size:13px;}
+.data-table th{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:10px;color:var(--text3);border-bottom:2px solid var(--border2);padding:.6rem .75rem;text-align:left;}
+.data-table td{padding:.65rem .75rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:400;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:var(--bg2);}
+.data-table .highlight td{font-weight:600;color:var(--text);background:var(--gold-light);}
+.table-caption{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.6rem;}
 
 /* FOOTER */
-.essay-footer{border-top:1px solid var(--border);max-width:var(--max-prose);margin:0 auto;padding:2.5rem 2rem;}
+.essay-end{max-width:var(--max-prose);margin:0 auto;padding:2rem 2rem 3rem;}
 .back-link{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:color .15s;}
 .back-link:hover{color:var(--text2);}
-footer{border-top:1px solid var(--border);margin-top:4rem;padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
-.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(0,0,0,.7);text-decoration:none;}
+footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(255,255,255,.9);text-decoration:none;}
 .footer-links{display:flex;gap:1.5rem;}
-.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);text-decoration:none;}
-.footer-link:hover{color:var(--text2);}
-.footer-copy{font-family:var(--font-sans);font-size:11px;color:var(--text3);}
+.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s;}
+.footer-link:hover{color:rgba(255,255,255,.8);}
+.footer-copy{font-family:var(--font-sans);font-size:11px;color:rgba(255,255,255,.25);}
 
 @media(max-width:700px){
   nav{padding:0 1rem;}
   .nav-center{display:none;}
-  .breadcrumb,.essay-header,.essay-body,.essay-footer{padding-left:1.25rem;padding-right:1.25rem;}
+  .breadcrumb,.essay-header,.essay-body,.essay-end{padding-left:1.25rem;padding-right:1.25rem;}
+  .figure-wide{padding:0 1.25rem;}
+  .figure-2col{grid-template-columns:1fr;}
   footer{padding:1.5rem;}
 }
 </style>
@@ -105,103 +152,179 @@ footer{border-top:1px solid var(--border);margin-top:4rem;padding:2rem 3rem;disp
   <div class="nav-right">
     <a class="nav-link" href="../index.html">Home</a>
     <a class="nav-link" href="../about.html">About</a>
-    <a class="nav-cta" href="../index.html">Work With Me</a>
+    <a class="nav-cta" href="#">Work With Me</a>
   </div>
 </nav>
 
-<!-- ✏️  EDIT 2 — Update the breadcrumb labels below -->
+<!-- ✏️  EDIT 2 — Breadcrumb: change "For Leaders" or "For Consumers", and the product name -->
 <div class="breadcrumb">
   <a href="../index.html">Home</a>
   <span>/</span>
-  <!-- Change "For Consumers" to "For Leaders" if executive article -->
-  <a href="../index.html">For Consumers</a>
+  <a href="../index.html">For Leaders</a>
   <span>/</span>
-  <!-- Change "GIC" to the product name, e.g. "Credit Card", "TFSA" -->
-  <span>GIC</span>
+  <span>GIC Pricing</span>
 </div>
 
-<!-- ✏️  EDIT 3 — Update the pills, title, subtitle, date, read time -->
+<!-- ✏️  EDIT 3 — Pills, title, subtitle, date, read time -->
 <header class="essay-header">
   <div class="essay-pills">
-    <!-- AUDIENCE PILL: use pill-audience-c for consumer, pill-audience-e for executive -->
-    <span class="pill pill-audience-c">For Consumers</span>
-    <!-- PRODUCT PILL: e.g. GIC, Credit Card, TFSA, Payroll, Money Movement -->
+    <!-- Use pill-audience-e for executive, pill-audience-c for consumer -->
+    <span class="pill pill-audience-e">For Leaders</span>
     <span class="pill pill-product">GIC</span>
-    <!-- TOPIC PILL: e.g. Pricing, Consumer Rights, Investing, AI & ML, Team Building -->
-    <span class="pill pill-topic">Pricing</span>
+    <span class="pill pill-topic">Pricing Strategy</span>
   </div>
-
   <h1 class="essay-title">Your Essay Title Goes Here</h1>
-  <p class="essay-subtitle">An optional one-sentence subtitle or framing line — leave this out if you don't need it.</p>
-
+  <p class="essay-subtitle">Optional subtitle — one sharp sentence that earns the click.</p>
   <div class="essay-byline">
     <span class="byline-name">Deep Bando</span>
     <span class="byline-sep">&middot;</span>
-    <!-- ✏️  Change date and read time -->
     <span>Jun 2025</span>
     <span class="byline-sep">&middot;</span>
-    <span>6 min read</span>
+    <span>8 min read</span>
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
+
+<!-- ═══════════════════════════════════════════════════════════════════
      ✏️  EDIT 4 — WRITE YOUR ESSAY BELOW
-     
-     Formatting guide:
-       <p>         — paragraph
-       <h2>        — main section heading
-       <h3>        — sub-heading
-       <ul><li>    — bullet list
-       <ol><li>    — numbered list
-       <blockquote><p>  — pull quote / callout
-       <strong>    — bold
-       <em>        — italic
-       <hr>        — section divider line
-     
-     The first <p> renders slightly larger than the rest — use it as your
-     opening / hook paragraph.
-     ═══════════════════════════════════════════════════════════════════════ -->
+
+     TEXT ELEMENTS:
+       <p>                    paragraph (first <p> renders larger)
+       <h2>                   main section heading
+       <h3>                   sub-heading
+       <ul><li>               bullet list
+       <ol><li>               numbered list
+       <blockquote><p>        pull quote (gold left border)
+       <strong>               bold
+       <em>                   italic
+       <hr>                   section divider
+
+     CALLOUT BOX (key insight):
+       <div class="callout">
+         <div class="callout-label">Key Insight</div>
+         <p>Your insight here.</p>
+       </div>
+
+     IMAGES:
+       Standard (fits text column):
+         <figure>
+           <img src="../images/essays/your-image.png" alt="Description">
+           <figcaption>Caption explaining what the image shows.</figcaption>
+         </figure>
+
+       Wide (breaks out of column for impact):
+         <figure class="figure-wide">
+           <img src="../images/essays/your-wide-image.png" alt="Description">
+           <figcaption>Caption here.</figcaption>
+         </figure>
+
+       Two images side by side:
+         <div class="figure-2col">
+           <figure>
+             <img src="../images/essays/before.png" alt="Before">
+             <figcaption>Before</figcaption>
+           </figure>
+           <figure>
+             <img src="../images/essays/after.png" alt="After">
+             <figcaption>After</figcaption>
+           </figure>
+         </div>
+
+     CHARTS (from Datawrapper — free at datawrapper.de):
+       1. Build your chart on Datawrapper
+       2. Click Publish → copy the embed code (it starts with <iframe)
+       3. Paste it inside the .chart-embed div below:
+         <div class="chart-embed">
+           PASTE YOUR DATAWRAPPER IFRAME HERE
+         </div>
+         <p class="chart-label">Source: Your data source here</p>
+
+     DATA TABLE:
+       <div class="data-table">
+         <table>
+           <thead>
+             <tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr>
+           </thead>
+           <tbody>
+             <tr><td>Row data</td><td>Row data</td><td>Row data</td></tr>
+             <tr class="highlight"><td>Key row</td><td>stands out</td><td>in gold</td></tr>
+           </tbody>
+         </table>
+         <p class="table-caption">Table: Description of what this shows.</p>
+       </div>
+═══════════════════════════════════════════════════════════════════ -->
+
 <article class="essay-body">
 
-  <p>Your opening paragraph here. This renders slightly larger than the rest — make it count. State the most interesting thing you have to say, or open with the tension the essay will resolve.</p>
+  <p>Your opening paragraph. Make it count — this renders larger than the rest. State the most interesting thing you have to say, or open with the tension the essay resolves.</p>
 
   <h2>Your First Section Heading</h2>
 
-  <p>Body text goes here. Keep paragraphs to 3–4 sentences. Averia Serif Libre reads beautifully at this size — let it breathe.</p>
+  <p>Body text here. Keep paragraphs to 3–4 sentences. Short is sharp.</p>
 
-  <p>Second paragraph under the same section. Use short paragraphs. Long blocks of text lose readers.</p>
-
+  <!-- EXAMPLE: Pull quote -->
   <blockquote>
-    <p>Use a blockquote for a key insight, a striking data point, or a sentence you want to stand alone.</p>
+    <p>The sentence you want to stand alone. A striking stat, a counterintuitive claim, or the core insight of the essay.</p>
   </blockquote>
+
+  <!-- EXAMPLE: Standard image -->
+  <figure>
+    <img src="../images/essays/your-chart.png" alt="Chart showing pricing model output">
+    <figcaption>Fig 1. Replace with your real image and caption.</figcaption>
+  </figure>
 
   <h2>Your Second Section Heading</h2>
 
-  <p>Continue the essay. Add as many sections as you need.</p>
+  <p>Continue here.</p>
 
-  <ul>
-    <li>Use bullets for lists of 3 or more parallel items</li>
-    <li>Keep each bullet to one line if possible</li>
-    <li>Don't use bullets just to avoid writing prose</li>
-  </ul>
+  <!-- EXAMPLE: Key insight callout -->
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <p>The one thing you want an executive to remember after they close this tab.</p>
+  </div>
 
-  <h2>Conclusion or Takeaway</h2>
+  <!-- EXAMPLE: Datawrapper chart — replace with your embed code -->
+  <!--
+  <div class="chart-embed">
+    <iframe title="Your Chart Title" aria-label="Column Chart" src="https://datawrapper.de/your-embed-url" scrolling="no" frameborder="0" style="width:100%;height:400px;"></iframe>
+  </div>
+  <p class="chart-label">Source: Your data source</p>
+  -->
 
-  <p>End with the one thing you want the reader to remember or do. Make it concrete.</p>
+  <!-- EXAMPLE: Data table -->
+  <!--
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Strategy</th><th>NIM Impact</th><th>Retention Rate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Static pricing</td><td>-8 bps</td><td>71%</td></tr>
+        <tr><td>Segmented pricing</td><td>+2 bps</td><td>78%</td></tr>
+        <tr class="highlight"><td>Dynamic ML pricing</td><td>+14 bps</td><td>83%</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 1. NIM and retention outcomes by pricing approach. Internal data, anonymised.</p>
+  </div>
+  -->
+
+  <h2>Conclusion</h2>
+
+  <p>End with the one thing you want the reader to do or think differently about. Make it concrete and direct.</p>
 
 </article>
-<!-- ═══════════════════════════════════════════════════════════════════════
-     END OF ESSAY CONTENT
-     ═══════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════ END OF ESSAY ═══════════════════════ -->
 
-<div class="essay-footer">
-  <a class="back-link" href="../index.html">&#x2190; Back to all essays</a>
+
+<div class="essay-end">
+  <a class="back-link" href="../index.html">&#8592; Back to all essays</a>
 </div>
 
 <footer>
   <a class="footer-brand" href="../index.html">Deep Bando</a>
   <div class="footer-links">
     <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+    <a class="footer-link" href="https://github.com/quizzito" target="_blank">GitHub</a>
     <a class="footer-link" href="#">Twitter / X</a>
     <a class="footer-link" href="#">Subscribe</a>
   </div>
