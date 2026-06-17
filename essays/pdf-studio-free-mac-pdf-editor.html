@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Studio: A Free PDF Editor for Mac That Never Uploads Your Files — Deep Bando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F8F7F3; --bg2:#F0EDE7; --bg3:#E6E1D9;
+  --text:#17160F; --text2:#5C5A51; --text3:#9B9888;
+  --border:#DDD8CF; --border2:#C9C3B8;
+  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147;
+  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580;
+  --gold:#A87828; --gold-light:#F5EDD8;
+  --font-brand:'Pacifico',cursive;
+  --font-serif:'Averia Serif Libre',Georgia,serif;
+  --font-sans:'Montserrat',sans-serif;
+  --max-prose:700px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-serif);background:var(--bg);color:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.nav-brand{font-family:var(--font-brand);font-size:22px;color:var(--text);text-decoration:none;flex-shrink:0;}
+.nav-center{display:flex;align-items:center;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--bg2);}
+.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;border:none;background:transparent;color:var(--text2);transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-track.consumer:hover{background:var(--c-primary);color:#fff;}
+.nav-track.executive:hover{background:var(--e-primary);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:1.75rem;}
+.nav-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .15s;}
+.nav-link:hover{color:var(--text);}
+.nav-cta{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--e-primary);border:none;padding:9px 20px;border-radius:24px;cursor:pointer;text-decoration:none;display:inline-block;}
+.breadcrumb{max-width:var(--max-prose);margin:0 auto;padding:1.5rem 2rem .5rem;font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text3);display:flex;align-items:center;gap:.5rem;}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .15s;}
+.breadcrumb a:hover{color:var(--text2);}
+.breadcrumb span{color:var(--border2);}
+.essay-header{max-width:var(--max-prose);margin:0 auto;padding:1.5rem 2rem 2.5rem;border-bottom:1px solid var(--border);}
+.essay-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.pill{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px;}
+.pill-audience-c{background:var(--c-bg);color:var(--c-primary);}
+.pill-audience-e{background:var(--e-bg);color:var(--e-primary);}
+.pill-product{background:var(--gold-light);color:var(--gold);}
+.pill-topic{background:var(--bg3);color:var(--text2);}
+.essay-title{font-family:var(--font-serif);font-size:clamp(1.9rem,4vw,2.6rem);font-weight:700;line-height:1.18;letter-spacing:-.025em;margin-bottom:1rem;}
+.essay-subtitle{font-family:var(--font-serif);font-size:1.05rem;font-weight:300;font-style:italic;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;}
+.essay-byline{font-family:var(--font-sans);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.byline-name{font-weight:600;color:var(--text2);}
+.byline-sep{color:var(--border2);}
+.essay-body{max-width:var(--max-prose);margin:0 auto;padding:3rem 2rem 1rem;}
+.essay-body p{font-size:17px;font-weight:300;color:var(--text2);line-height:1.85;margin-bottom:1.5rem;}
+.essay-body p:first-of-type{font-size:19px;font-weight:400;color:var(--text);}
+.essay-body h2{font-size:1.45rem;font-weight:700;color:var(--text);letter-spacing:-.015em;margin:3rem 0 1rem;line-height:1.3;}
+.essay-body h3{font-size:1.1rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem;}
+.essay-body ul,.essay-body ol{padding-left:1.5rem;margin-bottom:1.5rem;}
+.essay-body li{font-size:16px;font-weight:300;color:var(--text2);line-height:1.75;margin-bottom:.4rem;}
+.essay-body strong{font-weight:700;color:var(--text);}
+.essay-body em{font-style:italic;}
+.essay-body hr{border:none;border-top:1px solid var(--border);margin:3rem 0;}
+.essay-body a{color:var(--e-mid);text-decoration:underline;text-underline-offset:3px;}
+.essay-body blockquote{border-left:3px solid var(--gold);margin:2.5rem 0;padding:1rem 1.5rem;background:var(--gold-light);border-radius:0 6px 6px 0;}
+.essay-body blockquote p{font-size:1.1rem;font-weight:400;font-style:italic;color:var(--text);margin:0;line-height:1.6;}
+.callout{background:var(--e-bg);border:1px solid var(--e-border);border-left:3px solid var(--e-primary);border-radius:0 6px 6px 0;padding:1.25rem 1.5rem;margin:2.5rem 0;}
+.callout-label{font-family:var(--font-sans);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--e-mid);margin-bottom:.4rem;}
+.callout p{font-family:var(--font-serif);font-size:15px;font-weight:400;color:var(--e-primary);margin:0;line-height:1.65;}
+figure{margin:2.5rem 0;}
+figure img{width:100%;height:auto;border-radius:6px;border:1px solid var(--border);display:block;}
+figcaption{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.6rem;line-height:1.5;letter-spacing:.02em;}
+.figure-wide{max-width:900px;margin:2rem auto 2.5rem;padding:0 2rem;}
+.figure-wide img{width:100%;height:auto;border-radius:10px;border:1px solid var(--border);display:block;box-shadow:0 12px 40px -12px rgba(0,0,0,.18);}
+.figure-wide figcaption{font-family:var(--font-sans);font-size:11px;font-weight:500;color:var(--text3);margin-top:.75rem;padding:0 2rem;text-align:center;}
+.cta-inline,
+.essay-body a.cta-inline{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-sans);font-size:13px;font-weight:700;letter-spacing:.05em;color:#FFFFFF !important;background:var(--c-primary);padding:11px 24px;border-radius:24px;text-decoration:none !important;margin:.5rem 0 1.5rem;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 4px 14px -4px rgba(26,66,48,.35);}
+.cta-inline:hover,
+.essay-body a.cta-inline:hover{background:var(--c-mid);transform:translateY(-1px);box-shadow:0 8px 20px -4px rgba(26,66,48,.45);color:#FFFFFF !important;}
+.cta-inline:visited,
+.essay-body a.cta-inline:visited{color:#FFFFFF !important;}
+.essay-end{max-width:var(--max-prose);margin:0 auto;padding:2rem 2rem 3rem;}
+.back-link{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:color .15s;}
+.back-link:hover{color:var(--text2);}
+footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(255,255,255,.9);text-decoration:none;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s;}
+.footer-link:hover{color:rgba(255,255,255,.8);}
+.footer-copy{font-family:var(--font-sans);font-size:11px;color:rgba(255,255,255,.25);}
+@media(max-width:700px){
+  nav{padding:0 1rem;}
+  .nav-center{display:none;}
+  .breadcrumb,.essay-header,.essay-body,.essay-end{padding-left:1.25rem;padding-right:1.25rem;}
+  .figure-wide{padding:0 1.25rem;}
+  footer{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html">Deep Bando</a>
+  <div class="nav-center">
+    <a class="nav-track consumer" href="../index.html">&#127974; For Consumers</a>
+    <a class="nav-track executive" href="../index.html">&#128202; For Leaders</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" href="../index.html">Home</a>
+    <a class="nav-link" href="../products.html">Products</a>
+    <a class="nav-link" href="../about.html">About</a>
+    <a class="nav-cta" href="#">Work With Me</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a>
+  <span>/</span>
+  <a href="../index.html">For Consumers</a>
+  <span>/</span>
+  <span>Tools &amp; Productivity</span>
+</div>
+
+<header class="essay-header">
+  <div class="essay-pills">
+    <span class="pill pill-audience-c">For Consumers</span>
+    <span class="pill pill-topic">Tools &amp; Productivity</span>
+  </div>
+  <h1 class="essay-title">PDF Studio: A Free PDF Editor for Mac That Never Uploads Your Files</h1>
+  <p class="essay-subtitle">A free, open-source desktop app that compresses, merges, organizes, signs, and converts PDFs entirely on your own computer &mdash; no account, no subscription, no file ever touching the internet.</p>
+  <div class="essay-byline">
+    <span class="byline-name">Deep Bando</span>
+    <span class="byline-sep">&middot;</span>
+    <span>Jun 2025</span>
+    <span class="byline-sep">&middot;</span>
+    <span>5 min read</span>
+  </div>
+</header>
+
+<article class="essay-body">
+
+  <figure class="figure-wide">
+    <img src="../images/essays/pdf-studio-screenshot.jpeg" alt="PDF Studio app home screen showing nine PDF tools including Compress PDF, Combine PDFs, and Add Signature">
+    <figcaption>PDF Studio&rsquo;s home screen &mdash; nine tools, zero uploads.</figcaption>
+  </figure>
+
+  <p>Here&rsquo;s a question worth asking the next time you need to shrink a PDF before emailing it: where does that file actually go?</p>
+
+  <p>If you use Smallpdf, iLovePDF, or any of the dozen PDF websites that rank on Google, the answer is someone else&rsquo;s server. You upload your file, their software processes it, and you download the result &mdash; assuming you haven&rsquo;t hit a daily limit or a paywall first. For a grocery list, that&rsquo;s a non-issue. For a signed lease, a tax return, a medical record, or a client contract, it&rsquo;s a quiet trade-off most people never think to question.</p>
+
+  <p>The other &ldquo;solution&rdquo; is Adobe Acrobat, which does keep things closer to home but charges roughly $20 a month for the privilege &mdash; a subscription that, over a few years, costs more than most people&rsquo;s laptops.</p>
+
+  <p>Neither option should be the only choice for something as basic as combining two PDFs or rotating a page.</p>
+
+  <h2>A PDF toolkit that runs entirely on your Mac</h2>
+
+  <p>PDF Studio is a native Mac app that bundles nine of the most commonly needed PDF tools into one free, local program:</p>
+
+  <ul>
+    <li><strong>Compress PDF</strong> &mdash; shrink file size by up to 80% with three quality presets</li>
+    <li><strong>Combine PDFs</strong> &mdash; merge multiple files into one</li>
+    <li><strong>Organize Pages</strong> &mdash; drag to reorder, rotate, or delete pages with live thumbnails</li>
+    <li><strong>PDF to Word</strong> &mdash; convert a PDF into a fully editable .docx</li>
+    <li><strong>Word to PDF</strong> &mdash; turn a .docx into a PDF instantly</li>
+    <li><strong>JPG to PDF</strong> &mdash; combine one or more photos into a PDF</li>
+    <li><strong>HEIC to PDF</strong> &mdash; convert iPhone photos straight to PDF, no format conversion needed first</li>
+    <li><strong>PPT to PDF</strong> &mdash; turn PowerPoint slides into a PDF</li>
+    <li><strong>Add Signature</strong> &mdash; draw, type, or upload a signature and stamp it onto any page</li>
+  </ul>
+
+  <p>That covers the vast majority of what people actually do with PDFs day to day &mdash; without a subscription, a usage cap, or a server in between.</p>
+
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <p>The key design decision is what PDF Studio doesn&rsquo;t do: no account, no credit card, no file ever sent anywhere. Every conversion, compression, and signature happens locally, using the same open-source engines &mdash; Ghostscript and LibreOffice &mdash; that professional tools rely on, just bundled directly into the app.</p>
+  </div>
+
+  <p>It&rsquo;s also fully open source. The entire codebase is public on GitHub, which means anyone can verify exactly what the app does with their files &mdash; not just take a privacy policy&rsquo;s word for it.</p>
+
+  <h2>Get it running in three steps</h2>
+
+  <p>No Terminal, no developer tools, no Python install. If you can install any normal Mac app, you can install this.</p>
+
+  <ol>
+    <li>Download the latest <strong>PDF Studio.dmg</strong> from the GitHub releases page</li>
+    <li>Open the file and drag <strong>PDF Studio</strong> into your <strong>Applications</strong> folder</li>
+    <li>Launch PDF Studio from Launchpad, exactly like any other app</li>
+  </ol>
+
+  <p>That&rsquo;s the whole installation. Ghostscript and LibreOffice are already packaged inside the app, so there&rsquo;s nothing else to download.</p>
+
+  <p>One thing you will see on first launch: macOS will say <em>&ldquo;PDF Studio can&rsquo;t be opened because it is from an unidentified developer.&rdquo;</em> This isn&rsquo;t a red flag &mdash; it simply means the app wasn&rsquo;t signed with a paid $99/year Apple Developer certificate, the way a free, independent project usually isn&rsquo;t. To get past it once: <strong>right-click the app &rarr; Open &rarr; Open</strong>. macOS won&rsquo;t ask again after that.</p>
+
+  <a class="cta-inline" href="https://github.com/quizzito/pdf-studio/releases/latest" target="_blank">Download PDF Studio &#x2192;</a>
+
+  <h2>Common questions before you install</h2>
+
+  <h3>Is it actually free, with no catch?</h3>
+  <p>Yes. No premium tier, no file-size cap, no daily limit, no account wall. It&rsquo;s free because it&rsquo;s open source.</p>
+
+  <h3>Is it safe to open an app from an &ldquo;unidentified developer&rdquo;?</h3>
+  <p>That warning is standard for any Mac app not distributed through the App Store or signed with a paid Apple certificate. Because the project is open source, anyone can inspect exactly what the code does before running it &mdash; more transparency than most paid PDF tools offer.</p>
+
+  <h3>Does any of my file data get uploaded anywhere?</h3>
+  <p>No. Every tool runs as a local process on your own Mac. There&rsquo;s no network call involved in processing your files &mdash; that&rsquo;s the entire point of building it this way.</p>
+
+  <h3>Does it work on Windows or Linux?</h3>
+  <p>Not yet &mdash; the packaged app is currently macOS-only. The underlying Flask app can be run from source on other platforms by developers, with setup instructions in the GitHub repo.</p>
+
+  <hr>
+
+  <p>PDF Studio is live, free, and ready to download right now. Browse the full source, request a feature, or star the repo on GitHub &mdash; it helps other people find a free alternative too.</p>
+
+  <a class="cta-inline" href="https://github.com/quizzito/pdf-studio" target="_blank">View on GitHub &#x2192;</a>
+
+</article>
+
+<div class="essay-end">
+  <a class="back-link" href="../index.html">&#8592; Back to all essays</a>
+</div>
+
+<footer>
+  <a class="footer-brand" href="../index.html">Deep Bando</a>
+  <div class="footer-links">
+    <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+    <a class="footer-link" href="https://github.com/quizzito" target="_blank">GitHub</a>
+    <a class="footer-link" href="#">Twitter / X</a>
+    <a class="footer-link" href="#">Subscribe</a>
+  </div>
+  <span class="footer-copy">&copy; 2025 Deep Bando</span>
+</footer>
+
+</body>
+</html>

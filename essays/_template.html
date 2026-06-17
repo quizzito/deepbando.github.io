@@ -74,6 +74,19 @@ nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px sol
 .essay-body hr{border:none;border-top:1px solid var(--border);margin:3rem 0;}
 .essay-body a{color:var(--e-mid);text-decoration:underline;text-underline-offset:3px;}
 
+/* CTA button — use for "Download", "View on GitHub", "Try it", etc.
+   Comes in two color variants: green (consumer-toned) or navy (executive-toned) */
+.cta-inline,
+.essay-body a.cta-inline{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-sans);font-size:13px;font-weight:700;letter-spacing:.05em;color:#FFFFFF !important;background:var(--c-primary);padding:11px 24px;border-radius:24px;text-decoration:none !important;margin:.5rem 0 1.5rem;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 4px 14px -4px rgba(26,66,48,.35);}
+.cta-inline:hover,
+.essay-body a.cta-inline:hover{background:var(--c-mid);transform:translateY(-1px);box-shadow:0 8px 20px -4px rgba(26,66,48,.45);color:#FFFFFF !important;}
+.cta-inline:visited,
+.essay-body a.cta-inline:visited{color:#FFFFFF !important;}
+.cta-inline.executive,
+.essay-body a.cta-inline.executive{background:var(--e-primary);box-shadow:0 4px 14px -4px rgba(22,32,64,.35);}
+.cta-inline.executive:hover,
+.essay-body a.cta-inline.executive:hover{background:var(--e-mid);box-shadow:0 8px 20px -4px rgba(22,32,64,.45);}
+
 /* Pull quote / blockquote */
 .essay-body blockquote{border-left:3px solid var(--gold);margin:2.5rem 0;padding:1rem 1.5rem;background:var(--gold-light);border-radius:0 6px 6px 0;}
 .essay-body blockquote p{font-size:1.15rem;font-weight:400;font-style:italic;color:var(--text);margin:0;line-height:1.6;}
@@ -151,6 +164,7 @@ footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:spa
   </div>
   <div class="nav-right">
     <a class="nav-link" href="../index.html">Home</a>
+    <a class="nav-link" href="../products.html">Products</a>
     <a class="nav-link" href="../about.html">About</a>
     <a class="nav-cta" href="#">Work With Me</a>
   </div>
@@ -204,6 +218,10 @@ footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:spa
          <div class="callout-label">Key Insight</div>
          <p>Your insight here.</p>
        </div>
+
+     CTA BUTTON (download, view on GitHub, try it, etc.):
+       <a class="cta-inline" href="https://your-link.com" target="_blank">Button Text &#x2192;</a>
+       Add class="cta-inline executive" instead for the navy variant on leader-facing essays.
 
      IMAGES:
        Standard (fits text column):

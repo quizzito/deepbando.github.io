@@ -1,0 +1,23 @@
+[
+  {
+    "category": "Productivity",
+    "name": "PDF Studio",
+    "summary": "A free, open-source PDF editor for Mac that compresses, merges, converts, and signs PDFs entirely on your own computer \u2014 no uploads, no account, no subscription.",
+    "url": "https://github.com/quizzito/pdf-studio",
+    "cta": "Get the Product"
+  },
+  {
+    "category": "Decision Making",
+    "name": "Case Gym",
+    "summary": "A practice environment for case interviews and structured decision-making drills \u2014 built to train the muscle of clear, fast, defensible reasoning under pressure.",
+    "url": "https://casegym.replit.app/",
+    "cta": "Try It"
+  },
+  {
+    "category": "Finance",
+    "name": "Super Cards",
+    "summary": "A tool for comparing and optimizing credit card decisions \u2014 built from the inside knowledge of how card pricing and rewards actually work.",
+    "url": "https://card-wizard--quizzito.replit.app/",
+    "cta": "Try It"
+  }
+]

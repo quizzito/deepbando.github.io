@@ -1,6 +1,15 @@
 [
   {
     "audience": "consumer",
+    "product": null,
+    "topic": "productivity",
+    "date": "Jun 2025",
+    "title": "PDF Studio: A Free PDF Editor for Mac That Never Uploads Your Files",
+    "excerpt": "A free, open-source desktop app that compresses, merges, organizes, signs, and converts PDFs entirely on your own computer \u2014 no account, no subscription, no upload.",
+    "url": "essays/pdf-studio-free-mac-pdf-editor.html"
+  },
+  {
+    "audience": "consumer",
     "product": "gic",
     "topic": "pricing",
     "date": "Jun 2025",

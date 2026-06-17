@@ -199,6 +199,7 @@ footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:spa
   </div>
   <div class="nav-right">
     <a class="nav-link" onclick="showPage('home')">Home</a>
+    <a class="nav-link" href="products.html">Products</a>
     <a class="nav-link" href="about.html">About</a>
     <button class="nav-cta">Work With Me</button>
   </div>
@@ -239,6 +240,7 @@ footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:spa
       <button class="topic-chip" data-topic="team" onclick="homeFilter('team',this)">Team Building</button>
       <button class="topic-chip" data-topic="data" onclick="homeFilter('data',this)">Data Strategy</button>
       <button class="topic-chip" data-topic="pricing" onclick="homeFilter('pricing',this)">Pricing Strategy</button>
+      <button class="topic-chip" data-topic="productivity" onclick="homeFilter('productivity',this)">Tools &amp; Productivity</button>
     </div>
   </div>
 
@@ -341,6 +343,7 @@ footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:spa
         <button class="filter-chip" data-filter="topic" data-val="consumer-rights" onclick="fullFilter('consumer','topic','consumer-rights',this)">Consumer Rights</button>
         <button class="filter-chip" data-filter="topic" data-val="investing" onclick="fullFilter('consumer','topic','investing',this)">Investing</button>
         <button class="filter-chip" data-filter="topic" data-val="fees" onclick="fullFilter('consumer','topic','fees',this)">Fees &amp; Rates</button>
+        <button class="filter-chip" data-filter="topic" data-val="productivity" onclick="fullFilter('consumer','topic','productivity',this)">Tools &amp; Productivity</button>
       </div>
     </div>
   </div>
@@ -410,7 +413,8 @@ const PRODUCT_LABELS = {
 const TOPIC_LABELS = {
   "pricing":"Pricing Strategy","ai-ml":"AI & ML","team":"Team Building",
   "data":"Data Strategy","challenger":"Challenger Banks",
-  "consumer-rights":"Consumer Rights","investing":"Investing","fees":"Fees & Rates"
+  "consumer-rights":"Consumer Rights","investing":"Investing","fees":"Fees & Rates",
+  "productivity":"Tools & Productivity"
 };
 
 /* ── STATE ────────────────────────────────────────────────────────────── */

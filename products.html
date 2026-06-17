@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Deep Bando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F8F7F3; --bg2:#F0EDE7; --bg3:#E6E1D9;
+  --text:#17160F; --text2:#5C5A51; --text3:#9B9888;
+  --border:#DDD8CF; --border2:#C9C3B8;
+  --c-bg:#E6F0EB; --c-primary:#1A4230; --c-mid:#2A6147; --c-border:#A8CBBA;
+  --e-bg:#E6EAF4; --e-primary:#162040; --e-mid:#253580; --e-border:#9AAAD4;
+  --gold:#A87828; --gold-light:#F5EDD8; --gold-mid:#C49030;
+  --font-brand:'Pacifico',cursive;
+  --font-serif:'Averia Serif Libre',Georgia,serif;
+  --font-sans:'Montserrat',sans-serif;
+  --r-sm:4px; --r-md:8px; --r-lg:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-serif);background:var(--bg);color:var(--text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.nav-brand{font-family:var(--font-brand);font-size:22px;color:var(--text);text-decoration:none;flex-shrink:0;}
+.nav-center{display:flex;align-items:center;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--bg2);}
+.nav-track{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 18px;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:all .2s;text-decoration:none;display:inline-block;}
+.nav-track.consumer:hover{background:var(--c-primary);color:#fff;}
+.nav-track.executive:hover{background:var(--e-primary);color:#fff;}
+.nav-right{display:flex;align-items:center;gap:1.75rem;}
+.nav-link{font-family:var(--font-sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .15s;}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{color:var(--text);border-bottom:1.5px solid var(--gold);padding-bottom:2px;}
+.nav-cta{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--e-primary);border:none;padding:9px 20px;border-radius:24px;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+.nav-cta:hover{background:var(--e-mid);}
+
+/* PAGE HERO */
+.page-hero{max-width:1120px;margin:0 auto;padding:4.5rem 3rem 3rem;border-bottom:1px solid var(--border);}
+.page-eyebrow{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);display:inline-block;padding:5px 12px;border-radius:24px;margin-bottom:1.5rem;}
+.page-hero h1{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.025em;margin-bottom:.75rem;line-height:1.15;}
+.page-hero p{font-family:var(--font-serif);font-size:16px;font-weight:300;color:var(--text2);max-width:560px;line-height:1.7;}
+
+/* CATEGORY SECTION */
+.category-section{max-width:1120px;margin:0 auto;padding:3rem 3rem;border-bottom:1px solid var(--border);}
+.category-section:last-of-type{border-bottom:none;}
+.category-header{display:flex;align-items:center;gap:.875rem;margin-bottom:2rem;}
+.category-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.category-dot.cat-productivity{background:var(--gold);}
+.category-dot.cat-decision-making{background:var(--c-primary);}
+.category-dot.cat-finance{background:var(--e-primary);}
+.category-title{font-family:var(--font-sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);}
+.category-count{font-family:var(--font-sans);font-size:11px;color:var(--text3);font-weight:500;}
+.category-line{flex:1;height:1px;background:var(--border);}
+
+/* PRODUCT CARD */
+.products-list{display:flex;flex-direction:column;gap:1rem;}
+.product-card{border:1px solid var(--border);border-radius:var(--r-lg);padding:1.75rem 2rem;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:center;transition:border-color .2s,box-shadow .2s,transform .2s;background:var(--bg);}
+.product-card:hover{box-shadow:0 8px 28px -10px rgba(0,0,0,.12);transform:translateY(-2px);}
+.product-card.cat-productivity:hover{border-color:var(--gold-mid);}
+.product-card.cat-decision-making:hover{border-color:var(--c-border);}
+.product-card.cat-finance:hover{border-color:var(--e-border);}
+
+.product-info{display:flex;flex-direction:column;gap:.5rem;}
+.product-name-link{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:var(--text);text-decoration:none;transition:color .15s;width:fit-content;}
+.cat-productivity .product-name-link:hover{color:var(--gold-mid);}
+.cat-decision-making .product-name-link:hover{color:var(--c-mid);}
+.cat-finance .product-name-link:hover{color:var(--e-mid);}
+.product-summary{font-family:var(--font-serif);font-size:14.5px;font-weight:300;color:var(--text2);line-height:1.65;max-width:560px;}
+
+.product-action{flex-shrink:0;}
+.product-btn{font-family:var(--font-sans);font-size:12px;font-weight:700;letter-spacing:.05em;padding:10px 22px;border-radius:24px;text-decoration:none;white-space:nowrap;display:inline-block;transition:transform .15s,box-shadow .15s;}
+.cat-productivity .product-btn{background:var(--gold);color:#fff;}
+.cat-decision-making .product-btn{background:var(--c-primary);color:#fff;}
+.cat-finance .product-btn{background:var(--e-primary);color:#fff;}
+.product-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px -4px rgba(0,0,0,.25);}
+
+.loading-state{padding:2rem 0;font-family:var(--font-sans);font-size:12px;color:var(--text3);display:flex;align-items:center;gap:.5rem;}
+.loading-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);animation:pulse 1.2s ease infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+
+/* FOOTER */
+footer{background:var(--text);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.footer-brand{font-family:var(--font-brand);font-size:18px;color:rgba(255,255,255,.9);text-decoration:none;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-link{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s;}
+.footer-link:hover{color:rgba(255,255,255,.8);}
+.footer-copy{font-family:var(--font-sans);font-size:11px;color:rgba(255,255,255,.25);}
+
+@media(max-width:700px){
+  nav{padding:0 1.25rem;}
+  .nav-center{display:none;}
+  .page-hero{padding:3rem 1.25rem 2rem;}
+  .category-section{padding:2.5rem 1.25rem;}
+  .product-card{grid-template-columns:1fr;text-align:left;}
+  .product-action{width:fit-content;}
+  footer{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Deep Bando</a>
+  <div class="nav-center">
+    <a class="nav-track consumer" href="index.html">&#127974; For Consumers</a>
+    <a class="nav-track executive" href="index.html">&#128202; For Leaders</a>
+  </div>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link active">Products</a>
+    <a class="nav-link" href="about.html">About</a>
+    <a class="nav-cta" href="#">Work With Me</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <span class="page-eyebrow">Built &amp; Shipped</span>
+  <h1>Products</h1>
+  <p>Tools I&rsquo;ve built and shipped, mostly to scratch my own itch. Free, open where possible, and organized by what problem they solve.</p>
+</div>
+
+<div id="products-container">
+  <div class="category-section">
+    <div class="loading-state"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+  </div>
+</div>
+
+<footer>
+  <a class="footer-brand" href="index.html">Deep Bando</a>
+  <div class="footer-links">
+    <a class="footer-link" href="https://www.linkedin.com/in/deepban/" target="_blank">LinkedIn</a>
+    <a class="footer-link" href="https://github.com/quizzito" target="_blank">GitHub</a>
+    <a class="footer-link" href="#">Twitter / X</a>
+    <a class="footer-link" href="#">Subscribe</a>
+  </div>
+  <span class="footer-copy">&copy; 2025 Deep Bando &middot; Decision Management</span>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   ✏️  TO ADD A NEW PRODUCT:
+   Open data/products.json and add a new entry to the array:
+
+   {
+     "category": "Productivity",   <- must match an existing category exactly,
+                                       or create a new one — it will render
+                                       as its own section automatically
+     "name": "Your Product Name",
+     "summary": "1-2 sentence description of what it does.",
+     "url": "https://your-product-link.com",
+     "cta": "Get the Product"      <- button text, e.g. "Try It", "Download"
+   }
+
+   Save the file, commit, push. No HTML editing required.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+async function init() {
+  let PRODUCTS = [];
+  try {
+    const res = await fetch("data/products.json");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    PRODUCTS = await res.json();
+  } catch (e) {
+    document.getElementById("products-container").innerHTML = `
+      <div class="category-section">
+        <p style="font-family:var(--font-sans);font-size:12px;color:#c0392b;line-height:1.6;">
+          &#9888; Could not load products.<br>
+          <strong>If testing locally:</strong> open this folder in VS Code and click <em>Go Live</em>.
+          Do not open the HTML file directly in your browser.
+        </p>
+      </div>`;
+    return;
+  }
+
+  // Group by category, preserving first-seen order
+  const order = [];
+  const grouped = {};
+  PRODUCTS.forEach(p => {
+    if (!grouped[p.category]) { grouped[p.category] = []; order.push(p.category); }
+    grouped[p.category].push(p);
+  });
+
+  document.getElementById("products-container").innerHTML = order.map(cat => {
+    const slug = slugify(cat);
+    const items = grouped[cat];
+    return `
+      <div class="category-section">
+        <div class="category-header">
+          <div class="category-dot cat-${slug}"></div>
+          <span class="category-title">${cat}</span>
+          <span class="category-count">${items.length} ${items.length === 1 ? 'product' : 'products'}</span>
+          <div class="category-line"></div>
+        </div>
+        <div class="products-list">
+          ${items.map(p => `
+            <div class="product-card cat-${slug}">
+              <div class="product-info">
+                <a class="product-name-link" href="${p.url}" target="_blank">${p.name}</a>
+                <p class="product-summary">${p.summary}</p>
+              </div>
+              <div class="product-action">
+                <a class="product-btn" href="${p.url}" target="_blank">${p.cta} &#x2192;</a>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+init();
+</script>
+</body>
+</html>
