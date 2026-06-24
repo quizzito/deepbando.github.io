@@ -1,5 +1,14 @@
 [
   {
+    "audience": "executive",
+    "product": null,
+    "topic": "ai-ml",
+    "date": "Jun 2025",
+    "title": "The $40,000 Tuesday Problem: Why Your Media Budget Is a Portfolio Management Failure",
+    "excerpt": "At $50K daily spend, a 3-day allocation lag costs $1.8M annually. The open-source reallocation engine that fixes it \u2014 architecture, Thompson Sampling, and 30-day deployment guide.",
+    "url": "essays/media-budget-portfolio-reallocation-engine.html"
+  },
+  {
     "audience": "consumer",
     "product": "credit-card",
     "topic": "consumer-rights",
