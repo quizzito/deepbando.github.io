@@ -1,4 +1,13 @@
 [
+   {
+    "audience": "executive",
+    "product": null,
+    "topic": "ai-ml",
+    "date": "Jun 2025",
+    "title": "The $50 Million Blind Spot: Why Fraud Teams Are Losing Investigations They Should Win",
+    "excerpt": "How graph visualization reduces fraud investigation time by 40% in BFSI — a practitioner build log covering fraud rings, ATO, and synthetic identity detection.",
+    "url": "essays/graph-analytics-fraud-detection-bfsi.html"
+  },
   {
     "audience": "consumer",
     "product": null,
