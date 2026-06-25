@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://quizzito.github.io/deepbando.github.io/</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/about.html</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/products.html</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/essays/media-budget-portfolio-reallocation-engine.html</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/essays/graph-analytics-fraud-detection-bfsi.html</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/essays/pdf-studio-free-mac-pdf-editor.html</loc></url>
-  <url><loc>https://quizzito.github.io/deepbando.github.io/essays/credit-card-optimization-essay.html</loc></url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/about.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/products.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/essays/media-budget-portfolio-reallocation-engine.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/essays/graph-analytics-fraud-detection-bfsi.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/essays/pdf-studio-free-mac-pdf-editor.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/essays/credit-card-optimization-essay.html</loc>
+  </url>
+  <url>
+    <loc>https://quizzito.github.io/deepbando.github.io/essays/graph-analytics-fraud-detection-bfsi.html</loc>
+  </url>
 </urlset>
