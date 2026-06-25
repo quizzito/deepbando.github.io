@@ -920,39 +920,170 @@
 </div><!-- /page -->
 
 <script>
-  /* Filter pills — toggle active state */
-  document.querySelectorAll('.filter-row').forEach(function(row) {
-    row.querySelectorAll('.pill').forEach(function(pill) {
-      pill.addEventListener('click', function() {
-        row.querySelectorAll('.pill').forEach(function(p) {
+(function () {
+
+  /* ── LABEL LOOKUPS ─────────────────────────────────────────────── */
+  var PRODUCT_LABELS = {
+    'gic': 'GIC', 'credit-card': 'Credit Card', 'tfsa': 'TFSA',
+    'payroll': 'Payroll', 'money-movement': 'Money Movement'
+  };
+  var TOPIC_LABELS = {
+    'pricing': 'Pricing Strategy', 'ai-ml': 'AI & ML', 'team': 'Team Building',
+    'data': 'Data Strategy', 'challenger': 'Challenger Banks',
+    'consumer-rights': 'Consumer Rights', 'investing': 'Investing',
+    'fees': 'Fees & Rates', 'productivity': 'Tools & Productivity'
+  };
+
+  /* Maps filter chip values in this design → topic values in essays.json */
+  var LEADER_FILTER_MAP = {
+    'ai-ml': 'ai-ml', 'team-building': 'team', 'data-strategy': 'data',
+    'pricing-strategy': 'pricing', 'tools': 'productivity'
+  };
+
+  var ALL_CONSUMER = [];
+  var ALL_LEADER   = [];
+
+  /* ── TAG LABEL HELPER ──────────────────────────────────────────── */
+  function tagLabel(a) {
+    if (a.product && PRODUCT_LABELS[a.product]) return PRODUCT_LABELS[a.product];
+    if (a.topic   && TOPIC_LABELS[a.topic])   return TOPIC_LABELS[a.topic];
+    return 'Essay';
+  }
+
+  /* ── CARD HTML BUILDERS ────────────────────────────────────────── */
+  function cardLarge(a, aud) {
+    var cc  = aud === 'consumer' ? 'consumers-card' : 'leaders-card';
+    var tc  = aud === 'consumer' ? 'tag-consumer'   : 'tag-leader';
+    return '<a href="' + a.url + '" class="article-card ' + cc + '">' +
+      '<div>' +
+        '<span class="article-tag ' + tc + '">' + tagLabel(a) + '</span>' +
+        '<p class="article-title">'   + a.title   + '</p>' +
+        '<p class="article-excerpt">' + a.excerpt + '</p>' +
+      '</div>' +
+      '<div class="article-meta">' +
+        '<span>' + a.date + '</span>' +
+        '<span class="article-meta-action">Read essay \u2192</span>' +
+      '</div>' +
+    '</a>';
+  }
+
+  function cardSmall(a, aud) {
+    var cc = aud === 'consumer' ? 'consumers-card' : 'leaders-card';
+    var tc = aud === 'consumer' ? 'tag-consumer'   : 'tag-leader';
+    return '<a href="' + a.url + '" class="article-card ' + cc + ' small">' +
+      '<div>' +
+        '<span class="article-tag ' + tc + '">' + tagLabel(a) + '</span>' +
+        '<p class="article-title">' + a.title + '</p>' +
+      '</div>' +
+      '<div class="article-meta">' +
+        '<span>' + a.date + '</span>' +
+        '<span class="article-meta-action">Read \u2192</span>' +
+      '</div>' +
+    '</a>';
+  }
+
+  /* ── RENDER GRID ───────────────────────────────────────────────── */
+  function renderGrid(gridId, articles, aud) {
+    var grid = document.getElementById(gridId);
+    if (!grid) return;
+    if (!articles.length) {
+      grid.innerHTML = '<div class="articles-placeholder" style="grid-column:1/-1">' +
+        '<strong>No essays in this category yet.</strong>More coming soon.</div>';
+      return;
+    }
+    var html = cardLarge(articles[0], aud);
+    var sides = articles.slice(1, 3);
+    if (sides.length) {
+      html += '<div class="articles-side">';
+      sides.forEach(function (a) { html += cardSmall(a, aud); });
+      html += '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  /* ── FILTER HANDLERS ───────────────────────────────────────────── */
+  function filterConsumer(val) {
+    var list = val === 'all'
+      ? ALL_CONSUMER
+      : ALL_CONSUMER.filter(function (a) { return a.product === val; });
+    renderGrid('consumers-grid', list, 'consumer');
+  }
+
+  function filterLeader(val) {
+    var topic = val === 'all' ? 'all' : (LEADER_FILTER_MAP[val] || val);
+    var list  = topic === 'all'
+      ? ALL_LEADER
+      : ALL_LEADER.filter(function (a) { return a.topic === topic; });
+    renderGrid('leaders-grid', list, 'leader');
+  }
+
+  /* ── WIRE FILTER PILLS ─────────────────────────────────────────── */
+  function wirePills(sectionId, filterFn) {
+    var section = document.getElementById(sectionId);
+    if (!section) return;
+    var row = section.querySelector('.filter-row');
+    if (!row) return;
+    var pills = row.querySelectorAll('.pill');
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        pills.forEach(function (p) {
           p.classList.remove('active');
           p.setAttribute('aria-pressed', 'false');
         });
         pill.classList.add('active');
         pill.setAttribute('aria-pressed', 'true');
+        filterFn(pill.getAttribute('data-filter') || 'all');
       });
     });
-    /* Set initial aria-pressed */
     var active = row.querySelector('.pill.active');
     if (active) active.setAttribute('aria-pressed', 'true');
-  });
+  }
 
-  /* Intersection observer for scroll-triggered fade-up on article cards */
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
+  /* ── SCROLL FADE-UP ────────────────────────────────────────────── */
+  function initObserver() {
+    if (!('IntersectionObserver' in window)) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.style.animation = 'fadeUp 0.45s ease both';
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12 });
-
-    document.querySelectorAll('.article-card, .about-strip, .consult-cta').forEach(function(el) {
+    document.querySelectorAll('.about-strip, .consult-cta').forEach(function (el) {
       el.style.opacity = '0';
       observer.observe(el);
     });
   }
+
+  /* ── INIT — fetch essays.json then render everything ───────────── */
+  function init() {
+    fetch('data/essays.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        ALL_CONSUMER = data.filter(function (a) { return a.audience === 'consumer'; });
+        ALL_LEADER   = data.filter(function (a) { return a.audience === 'executive'; });
+        renderGrid('consumers-grid', ALL_CONSUMER, 'consumer');
+        renderGrid('leaders-grid',   ALL_LEADER,   'leader');
+        wirePills('consumers', filterConsumer);
+        wirePills('leaders',   filterLeader);
+        initObserver();
+      })
+      .catch(function (err) {
+        console.error('Could not load essays.json. If testing locally, use VS Code Go Live — not a direct file open.', err);
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
 </script>
 
 </body>
