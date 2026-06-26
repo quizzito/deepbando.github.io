@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essays — Deep Bando</title>
+<meta name="description" content="All essays by Deep Bando on decision management, banking systems, AI pricing, and financial products — for consumers and executives.">
+<link rel="canonical" href="https://quizzito.github.io/deepbando.github.io/essays.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+
+/* ── TOKENS ─────────────────────────────────────────────────────── */
+:root {
+  --ink:        oklch(14% 0.012 240);
+  --ink-2:      oklch(35% 0.015 240);
+  --ink-3:      oklch(55% 0.01  240);
+  --surface:    oklch(98% 0.004 240);
+  --surface-2:  oklch(95% 0.006 240);
+  --gold:       oklch(62% 0.12  85);
+  --gold-light: oklch(93% 0.03  85);
+  --gold-dark:  oklch(40% 0.10  85);
+  --teal:       oklch(52% 0.11  195);
+  --teal-light: oklch(93% 0.03  195);
+  --teal-dark:  oklch(34% 0.09  195);
+  --border:     oklch(88% 0.008 240);
+  --serif:      'Playfair Display', Georgia, serif;
+  --sans:       'DM Sans', system-ui, sans-serif;
+  --r-sm:6px; --r-md:12px; --r-lg:18px; --r-pill:40px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--surface);color:var(--ink);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+
+/* ── NAV ─────────────────────────────────────────────────────────── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:0.5px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:var(--serif);font-size:17px;font-weight:500;letter-spacing:-.01em;color:var(--ink);}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-link{font-family:var(--sans);font-size:13.5px;color:var(--ink-3);transition:color .18s;}
+.nav-link:hover,.nav-link.active{color:var(--ink);}
+.nav-cta{font-size:13px;font-weight:500;color:var(--gold-dark);border:1px solid var(--gold);padding:7px 20px;border-radius:var(--r-pill);transition:background .18s,transform .12s;}
+.nav-cta:hover{background:var(--gold-light);transform:translateY(-1px);}
+
+/* ── FOOTER ──────────────────────────────────────────────────────── */
+.footer{display:flex;align-items:center;justify-content:space-between;padding:26px 40px;background:var(--surface-2);border-top:0.5px solid var(--border);flex-wrap:wrap;gap:16px;}
+.footer-brand{font-family:var(--serif);font-size:14px;color:var(--ink-2);}
+.footer-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+.footer-link{font-family:var(--sans);font-size:13px;color:var(--ink-3);transition:color .18s;}
+.footer-link:hover{color:var(--ink);}
+.footer-copy{font-family:var(--sans);font-size:12px;color:var(--ink-3);}
+
+/* ── SHARED SECTION ──────────────────────────────────────────────── */
+.page-hero{max-width:860px;margin:0 auto;padding:5rem 40px 4rem;}
+.eyebrow{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);display:inline-block;margin-bottom:1.25rem;}
+.eyebrow.gold{color:var(--gold-dark);background:var(--gold-light);padding:4px 12px;border-radius:var(--r-pill);}
+.eyebrow.teal{color:var(--teal-dark);background:var(--teal-light);padding:4px 12px;border-radius:var(--r-pill);}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:500;letter-spacing:-.025em;line-height:1.18;color:var(--ink);margin-bottom:.875rem;}
+.section-sub{font-family:var(--sans);font-size:16px;font-weight:300;color:var(--ink-3);max-width:520px;line-height:1.7;}
+
+/* ── PILL TAGS ───────────────────────────────────────────────────── */
+.pill{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-pill);display:inline-block;}
+.pill-consumer{background:var(--teal-light);color:var(--teal-dark);}
+.pill-executive{background:var(--gold-light);color:var(--gold-dark);}
+.pill-neutral{background:var(--surface-2);color:var(--ink-3);}
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────────────────── */
+@media(prefers-reduced-motion:no-preference){
+  .anim{opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);}
+  .anim.in{opacity:1;transform:none;}
+  .anim-d1{transition-delay:.08s;}
+  .anim-d2{transition-delay:.16s;}
+  .anim-d3{transition-delay:.24s;}
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+@media(max-width:700px){
+  .nav{padding:16px 20px;}
+  .nav-link:not(.nav-cta){display:none;}
+  .page-hero{padding:3.5rem 20px 3rem;}
+  .footer{padding:22px 20px;flex-direction:column;align-items:flex-start;}
+}
+
+/* ── FILTER BAR ──────────────────────────────────────────────────── */
+.filter-bar{border-bottom:0.5px solid var(--border);background:var(--surface);position:sticky;top:61px;z-index:90;padding:.875rem 0;}
+.filter-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:.5rem;}
+.filter-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.filter-label{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);width:60px;flex-shrink:0;}
+.chip{font-family:var(--sans);font-size:11px;font-weight:500;padding:5px 14px;border-radius:var(--r-pill);border:0.5px solid var(--border);background:transparent;color:var(--ink-3);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.chip:hover{border-color:var(--ink-3);color:var(--ink);background:var(--surface-2);}
+.chip.active-audience{background:var(--ink);color:var(--surface);border-color:var(--ink);}
+.chip.active-consumer{background:var(--teal);color:#fff;border-color:var(--teal);}
+.chip.active-executive{background:var(--gold-dark);color:#fff;border-color:var(--gold-dark);}
+.chip.active-topic{background:var(--surface-2);color:var(--ink);border-color:var(--border);font-weight:600;}
+.filter-clear{font-family:var(--sans);font-size:11px;color:var(--ink-3);background:none;border:none;cursor:pointer;text-decoration:underline;padding:0 4px;}
+
+/* ── ESSAY GRID ──────────────────────────────────────────────────── */
+.essay-grid{max-width:1100px;margin:0 auto;padding:2.5rem 40px 4rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;align-items:start;}
+.essay-card{border:0.5px solid var(--border);border-radius:var(--r-md);padding:1.5rem;background:var(--surface);transition:border-color .2s,box-shadow .2s,transform .2s;display:block;color:inherit;cursor:pointer;}
+.essay-card:hover{box-shadow:0 6px 24px -6px oklch(14% 0.012 240 / .1);transform:translateY(-2px);}
+.essay-card.consumer:hover{border-color:var(--teal);}
+.essay-card.executive:hover{border-color:var(--gold);}
+.essay-card.hidden{display:none;}
+.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:.625rem;flex-wrap:wrap;}
+.card-date{font-family:var(--sans);font-size:11px;color:var(--ink-3);}
+.card-title{font-family:var(--serif);font-size:1.1rem;font-weight:500;line-height:1.3;color:var(--ink);margin-bottom:.5rem;transition:color .15s;}
+.essay-card.consumer:hover .card-title{color:var(--teal-dark);}
+.essay-card.executive:hover .card-title{color:var(--gold-dark);}
+.card-excerpt{font-family:var(--sans);font-size:13.5px;font-weight:300;color:var(--ink-3);line-height:1.65;}
+.empty-state{grid-column:1/-1;text-align:center;padding:3rem;font-family:var(--sans);font-size:14px;color:var(--ink-3);}
+.empty-state button{margin-top:.75rem;font-family:var(--sans);font-size:13px;background:none;border:0.5px solid var(--border);border-radius:var(--r-pill);padding:6px 18px;color:var(--ink-3);cursor:pointer;}
+
+@media(max-width:700px){
+  .essay-grid{grid-template-columns:1fr;padding:2rem 20px;}
+  .filter-inner{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">Deep Bando</a>
+    <div class="nav-links">
+      <a href="essays.html" class="nav-link active">Essays</a><a href="products.html" class="nav-link">Products</a><a href="about.html" class="nav-link">About</a>
+      <a href="https://www.linkedin.com/in/deepban/" target="_blank" rel="noopener noreferrer" class="nav-link nav-cta">Work with me</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero" style="padding-bottom:2rem;">
+  <span class="eyebrow">All Writing</span>
+  <h1 class="section-title">Essays</h1>
+  <p class="section-sub">Decision management, banking systems, AI pricing, and financial products &mdash; one insider perspective, two audiences.</p>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="filter-row" id="audience-row">
+      <span class="filter-label">Audience</span>
+      <button class="chip active-audience" data-audience="all">All</button>
+      <button class="chip" data-audience="consumer">For Consumers</button>
+      <button class="chip" data-audience="executive">For Leaders</button>
+    </div>
+    <div class="filter-row" id="topic-row">
+      <span class="filter-label">Topic</span>
+      <button class="chip active-topic" data-topic="all">All</button>
+      <button class="chip" data-topic="gic">GIC</button>
+      <button class="chip" data-topic="credit-card">Credit Card</button>
+      <button class="chip" data-topic="tfsa">TFSA</button>
+      <button class="chip" data-topic="payroll">Payroll</button>
+      <button class="chip" data-topic="money-movement">Money Movement</button>
+      <button class="chip" data-topic="pricing">Pricing Strategy</button>
+      <button class="chip" data-topic="ai-ml">AI &amp; ML</button>
+      <button class="chip" data-topic="data">Data Strategy</button>
+      <button class="chip" data-topic="team">Team Building</button>
+      <button class="chip" data-topic="productivity">Tools</button>
+      <button class="chip" data-topic="consumer-rights">Consumer Rights</button>
+      <button class="chip" data-topic="investing">Investing</button>
+      <button class="chip" data-topic="fees">Fees</button>
+      <button class="filter-clear" id="clear-btn" style="display:none" onclick="clearFilters()">Clear filters</button>
+    </div>
+  </div>
+</div>
+
+<div class="essay-grid" id="essay-grid">
+  <div class="empty-state">Loading essays&hellip;</div>
+</div>
+
+<footer class="footer">
+  <span class="footer-brand">Deep Bando &middot; Decision Management</span>
+  <nav class="footer-links">
+    <a href="https://www.linkedin.com/in/deepban/" class="footer-link" target="_blank">LinkedIn</a>
+    <a href="https://github.com/quizzito"          class="footer-link" target="_blank">GitHub</a>
+    <a href="#" class="footer-link">Twitter / X</a>
+    <a href="#" class="footer-link">Subscribe</a>
+  </nav>
+  <span class="footer-copy">&copy; 2025</span>
+</footer>
+
+<script>
+var PRODUCT_LABELS={'gic':'GIC','credit-card':'Credit Card','tfsa':'TFSA','payroll':'Payroll','money-movement':'Money Movement'};
+var TOPIC_LABELS={'pricing':'Pricing Strategy','ai-ml':'AI & ML','team':'Team Building','data':'Data Strategy','challenger':'Challenger Banks','consumer-rights':'Consumer Rights','investing':'Investing','fees':'Fees & Rates','productivity':'Tools & Productivity'};
+
+var activeAudience='all', activeTopic='all';
+
+function tagLabel(a){
+  if(a.product&&PRODUCT_LABELS[a.product])return PRODUCT_LABELS[a.product];
+  if(a.topic&&TOPIC_LABELS[a.topic])return TOPIC_LABELS[a.topic];
+  return 'Essay';
+}
+
+function renderGrid(articles){
+  var grid=document.getElementById('essay-grid');
+  if(!articles.length){grid.innerHTML='<div class="empty-state">No essays yet.</div>';return;}
+  grid.innerHTML=articles.map(function(a){
+    var aud=a.audience==='consumer'?'consumer':'executive';
+    var pillCls=aud==='consumer'?'pill-consumer':'pill-executive';
+    var audLabel=aud==='consumer'?'For Consumers':'For Leaders';
+    return '<a href="'+a.url+'" class="essay-card '+aud+' anim" data-audience="'+aud+'" data-product="'+(a.product||'')+'" data-topic="'+(a.topic||'')+'">'+
+      '<div class="card-meta">'+
+        '<span class="pill '+pillCls+'">'+audLabel+'</span>'+
+        '<span class="pill pill-neutral">'+tagLabel(a)+'</span>'+
+        '<span class="card-date">'+a.date+'</span>'+
+      '</div>'+
+      '<div class="card-title">'+a.title+'</div>'+
+      '<div class="card-excerpt">'+a.excerpt+'</div>'+
+    '</a>';
+  }).join('');
+  if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.essay-grid .anim').forEach(function(el){obs.observe(el);});
+  } else {
+    document.querySelectorAll('.essay-grid .anim').forEach(function(el){el.classList.add('in');});
+  }
+}
+
+function applyFilters(articles){
+  return articles.filter(function(a){
+    var audMatch=activeAudience==='all'||a.audience===activeAudience;
+    var topicMatch=activeTopic==='all'||a.product===activeTopic||a.topic===activeTopic;
+    return audMatch&&topicMatch;
+  });
+}
+
+var ALL_ARTICLES=[];
+
+function filter(){
+  document.getElementById('clear-btn').style.display=(activeAudience!=='all'||activeTopic!=='all')?'inline':'none';
+  renderGrid(applyFilters(ALL_ARTICLES));
+}
+
+function clearFilters(){
+  activeAudience='all';activeTopic='all';
+  document.querySelectorAll('[data-audience]').forEach(function(b){b.className='chip'+(b.dataset.audience==='all'?' active-audience':'');});
+  document.querySelectorAll('[data-topic]').forEach(function(b){b.className='chip'+(b.dataset.topic==='all'?' active-topic':'');});
+  filter();
+}
+
+/* Wire audience chips */
+document.querySelectorAll('[data-audience]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    activeAudience=btn.dataset.audience;
+    document.querySelectorAll('[data-audience]').forEach(function(b){b.className='chip';});
+    btn.className='chip active-audience';
+    filter();
+  });
+});
+
+/* Wire topic chips */
+document.querySelectorAll('[data-topic]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    activeTopic=btn.dataset.topic;
+    document.querySelectorAll('[data-topic]').forEach(function(b){b.className='chip'+(b.dataset.topic==='all'?' active-topic':'');});
+    if(btn.dataset.topic!=='all')btn.className='chip active-topic';
+    filter();
+  });
+});
+
+/* Fetch essays */
+fetch('data/essays.json')
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(data){ALL_ARTICLES=data;renderGrid(data);})
+  .catch(function(e){
+    document.getElementById('essay-grid').innerHTML='<div class="empty-state">Could not load essays.<br><small>If testing locally, open with VS Code Go Live.</small></div>';
+  });
+</script>
+<script>
+(function(){
+  /* Progress bar */
+  var b=document.createElement('div');
+  b.setAttribute('aria-hidden','true');
+  b.style.cssText='position:fixed;top:0;left:0;height:2px;background:oklch(62% 0.12 85);width:0%;z-index:9999;pointer-events:none;transition:width .1s linear';
+  document.body.appendChild(b);
+  window.addEventListener('scroll',function(){
+    b.style.width=Math.min(100,window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
+  },{passive:true});
+  /* Scroll fade-up */
+  if(!('IntersectionObserver' in window))return;
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -48px 0px'});
+  document.querySelectorAll('.anim').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>
