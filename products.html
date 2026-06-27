@@ -93,5 +93,23 @@ fetch("data/products.json")
   document.querySelectorAll(".anim").forEach(function(el){obs.observe(el);});
 })();
 </script>
+<script>
+/* ── BACK TO TOP + CHIP DELIGHT ──────────────────────────────── */
+(function(){
+  var top=document.createElement("button");
+  top.innerHTML="&#8593;";top.setAttribute("aria-label","Back to top");
+  top.style.cssText="position:fixed;bottom:28px;right:28px;width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--surface);border:none;font-size:16px;cursor:pointer;opacity:0;z-index:90;transition:opacity 0.3s cubic-bezier(.22,1,.36,1),transform 0.3s cubic-bezier(.22,1,.36,1);transform:translateY(8px);font-family:var(--sans);";
+  document.body.appendChild(top);
+  window.addEventListener("scroll",function(){var s=window.scrollY>400;top.style.opacity=s?"1":"0";top.style.transform=s?"translateY(0)":"translateY(8px)";},{passive:true});
+  top.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+  /* Chip click micro-feedback */
+  document.querySelectorAll(".chip").forEach(function(c){
+    c.addEventListener("click",function(){
+      c.style.transform="scale(0.9)";
+      setTimeout(function(){c.style.transform="";},110);
+    });
+  });
+})();
+</script>
 </body>
 </html>

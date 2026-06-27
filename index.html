@@ -68,15 +68,18 @@
       }
     }
 
-    /* ─── ANIMATIONS ──────────────────────────────────────── */
+    /* ─── ANIMATIONS (Impeccable: ease-out-quint, no bounce) ─── */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
+      from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-up          { animation: fadeUp 0.55s ease both; }
-    .fade-up-d1       { animation: fadeUp 0.55s 0.10s ease both; }
-    .fade-up-d2       { animation: fadeUp 0.55s 0.18s ease both; }
-    .fade-up-d3       { animation: fadeUp 0.55s 0.26s ease both; }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .fade-up          { animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade-up-d1       { animation: fadeUp 0.65s 0.10s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade-up-d2       { animation: fadeUp 0.65s 0.20s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade-up-d3       { animation: fadeUp 0.65s 0.30s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
     /* ─── LAYOUT WRAPPER ──────────────────────────────────── */
     .page { max-width: 1080px; margin: 0 auto; }
@@ -228,16 +231,43 @@
 
     .scroll-hint {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 10px;
-      font-size: 12px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--ink-3);
-      letter-spacing: 0.06em;
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .scroll-hint.hidden { opacity: 0; pointer-events: none; }
     .scroll-hint-line {
-      width: 32px; height: 0.5px;
-      background: var(--ink-3);
+      position: relative;
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+      overflow: hidden;
       flex-shrink: 0;
+    }
+    @keyframes scrollTravel {
+      0%   { transform: translateY(-100%); opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(200%); opacity: 0; }
+    }
+    .scroll-hint-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 50%;
+      background: var(--ink-2);
+      animation: scrollTravel 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-hint-line::after { animation: none; opacity: 0.4; transform: none; }
     }
 
     /* ─── AUDIENCE CARDS ──────────────────────────────────── */
@@ -254,14 +284,17 @@
       transform: translateY(-3px);
       box-shadow: 0 10px 28px oklch(14% 0.012 240 / 0.06);
     }
+    /* Impeccable: side-stripe borders banned — using background tint + full border instead */
     .audience-card.consumers {
-      border-left: 3px solid var(--teal);
+      background: oklch(96% 0.015 195);
+      border-color: var(--teal);
     }
-    .audience-card.consumers:hover { border-color: var(--teal); border-left-color: var(--teal); }
+    .audience-card.consumers:hover { border-color: var(--teal-dark); box-shadow: 0 10px 28px oklch(52% 0.11 195 / 0.12); }
     .audience-card.leaders {
-      border-left: 3px solid var(--gold);
+      background: oklch(96% 0.015 85);
+      border-color: var(--gold);
     }
-    .audience-card.leaders:hover { border-color: var(--gold); border-left-color: var(--gold); }
+    .audience-card.leaders:hover { border-color: var(--gold-dark); box-shadow: 0 10px 28px oklch(62% 0.12 85 / 0.12); }
 
     .card-track {
       font-size: 11px;
@@ -713,8 +746,8 @@
         </div>
 
         <div class="scroll-hint" aria-hidden="true">
-          <span class="scroll-hint-line"></span>
           <span>Scroll to explore</span>
+          <span class="scroll-hint-line"></span>
         </div>
       </div>
 
@@ -1043,18 +1076,96 @@
   /* ── SCROLL FADE-UP ────────────────────────────────────────────── */
   function initObserver() {
     if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+    /* Broader scope — section headers, strips, ctas, filter rows */
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.style.animation = 'fadeUp 0.45s ease both';
+          entry.target.style.transition = 'opacity 0.6s ' + easing + ', transform 0.6s ' + easing;
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'none';
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.about-strip, .consult-cta').forEach(function (el) {
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.about-strip, .consult-cta, .section-header, .filter-row').forEach(function (el) {
       el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
       observer.observe(el);
     });
+
+    /* Article cards — stagger after render */
+    var cardObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.transition = 'opacity 0.5s ' + easing + ', transform 0.5s ' + easing;
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'none';
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    function observeCards() {
+      document.querySelectorAll('.article-card').forEach(function (el, i) {
+        if (el.style.opacity === '') {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(14px)';
+          el.style.transitionDelay = (i % 3 * 0.07) + 's';
+          cardObserver.observe(el);
+        }
+      });
+    }
+
+    /* Re-run after essay fetch completes */
+    setTimeout(observeCards, 400);
+    setTimeout(observeCards, 1200);
+  }
+
+  /* ── PILL CLICK DELIGHT ─────────────────────────────────────────── */
+  function addPillDelight() {
+    document.querySelectorAll('.pill').forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        pill.style.transform = 'scale(0.92)';
+        setTimeout(function () { pill.style.transform = ''; }, 120);
+      });
+    });
+  }
+
+  /* ── BACK TO TOP ────────────────────────────────────────────────── */
+  function initBackToTop() {
+    var btn = document.createElement('button');
+    btn.innerHTML = '&#8593;';
+    btn.setAttribute('aria-label', 'Back to top');
+    btn.style.cssText = 'position:fixed;bottom:28px;right:28px;width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--surface);border:none;font-size:16px;cursor:pointer;opacity:0;z-index:90;transition:opacity 0.3s cubic-bezier(0.22,1,0.36,1),transform 0.3s cubic-bezier(0.22,1,0.36,1);transform:translateY(8px);font-family:var(--sans);';
+    document.body.appendChild(btn);
+
+    /* Hide scroll-hint once user starts scrolling */
+    var hint = document.querySelector('.scroll-hint');
+    window.addEventListener('scroll', function () {
+      var show = window.scrollY > 400;
+      btn.style.opacity = show ? '1' : '0';
+      btn.style.transform = show ? 'translateY(0)' : 'translateY(8px)';
+      if (hint && window.scrollY > 80) hint.classList.add('hidden');
+    }, { passive: true });
+
+    btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  }
+
+  /* ── READING PROGRESS ───────────────────────────────────────────── */
+  function initProgress() {
+    var bar = document.createElement('div');
+    bar.setAttribute('aria-hidden', 'true');
+    bar.style.cssText = 'position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0%;z-index:9999;pointer-events:none;transition:width 0.1s linear;';
+    document.body.appendChild(bar);
+    window.addEventListener('scroll', function () {
+      var pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      bar.style.width = Math.min(100, pct * 100) + '%';
+    }, { passive: true });
   }
 
   /* ── INIT — fetch essays.json then render everything ───────────── */
@@ -1072,6 +1183,7 @@
         wirePills('consumers', filterConsumer);
         wirePills('leaders',   filterLeader);
         initObserver();
+        addPillDelight();
       })
       .catch(function (err) {
         console.error('Could not load essays.json. If testing locally, use VS Code Go Live — not a direct file open.', err);
@@ -1079,9 +1191,9 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function() { init(); initBackToTop(); initProgress(); });
   } else {
-    init();
+    init(); initBackToTop(); initProgress();
   }
 
 })();

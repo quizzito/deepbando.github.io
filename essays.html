@@ -193,7 +193,7 @@ function tagLabel(a){
 
 function renderGrid(articles){
   var grid=document.getElementById('essay-grid');
-  if(!articles.length){grid.innerHTML='<div class="empty-state">No essays yet.</div>';return;}
+  if(!articles.length){grid.innerHTML='<div class="empty-state">No essays in this category.<button onclick="clearFilters()" style="display:block;margin:.75rem auto 0;font-family:var(--sans);font-size:13px;background:none;border:0.5px solid var(--border);border-radius:var(--r-pill);padding:6px 18px;color:var(--ink-3);cursor:pointer;">Clear filters</button></div>';return;}
   grid.innerHTML=articles.map(function(a){
     var aud=a.audience==='consumer'?'consumer':'executive';
     var pillCls=aud==='consumer'?'pill-consumer':'pill-executive';
@@ -208,11 +208,13 @@ function renderGrid(articles){
       '<div class="card-excerpt">'+a.excerpt+'</div>'+
     '</a>';
   }).join('');
+  /* Staggered card entrances — ease-out-quint, no bounce */
+  var cards=grid.querySelectorAll('.anim');
   if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('.essay-grid .anim').forEach(function(el){obs.observe(el);});
+    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.06,rootMargin:'0px 0px -28px 0px'});
+    cards.forEach(function(el,i){el.style.transitionDelay=Math.min(i*0.05,0.4)+'s';obs.observe(el);});
   } else {
-    document.querySelectorAll('.essay-grid .anim').forEach(function(el){el.classList.add('in');});
+    cards.forEach(function(el){el.classList.add('in');});
   }
 }
 
@@ -226,9 +228,22 @@ function applyFilters(articles){
 
 var ALL_ARTICLES=[];
 
+/* Smooth fade transition between filter states (Impeccable delight) */
 function filter(){
   document.getElementById('clear-btn').style.display=(activeAudience!=='all'||activeTopic!=='all')?'inline':'none';
-  renderGrid(applyFilters(ALL_ARTICLES));
+  var grid=document.getElementById('essay-grid');
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    renderGrid(applyFilters(ALL_ARTICLES));
+    return;
+  }
+  grid.style.transition='opacity 0.18s ease, transform 0.18s ease';
+  grid.style.opacity='0';
+  grid.style.transform='translateY(6px)';
+  setTimeout(function(){
+    renderGrid(applyFilters(ALL_ARTICLES));
+    grid.style.opacity='1';
+    grid.style.transform='none';
+  },180);
 }
 
 function clearFilters(){
@@ -283,6 +298,24 @@ fetch('data/essays.json')
     entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
   },{threshold:.1,rootMargin:'0px 0px -48px 0px'});
   document.querySelectorAll('.anim').forEach(function(el){obs.observe(el);});
+})();
+</script>
+<script>
+/* ── BACK TO TOP + CHIP DELIGHT ──────────────────────────────── */
+(function(){
+  var top=document.createElement("button");
+  top.innerHTML="&#8593;";top.setAttribute("aria-label","Back to top");
+  top.style.cssText="position:fixed;bottom:28px;right:28px;width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--surface);border:none;font-size:16px;cursor:pointer;opacity:0;z-index:90;transition:opacity 0.3s cubic-bezier(.22,1,.36,1),transform 0.3s cubic-bezier(.22,1,.36,1);transform:translateY(8px);font-family:var(--sans);";
+  document.body.appendChild(top);
+  window.addEventListener("scroll",function(){var s=window.scrollY>400;top.style.opacity=s?"1":"0";top.style.transform=s?"translateY(0)":"translateY(8px)";},{passive:true});
+  top.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+  /* Chip click micro-feedback */
+  document.querySelectorAll(".chip").forEach(function(c){
+    c.addEventListener("click",function(){
+      c.style.transform="scale(0.9)";
+      setTimeout(function(){c.style.transform="";},110);
+    });
+  });
 })();
 </script>
 </body>
