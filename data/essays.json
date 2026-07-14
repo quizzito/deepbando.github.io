@@ -3,6 +3,15 @@
     "audience": "executive",
     "product": null,
     "topic": "ai-ml",
+    "date": "Jul 2026",
+    "title": "How to Build an Agentic Analytics Team: The Failure Your Semantic Layer Won't Catch",
+    "excerpt": "I built a working agentic analytics stack and deliberately tested it on a free AI model before ever touching Claude. Here is exactly what broke, and the blueprint that held up anyway.",
+    "url": "essays/agentic-analytics-team-blueprint.html"
+  },
+  {
+    "audience": "executive",
+    "product": null,
+    "topic": "ai-ml",
     "date": "Jun 2025",
     "title": "The $40,000 Tuesday Problem: Why Your Media Budget Is a Portfolio Management Failure",
     "excerpt": "At $50K daily spend, a 3-day allocation lag costs $1.8M annually. The open-source reallocation engine that fixes it \u2014 architecture, Thompson Sampling, and 30-day deployment guide.",

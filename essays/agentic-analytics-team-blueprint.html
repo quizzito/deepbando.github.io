@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO / AEO -->
+  <title>How to Build an Agentic Analytics Team: The Failure Your Semantic Layer Won't Catch · Deep Bando</title>
+  <meta name="description" content="I built a working agentic analytics stack, canonical warehouse, semantic layer, skill, and evals, then deliberately tested it on a free AI model before ever touching Claude. Here is exactly what broke, and the blueprint for building this inside any organization." />
+  <meta name="author" content="Deep Bando" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://quizzito.github.io/deepbando.github.io/essays/agentic-analytics-team-blueprint.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How to Build an Agentic Analytics Team: The Failure Your Semantic Layer Won't Catch" />
+  <meta property="og:description" content="I built a working agentic analytics stack, then deliberately tested it on a free AI model before ever touching Claude. Here is what broke, and the blueprint that held up anyway." />
+  <meta property="og:url" content="https://quizzito.github.io/deepbando.github.io/essays/agentic-analytics-team-blueprint.html" />
+  <meta property="og:site_name" content="Deep Bando · Decision Management in Banking" />
+  <meta property="article:author" content="Deep Bando" />
+  <meta property="article:published_time" content="2026-07-14" />
+  <meta property="article:section" content="AI & ML" />
+  <meta property="article:tag" content="agentic analytics, AI analytics agent, semantic layer, Claude skills, self-serve analytics, data governance for AI, LLM evals" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to Build an Agentic Analytics Team" />
+  <meta name="twitter:description" content="What actually breaks when you point an AI agent at a real data warehouse, and the four-layer architecture that fixes it." />
+  <meta name="twitter:site" content="@deepbando" />
+
+  <!-- AEO: FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is agentic analytics?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Agentic analytics is the practice of letting an AI agent answer business questions directly against a company's data warehouse, using natural language, instead of routing every question through a human analyst. It works reliably only when the agent has governed data models, a shared definition of business metrics, procedural instructions for the data's quirks, and an automated way to test its accuracy, not just a capable language model."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do AI agents get business metrics wrong even with good data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI agents get metrics wrong because business terms like revenue, active customer, or refund rate are ambiguous without shared context. A model with no governed definition of these terms will compute a plausible but wrong answer, for example gross revenue instead of net revenue, or all signups instead of real customers, with equal confidence to a correct one."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a semantic layer for AI agents?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A semantic layer is a single, governed definition of each business metric, mapped to exactly one source table and one calculation, so an AI agent (or a human analyst) never has to guess which of several possible interpretations is correct. It typically lives as a version-controlled file, such as a metrics.yml, that is loaded as context before the agent answers any question."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a free AI model reliably run an analytics agent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A free-tier model can execute the core workflow, calling SQL tools and returning correct numbers, but testing showed it introduces specific failure modes a frontier model like Claude handles more reliably: writing SQL as prose instead of executing it, fabricating metadata such as data freshness dates, and inconsistent tool-calling behavior under complex instructions. Free models are a reasonable way to test and debug the architecture cheaply, before deciding what tier of model a given use case actually requires in production."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you test whether an AI analytics agent is trustworthy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Build a pinned set of test questions with known-correct answers, computed independently from the same data the agent will query, then run the agent against every question automatically and grade the results. Critically, the grading itself must be audited by hand on a sample, since an automated grader built from the same class of model can share its blind spots, including marking an answer correct when no real number was ever given."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- AEO: Article Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Build an Agentic Analytics Team: The Failure Your Semantic Layer Won't Catch",
+    "description": "I built a working agentic analytics stack, canonical warehouse, semantic layer, skill, and evals, then deliberately tested it on a free AI model before ever touching Claude. Here is exactly what broke, and the blueprint for building this inside any organization.",
+    "author": {
+      "@type": "Person",
+      "name": "Deep Bando",
+      "url": "https://quizzito.github.io/deepbando.github.io/about.html",
+      "jobTitle": "Analytics & Decision Management Leader"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Deep Bando"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://quizzito.github.io/deepbando.github.io/essays/agentic-analytics-team-blueprint.html"
+    },
+    "keywords": ["agentic analytics", "AI analytics agent", "semantic layer for AI", "Claude skills", "self-serve data analytics", "LLM evals", "data governance for AI agents", "building an AI analytics team"]
+  }
+  </script>
+
+  <style>
+/* ── TOKENS (OKLCH, matches index.html exactly) ─────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:         oklch(14% 0.012 240);
+  --ink-2:       oklch(35% 0.015 240);
+  --ink-3:       oklch(55% 0.01  240);
+  --surface:     oklch(98% 0.004 240);
+  --surface-2:   oklch(95% 0.006 240);
+  --gold:        oklch(62% 0.12  85);
+  --gold-light:  oklch(93% 0.03  85);
+  --gold-dark:   oklch(40% 0.10  85);
+  --teal:        oklch(52% 0.11  195);
+  --teal-light:  oklch(93% 0.03  195);
+  --teal-dark:   oklch(34% 0.09  195);
+  --border:      oklch(88% 0.008 240);
+  --serif:       'Playfair Display', Georgia, serif;
+  --sans:        'DM Sans', system-ui, sans-serif;
+  --mono:        ui-monospace, monospace;
+  --max-prose:   68ch;
+  --max-wide:    900px;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-pill: 40px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── NAV ───────────────────────────────────────── */
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-nav-logo {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.site-nav-links { display: flex; align-items: center; gap: 28px; }
+.site-nav-link {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+  transition: color 0.18s ease;
+}
+.site-nav-link:hover { color: var(--ink); }
+.site-nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-dark);
+  border: 1px solid var(--gold);
+  padding: 7px 20px;
+  border-radius: var(--radius-pill);
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+.site-nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* ── HERO ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 5rem 1.5rem 3.5rem;
+}
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: var(--ink-3);
+}
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+}
+.deck {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+.byline {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 0.5px solid var(--border);
+  flex-wrap: wrap;
+}
+.byline strong { color: var(--ink-2); font-weight: 500; }
+
+/* ── PROSE ───────────────────────────────────────────────────────── */
+.prose {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+.prose p {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.85;
+  margin-bottom: 1.4rem;
+}
+.prose p:first-child { color: var(--ink); font-weight: 400; font-size: 18px; }
+.prose strong { color: var(--ink); font-weight: 500; }
+.prose em { font-style: italic; }
+.prose a { color: var(--teal-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-top: 3.5rem;
+  margin-bottom: 0.875rem;
+  line-height: 1.28;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 2.5rem;
+  margin-bottom: 0.6rem;
+}
+h3.question {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--ink);
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+  font-style: italic;
+}
+
+/* PULL QUOTE */
+.pull {
+  background: var(--gold-light);
+  border: 0.5px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* CALLOUT / ACTIONABLE */
+.callout {
+  background: var(--teal-light);
+  border: 0.5px solid var(--teal);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.8rem;
+  margin: 2rem 0;
+}
+.callout-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+  margin-bottom: 0.5rem;
+}
+.callout p { margin-bottom: 0; color: var(--ink-2); }
+
+.actionable {
+  background: oklch(94% 0.04 145);
+  border: 0.5px solid oklch(60% 0.12 145);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.8rem;
+  margin: 2rem 0;
+}
+.actionable-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(38% 0.10 145);
+  margin-bottom: 0.5rem;
+}
+.actionable p { margin-bottom: 0; color: var(--ink-2); }
+
+/* STAT BOX */
+.stat-box {
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 2rem 2rem;
+  margin: 2.5rem 0;
+  max-width: var(--max-wide);
+}
+.stat-box .stat-number {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+.stat-box .stat-desc {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: oklch(75% 0.01 240);
+  line-height: 1.6;
+}
+
+/* ── EXHIBIT (Mermaid diagrams) ──────────────────────────────────── */
+.exhibit {
+  max-width: var(--max-wide);
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+.exhibit-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.5rem;
+}
+.exhibit-title {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+.exhibit-sub {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-bottom: 1.2rem;
+}
+.exhibit-box {
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+.exhibit-note {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-top: 0.625rem;
+  font-style: italic;
+}
+.mermaid { display: flex; justify-content: center; }
+
+/* ── CTA SECTION ─────────────────────────────────────────────────── */
+.cta-section {
+  background: var(--ink);
+  color: oklch(98% 0.004 240);
+  padding: 4.5rem 2rem;
+  margin: 5rem 0 0;
+}
+.cta-inner { max-width: var(--max-prose); margin: 0 auto; }
+.cta-eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(65% 0.008 240);
+  margin-bottom: 1.2rem;
+}
+.cta-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
+  color: oklch(98% 0.004 240);
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.cta-section p {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: oklch(72% 0.008 240);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+.cta-btn {
+  display: inline-block;
+  background: oklch(98% 0.004 240);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 11px 24px;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: opacity 0.18s ease, transform 0.12s ease;
+}
+.cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.cta-proof {
+  margin-top: 1.4rem;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: oklch(50% 0.008 240);
+}
+
+/* ── FOOTER ─────────────────────────────────── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 40px;
+  background: var(--surface-2);
+  border-top: 0.5px solid var(--border);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand { font-family: var(--serif); font-size: 14px; color: var(--ink-2); }
+.footer-links { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.footer-link { font-family: var(--sans); font-size: 13px; color: var(--ink-3); transition: color 0.18s ease; }
+.footer-link:hover { color: var(--ink); }
+.footer-copy { font-family: var(--sans); font-size: 12px; color: var(--ink-3); }
+
+/* ── DIVIDERS & MARKERS ──────────────────────────────────────────── */
+.section-rule {
+  max-width: var(--max-prose);
+  margin: 3.5rem auto 0;
+  padding: 0 1.5rem;
+  border: none;
+  border-top: 0.5px solid var(--border);
+}
+.fourmat-marker {
+  max-width: var(--max-prose);
+  margin: 4rem auto 0;
+  padding: 0 1.5rem;
+}
+.fourmat-tag {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 0.5px solid var(--border);
+  color: var(--ink-3);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .will-animate {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .will-animate.in-view { opacity: 1; transform: none; }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .site-nav { padding: 16px 20px; }
+  .site-nav-link:not(.site-nav-cta) { display: none; }
+  .hero, .prose, .fourmat-marker { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .exhibit { padding: 0 1.25rem; }
+  .footer { padding: 22px 20px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<header>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="../index.html" class="site-nav-logo">Deep Bando</a>
+    <div class="site-nav-links">
+      <a href="../products.html" class="site-nav-link">Products</a>
+      <a href="../about.html"    class="site-nav-link">About</a>
+      <a href="https://www.linkedin.com/in/deepban/" target="_blank" rel="noopener noreferrer" class="site-nav-link site-nav-cta">Work with me</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="eyebrow">For Leaders · AI &amp; Analytics</div>
+  <h1>How to build an agentic analytics team: the failure your semantic layer won't catch</h1>
+  <p class="deck">I built a working agentic analytics stack, canonical warehouse, semantic layer, skill, and evals, then deliberately tested it on a free AI model before ever touching Claude. Here is exactly what broke, why good architecture alone did not fix it, and the blueprint that held up anyway.</p>
+  <div class="byline">
+    <span>By <strong>Deep Bando</strong></span>
+    <span>·</span>
+    <span>Jul 2026</span>
+    <span>·</span>
+    <span>15 min read</span>
+    <span>·</span>
+    <span>AI &amp; ML</span>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     WHY  (4MAT: Why should I care?)
+═════════════════════════════════════════ -->
+<div class="fourmat-marker"><span class="fourmat-tag">Why</span></div>
+
+<article class="prose">
+
+  <p>Every analytics organization I have worked with runs into the same wall eventually. The number of business questions coming in outnumbers the number of analyst hours available to answer them. Dashboards help. Self-service BI tools help a little more. But sooner or later, someone in the room says the obvious thing: why not just point an AI model at the warehouse and let it answer questions directly?</p>
+
+  <p>That instinct fails in a specific, predictable way, not a vague one. A model with no shared context about what "revenue" means at your company, which tables are actually governed, or what quirks live in your data will give you a confident, wrong answer just as often as a correct one. It will not tell you it is guessing. It will sound exactly as sure when it is wrong as when it is right.</p>
+
+  <p>Anthropic published a detailed account of how they solved this internally, in <a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude" target="_blank" rel="noopener">How Anthropic enables self-service data analytics with Claude</a>. Their core argument: this is not a model capability problem. It is a context and validation problem, solved with four layers, governed data foundations, a semantic layer, procedural "skills," and offline evals with provenance tracking.</p>
+
+  <p>I decided to test that argument myself, not by reading about it, by building it. I constructed a small but complete version of the same four-layer stack, using synthetic e-commerce data with real, intentional messiness baked in. Then, deliberately, I tested it against a free AI model first, before ever touching Claude, specifically to find the failure modes that architecture alone does not fix.</p>
+
+  <div class="pull">"Good architecture reduces the space for a model to go wrong. It does not replace the need for a model that is actually reliable underneath it."</div>
+
+  <p>This essay is that build, and everything that broke along the way. If you are a leader considering whether to build an agentic analytics capability inside your own organization, the failures matter more than the successes. They tell you exactly where to put your guardrails.</p>
+
+</article>
+
+<!-- ════════════════════════════════════════
+     WHAT  (4MAT: What is the insight?)
+═════════════════════════════════════════ -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">What</span></div>
+
+<article class="prose">
+  <h2>The four-layer stack, and where each layer actually earns its keep</h2>
+
+  <p>The architecture has four parts, each solving a different failure mode. Raw data gets cleaned once into governed, canonical models. A semantic layer defines each business term exactly once, in exactly one place. A skill teaches an agent how and when to use that layer, including the specific gotchas in your data. And a pinned set of evals tests the whole thing automatically, so "we think it's accurate" becomes "we can show it is."</p>
+
+  <h3 class="question">Exhibit 1: the architecture, top to bottom</h3>
+</article>
+
+<div class="exhibit">
+  <div class="exhibit-label">Exhibit 1 of 3</div>
+  <div class="exhibit-title">The four-layer agentic analytics stack</div>
+  <div class="exhibit-sub">Raw data to governed answer, with evals feeding back into both the data layer and the skill</div>
+  <div class="exhibit-box">
+    <div class="mermaid">
+flowchart TD
+    A["Raw data<br/>orders, customers, refunds, products"] --> B["Staging models<br/>light cleanup, fix known naming bugs"]
+    B --> C["Canonical marts<br/>fct_orders_net, fct_order_items, dim_customers"]
+    C --> D["Semantic layer<br/>metrics.yml: net_revenue, active_customers, refund_rate"]
+    D --> E["Skill<br/>SKILL.md: when to use which metric, known gotchas"]
+    E --> F["Agent<br/>loads skill, calls SQL tool, answers questions"]
+    F --> G["Evals<br/>pinned Q&amp;A pairs, automatic grading, pass rate"]
+    G -. failures reveal gaps in .-> C
+    G -. failures reveal gaps in .-> E
+
+    style A fill:#f5f5f5,stroke:#999999
+    style C fill:#d4edda,stroke:#28a745
+    style D fill:#d4edda,stroke:#28a745
+    style E fill:#fff3cd,stroke:#ffc107
+    style G fill:#f8d7da,stroke:#dc3545
+    </div>
+  </div>
+  <p class="exhibit-note">Note: the dotted feedback arrows are the part most teams skip. A failing eval should point back at a specific layer, not just lower a score.</p>
+</div>
+
+<article class="prose">
+  <h3 class="question">Isn't this just prompt engineering with extra steps?</h3>
+
+  <p>No, and the distinction matters. Prompt engineering asks a model to behave correctly through instructions alone. This architecture removes entire categories of ambiguity before the model ever has a chance to guess. The clearest proof is in the data itself: one product in my test warehouse was renamed mid-history, so half its historical order rows carry the old name and half carry the new one. Roughly a third of the synthetic customer signups used disposable or throwaway email domains. An unaggregated refunds table sits right next to the orders table, easy to double-count from if you query it directly.</p>
+
+  <p>None of that is decorative. It exists because production warehouses look exactly like this. The semantic layer and the skill do not tell the model to be careful. They remove the ambiguity structurally, so there is nothing left to be careful about.</p>
+
+  <h3 class="question">Exhibit 2: what one real question actually does</h3>
+</article>
+
+<div class="exhibit">
+  <div class="exhibit-label">Exhibit 2 of 3</div>
+  <div class="exhibit-title">Answering "what was our net revenue over the trailing 30 days?"</div>
+  <div class="exhibit-sub">Every step the agent takes before it responds, including the deterministic freshness check</div>
+  <div class="exhibit-box">
+    <div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant A as Agent
+    participant S as Skill + Semantic Layer
+    participant W as Warehouse (DuckDB)
+
+    U->>A: What was our net revenue over the trailing 30 days?
+    A->>S: Load SKILL.md, metrics.yml, reference docs
+    S-->>A: net_revenue maps to fct_orders_net, aliases, segments, gotchas
+    A->>W: Compute freshness (max order_date) deterministically
+    W-->>A: 2026-07-01
+    A->>W: SELECT sum(net_order_amount) FROM fct_orders_net WHERE...
+    W-->>A: 12816.83
+    A-->>U: $12,816.83. Source: semantic layer. Metric: net_revenue. Window: trailing 30 days ending 2026-07-01. Confidence: high.
+    </div>
+  </div>
+  <p class="exhibit-note">Note: the freshness date is computed in code, not asked of the model. Why that specific choice mattered is below.</p>
+</div>
+
+<article class="prose">
+  <h3 class="question">Why test on a free model instead of paying for Claude from day one?</h3>
+
+  <p>Because the point was to find the floor, not to confirm the ceiling. A frontier model like Claude is good enough, often enough, that a poorly designed skill's flaws can hide behind the model's own competence. A smaller, free model has less room to compensate for gaps in the architecture. Every weakness in my skill, my semantic layer, or my evals showed up faster and more clearly against a model that could not paper over them. That is a feature of the test, not a limitation of it.</p>
+
+  <div class="stat-box">
+    <div class="stat-number">88% → 62%</div>
+    <div class="stat-desc">The eval pass rate I first reported, versus the honest pass rate after I tightened the grading prompt to actually check for a stated numeric answer and a correct freshness date. The architecture had not gotten worse. My measurement of it had gotten more honest.</div>
+  </div>
+
+  <h3 class="question">So what actually broke?</h3>
+
+  <p>In rough order of how much they mattered: the model wrote SQL in the wrong dialect until the tool description explicitly said "this is DuckDB, not SQLite." It sometimes wrote a proposed query out as prose instead of actually executing it, a bug that needed the API's tool-choice parameter forced to "required" until a real result came back, not just a stronger instruction. The backend rejected a full message object from the SDK because it contained extra null fields the OpenAI-compatible endpoint did not accept, a pure integration bug with nothing to do with prompting at all. And the free tier itself had no uptime guarantee: transient errors, timeouts, and rate limits all needed retry logic.</p>
+
+  <p>The most important failure, though, was quieter than any of those.</p>
+
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <p>The model repeatedly fabricated a plausible-looking "data freshness" date in its provenance footer, instead of querying for the real one, even after I added an explicit instruction telling it not to. Telling a model not to guess did not reliably stop it from guessing.</p>
+  </div>
+
+  <div class="actionable">
+    <div class="actionable-label">Do This</div>
+    <p>For any fact where being wrong is costly, do not rely on instruction-following. Compute the fact once, in code, and hand it to the model as a stated fact it must use, not something it needs to remember to look up. That single architectural change, not a better prompt, is what actually fixed the freshness bug.</p>
+  </div>
+
+  <h3 class="question">How do you know the eval score itself can be trusted?</h3>
+
+  <p>You do not, not automatically. My own automated grader, built from the same small model being graded, initially marked an answer "correct" that contained no numeric answer at all, only a description of a query the agent never actually ran. Separately, it once contradicted its own stated grading rule inside its own reasoning text. A grading system built from the same class of model it is grading inherits some of that model's unreliability. Treat a passing eval score as a claim to audit on a sample, not a fact to trust at face value, especially early in a program's life.</p>
+
+</article>
+
+<!-- ════════════════════════════════════════
+     HOW  (4MAT: How does this work in practice?)
+═════════════════════════════════════════ -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">How</span></div>
+
+<article class="prose">
+  <h2>How this becomes a team capability, not a personal project</h2>
+
+  <p>The four layers above are not just a technical pattern. They map directly onto how a human analytics team already works, which is what makes this approach organizationally scalable rather than a clever one-off demo.</p>
+
+  <h3 class="question">Exhibit 3: the org mapping</h3>
+</article>
+
+<div class="exhibit">
+  <div class="exhibit-label">Exhibit 3 of 3</div>
+  <div class="exhibit-title">What each layer replaces in a human analytics team</div>
+  <div class="exhibit-sub">The same knowledge, made durable and repeatable instead of tribal</div>
+  <div class="exhibit-box">
+    <div class="mermaid">
+flowchart LR
+    subgraph Human["Human analytics team today"]
+        H1["Senior analyst's<br/>tribal knowledge"]
+        H2["Shared vocabulary<br/>learned over months"]
+        H3["Onboarding wiki<br/>nobody reads"]
+        H4["Manual QA<br/>before shipping a number"]
+    end
+
+    subgraph Agentic["Agentic analytics team"]
+        A1["Canonical data marts"]
+        A2["Semantic layer metrics.yml"]
+        A3["Skill: SKILL.md plus<br/>reference docs"]
+        A4["Automated evals,<br/>run on every change"]
+    end
+
+    H1 -.becomes.-> A1
+    H2 -.becomes.-> A2
+    H3 -.becomes.-> A3
+    H4 -.becomes.-> A4
+    </div>
+  </div>
+  <p class="exhibit-note">Note: the mapping is deliberate. Every box on the left is knowledge that already exists inside a working analytics team, just not written down anywhere durable.</p>
+</div>
+
+<article class="prose">
+  <p>Data foundations are the team's shared source of truth. Today, that knowledge often lives in a senior analyst's head, or scattered across Slack threads about "which table is actually right." Encoding it as governed marts turns tribal knowledge into an asset anyone, human or agent, can build on.</p>
+
+  <p>The semantic layer is the team's shared vocabulary. New analysts spend their first weeks learning what "revenue" means at this specific company. An agent absorbs that vocabulary in one context load, and cannot silently drift from it the way a large, loosely governed reporting layer can over time.</p>
+
+  <p>Skills are onboarding documents that actually get read, every single time, as a precondition for acting, not a reference nobody opens. Evals are the team's QA function, run automatically instead of manually, on every change.</p>
+
+  <h3 class="question">Where should a leader actually start?</h3>
+
+  <p>Not with the agent. With the eval set. The single most valuable artifact in this entire project was not the working agent, it was the pinned set of test questions that made every real failure mode visible, specific, and fixable. Any team piloting this pattern should treat eval-set construction as the first deliverable, not the last one bolted on before launch.</p>
+
+</article>
+
+<!-- ════════════════════════════════════════
+     WHAT IF  (4MAT: What if I acted on this?)
+═════════════════════════════════════════ -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">What If</span></div>
+
+<article class="prose">
+  <h2>What I would tell any leader piloting this</h2>
+
+  <p>Model choice is a real, separate variable from architecture quality. A well-designed skill and semantic layer reduced the space for error considerably, but did not eliminate the need for a genuinely reliable model underneath. Some failure modes, like the fabricated freshness dates, need to be solved in code, not in prompts, because instruction-following alone is not a strong enough guarantee for facts where being wrong is costly.</p>
+
+  <p>Evals must be adversarially reviewed, not just run, because a grader built from the same class of model can share its blind spots. And free-tier infrastructure has no uptime guarantee, which is an entirely acceptable cost during a proof-of-concept phase run at zero marginal cost, and not a foundation to build a customer-facing or revenue-reporting system on.</p>
+
+  <div class="pull">"None of this is a criticism of the free tier. It's free, after all. It is a concrete, first-hand demonstration that skill quality and semantic-layer design only get you so far. Model reliability is a separate line item, and evals need to be scrutinized as hard as the agent they're testing."</div>
+
+  <h3 class="question">Strategic next steps for any organization considering this</h3>
+
+  <p>Run the identical pinned eval set against a frontier model like Claude and compare pass rates directly, turning the comparison itself into a data-backed business case for what tier of model a given use case actually requires. Treat the semantic layer as a living, owned artifact with a named owner and a review process, the same way you would treat a data contract. Expand the skill library one domain at a time, with dedicated eval coverage per domain, rather than building one large skill that tries to cover everything at once. And put a human-in-the-loop gate in front of any high-stakes or externally visible output, at least until a domain's eval pass rate and provenance accuracy have been tracked over enough real volume to earn trust.</p>
+
+</article>
+
+<!-- ── CTA ── -->
+<section class="cta-section" aria-label="Call to action">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Open source and ready to fork</div>
+    <h2>See the whole stack, including everything that broke</h2>
+    <p>The full project, the canonical warehouse, the semantic layer, the skill, the debugged agent, and the eval suite that caught its own false positives, is public on GitHub. Fork it, break it worse than I did, and find out what your own organization's version of the renamed product is hiding.</p>
+    <a href="https://github.com/quizzito/self-serve-analytics-demo" class="cta-btn" target="_blank" rel="noopener">View the project on GitHub →</a>
+    <p class="cta-proof">Open source · Built and debugged step by step · Free-tier model tested before Claude</p>
+  </div>
+</section>
+
+<!-- ── FAQ (visible, also AEO-indexed) ── -->
+<article class="prose" style="padding-top:3.5rem;">
+  <h2>Common questions</h2>
+
+  <h3 class="question">What is agentic analytics?</h3>
+  <p>Agentic analytics is letting an AI agent answer business questions directly against a company's data warehouse, in natural language, instead of routing every question through a human analyst. It works reliably only with governed data models, a shared definition of business metrics, procedural instructions for the data's quirks, and an automated way to test accuracy, not from a capable language model alone.</p>
+
+  <h3 class="question">Why do AI agents get business metrics wrong even with good data?</h3>
+  <p>Because terms like revenue, active customer, or refund rate are ambiguous without shared context. A model with no governed definition will compute a plausible but wrong answer, gross instead of net revenue, all signups instead of real customers, with the same confidence as a correct one.</p>
+
+  <h3 class="question">What is a semantic layer for AI agents?</h3>
+  <p>A single, governed definition of each business metric, mapped to exactly one source table and one calculation, so an agent never has to guess which of several interpretations is correct. It typically lives as a version-controlled file loaded as context before the agent answers anything.</p>
+
+  <h3 class="question">Can a free AI model reliably run an analytics agent?</h3>
+  <p>It can execute the core workflow and return correct numbers, but testing surfaced specific gaps a frontier model handles more reliably: writing SQL as prose instead of executing it, fabricating metadata like freshness dates, and inconsistent tool-calling under complex instructions. Free models are a reasonable, cheap way to stress-test the architecture before deciding what tier of model production actually needs.</p>
+
+  <h3 class="question">How do you test whether an AI analytics agent is trustworthy?</h3>
+  <p>Build a pinned set of test questions with known-correct answers computed independently, run the agent against every one automatically, and grade the results. Then audit the grader itself by hand on a sample, since an automated grader can share the same blind spots as the model it is grading.</p>
+
+</article>
+
+<hr class="section-rule" style="margin-bottom:3rem;" />
+
+<article class="prose">
+  <h3 class="question">About the author</h3>
+  <p>Deep Bando led pricing and analytics teams at major Canadian financial institutions for over a decade, managing $20B+ in credit card portfolios at Citi and building the analytics function at EQ Bank from zero. He writes about how banking systems actually work, and increasingly, how agentic AI systems should be built to work the same way: governed, tested, and honest about their own failure modes. <a href="https://quizzito.github.io/deepbando.github.io/about.html">Full story →</a></p>
+</article>
+
+<footer class="footer">
+  <span class="footer-brand">Deep Bando &middot; Decision Management</span>
+  <nav class="footer-links" aria-label="Social and contact links">
+    <a href="https://www.linkedin.com/in/deepban/" class="footer-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/quizzito"          class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="#" class="footer-link">Twitter / X</a>
+    <a href="#" class="footer-link">Subscribe</a>
+  </nav>
+  <span class="footer-copy">&copy; 2026</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      background: '#f7f6f4',
+      primaryColor: '#f0ede6',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#c9a83a',
+      lineColor: '#8a8a8a',
+      secondaryColor: '#e3f1f0',
+      tertiaryColor: '#ffffff',
+      fontFamily: 'DM Sans, system-ui, sans-serif'
+    },
+    flowchart: { curve: 'basis' },
+    securityLevel: 'loose'
+  });
+</script>
+
+<script>
+(function () {
+  /* Reading progress bar */
+  var bar = document.createElement('div');
+  bar.setAttribute('aria-hidden', 'true');
+  bar.style.cssText = 'position:fixed;top:0;left:0;height:2px;background:oklch(62% 0.12 85);width:0%;z-index:9999;pointer-events:none;transition:width 0.1s linear';
+  document.body.appendChild(bar);
+  window.addEventListener('scroll', function () {
+    var s = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    bar.style.width = Math.min(100, s * 100) + '%';
+  }, { passive: true });
+
+  /* Scroll-triggered fade-up */
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+  document.querySelectorAll('h2, .pull, .exhibit, .fourmat-marker, .stat-box, .callout, .actionable').forEach(function (el) {
+    el.classList.add('will-animate');
+    obs.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
