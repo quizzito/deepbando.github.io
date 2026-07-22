@@ -1,5 +1,14 @@
 [
   {
+  "audience": "executive",
+  "product": null,
+  "topic": "ai-ml",
+  "date": "Jul 2026",
+  "title": "How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap",
+  "excerpt": "A working roadmap for replacing an analytics team's manual work with coordinated AI agents, an Analyst Agent, Dashboard Agent, Model Agent, and Consultant Agent, proven one phase at a time.",
+  "url": "essays/self-serve-analytics-team-four-agent-roadmap.html"
+  },
+  {
     "audience": "executive",
     "product": null,
     "topic": "ai-ml",

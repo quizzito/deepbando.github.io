@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO / AEO -->
+  <title>How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap · Deep Bando</title>
+  <meta name="description" content="A working four-phase roadmap for replacing the manual work of an analytics team with coordinated AI agents, an Analyst Agent, Dashboard Agent, Model Agent, and Consultant Agent, built and proven one phase at a time, not theorized all at once." />
+  <meta name="author" content="Deep Bando" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://quizzito.github.io/deepbando.github.io/essays/self-serve-analytics-team-four-agent-roadmap.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap" />
+  <meta property="og:description" content="A working four-phase roadmap for replacing the manual work of an analytics team with coordinated AI agents, proven one phase at a time, starting with a real, debugged Analyst Agent." />
+  <meta property="og:url" content="https://quizzito.github.io/deepbando.github.io/essays/self-serve-analytics-team-four-agent-roadmap.html" />
+  <meta property="og:site_name" content="Deep Bando · Decision Management in Banking" />
+  <meta property="article:author" content="Deep Bando" />
+  <meta property="article:published_time" content="2026-07-22" />
+  <meta property="article:section" content="AI & ML" />
+  <meta property="article:tag" content="agentic analytics, AI analytics team, analyst agent, dashboard agent, model agent, consultant agent, self-serve analytics, AI decision making" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to Build a Self-Serve Analytics Team with AI Agents" />
+  <meta name="twitter:description" content="A four-phase roadmap: Analyst Agent, Dashboard Agent, Model Agent, Consultant Agent. Proven one phase at a time, not theorized all at once." />
+  <meta name="twitter:site" content="@deepbando" />
+
+  <!-- AEO: FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can AI agents replace an analytics team?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI agents can replace the manual, repeatable work of an analytics team, running governed queries, building dashboards, running standard statistical models, and assembling a weekly briefing, provided the underlying data is governed and every agent's output is tested before it is trusted. What they cannot replace is deciding what the organization's goals and OKRs actually are. That judgment stays with a human leader who steers the agents, it is the input the whole system depends on."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the phases of building an AI-native analytics team?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A practical roadmap has four phases, each depending on the one before it: an Analyst Agent that runs governed SQL queries and returns validated results, a Dashboard Agent that lets users build their own visualizations from the same governed metrics, a Model Agent that performs statistical work like segmentation and forecasting on the same canonical data, and a Consultant Agent that proactively synthesizes all three into a decision-ready narrative, tied to the organization's actual goals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why build the Analyst Agent first, before the dashboard or the model?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Because every later phase depends on the same governed data foundation, canonical tables, a semantic layer, and quality tests, that the Analyst Agent is built on. Skipping ahead to a dashboard or a forecasting model without that foundation means each new agent invents its own definition of the same business terms, recreating the exact ambiguity the whole system is meant to remove."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a Consultant Agent in AI-driven analytics?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Consultant Agent is a proactive layer that reads an organization's goals and OKRs, uses a Dashboard Agent's output to understand what is happening, engages an Analyst Agent for deeper queries to understand why it is happening, uses a Model Agent to project what happens next, and assembles all of it into a decision-ready narrative, delivered on a fixed cadence, without anyone having to ask for it first."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you know an AI analytics agent's answer is actually correct?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "By testing it the same way you would test any production system: a pinned set of questions with independently computed correct answers, run automatically against the agent, graded programmatically wherever possible rather than by another AI's judgment call, with failures traced back to a specific, fixable cause rather than accepted as an unexplained score."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- AEO: Article Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap",
+    "description": "A working four-phase roadmap for replacing the manual work of an analytics team with coordinated AI agents, an Analyst Agent, Dashboard Agent, Model Agent, and Consultant Agent, built and proven one phase at a time.",
+    "author": {
+      "@type": "Person",
+      "name": "Deep Bando",
+      "url": "https://quizzito.github.io/deepbando.github.io/about.html",
+      "jobTitle": "Analytics & Decision Management Leader"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Deep Bando"
+    },
+    "datePublished": "2026-07-22",
+    "dateModified": "2026-07-22",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://quizzito.github.io/deepbando.github.io/essays/self-serve-analytics-team-four-agent-roadmap.html"
+    },
+    "keywords": ["agentic analytics", "AI analytics team", "analyst agent", "dashboard agent", "model agent", "consultant agent", "self-serve analytics", "AI decision making", "semantic layer", "LLM evals"]
+  }
+  </script>
+
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:         oklch(14% 0.012 240);
+  --ink-2:       oklch(35% 0.015 240);
+  --ink-3:       oklch(55% 0.01  240);
+  --surface:     oklch(98% 0.004 240);
+  --surface-2:   oklch(95% 0.006 240);
+  --gold:        oklch(62% 0.12  85);
+  --gold-light:  oklch(93% 0.03  85);
+  --gold-dark:   oklch(40% 0.10  85);
+  --teal:        oklch(52% 0.11  195);
+  --teal-light:  oklch(93% 0.03  195);
+  --teal-dark:   oklch(34% 0.09  195);
+  --border:      oklch(88% 0.008 240);
+  --serif:       'Playfair Display', Georgia, serif;
+  --sans:        'DM Sans', system-ui, sans-serif;
+  --mono:        ui-monospace, monospace;
+  --max-prose:   68ch;
+  --max-wide:    900px;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-pill: 40px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.site-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px; border-bottom: 0.5px solid var(--border);
+  background: var(--surface); position: sticky; top: 0; z-index: 100;
+}
+.site-nav-logo { font-family: var(--serif); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+.site-nav-links { display: flex; align-items: center; gap: 28px; }
+.site-nav-link { font-family: var(--sans); font-size: 13.5px; color: var(--ink-3); letter-spacing: 0.01em; transition: color 0.18s ease; }
+.site-nav-link:hover { color: var(--ink); }
+.site-nav-cta {
+  font-size: 13px; font-weight: 500; color: var(--gold-dark);
+  border: 1px solid var(--gold); padding: 7px 20px; border-radius: var(--radius-pill);
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+.site-nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+.hero { max-width: var(--max-prose); margin: 0 auto; padding: 5rem 1.5rem 3.5rem; }
+.eyebrow {
+  font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.eyebrow::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--ink-3); }
+h1 {
+  font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.6rem); font-weight: 500;
+  line-height: 1.2; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 1.25rem;
+}
+.deck { font-family: var(--serif); font-size: 1.1rem; color: var(--ink-2); line-height: 1.65; margin-bottom: 2rem; font-style: italic; }
+.byline {
+  font-family: var(--sans); font-size: 12px; color: var(--ink-3);
+  display: flex; align-items: center; gap: 1.2rem; padding-top: 1.2rem;
+  border-top: 0.5px solid var(--border); flex-wrap: wrap;
+}
+.byline strong { color: var(--ink-2); font-weight: 500; }
+
+.prose { max-width: var(--max-prose); margin: 0 auto; padding: 0 1.5rem 2rem; }
+.prose p { font-family: var(--sans); font-size: 16px; font-weight: 300; color: var(--ink-2); line-height: 1.85; margin-bottom: 1.4rem; }
+.prose p:first-child { color: var(--ink); font-weight: 400; font-size: 18px; }
+.prose strong { color: var(--ink); font-weight: 500; }
+.prose em { font-style: italic; }
+.prose a { color: var(--teal-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+h2 {
+  font-family: var(--serif); font-size: clamp(1.25rem, 2.5vw, 1.55rem); font-weight: 500;
+  letter-spacing: -0.02em; color: var(--ink); margin-top: 3.5rem; margin-bottom: 0.875rem; line-height: 1.28;
+}
+h3 {
+  font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-3); margin-top: 2.5rem; margin-bottom: 0.6rem;
+}
+h3.question {
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 500; letter-spacing: -0.01em;
+  text-transform: none; color: var(--ink); margin-top: 2.75rem; margin-bottom: 0.9rem; font-style: italic;
+}
+
+.pull {
+  background: var(--gold-light); border: 0.5px solid var(--gold); border-radius: var(--radius-md);
+  padding: 1.5rem 2rem; margin: 2.5rem 0; font-family: var(--serif); font-size: 1.15rem;
+  font-style: italic; line-height: 1.6; color: var(--ink);
+}
+
+.callout {
+  background: var(--teal-light); border: 0.5px solid var(--teal); border-radius: var(--radius-md);
+  padding: 1.4rem 1.8rem; margin: 2rem 0;
+}
+.callout-label {
+  font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--teal-dark); margin-bottom: 0.5rem;
+}
+.callout p { margin-bottom: 0; color: var(--ink-2); }
+
+.actionable {
+  background: oklch(94% 0.04 145); border: 0.5px solid oklch(60% 0.12 145); border-radius: var(--radius-md);
+  padding: 1.4rem 1.8rem; margin: 2rem 0;
+}
+.actionable-label {
+  font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: oklch(38% 0.10 145); margin-bottom: 0.5rem;
+}
+.actionable p { margin-bottom: 0; color: var(--ink-2); }
+
+.stat-box {
+  background: var(--ink); color: var(--surface); border-radius: var(--radius-md);
+  padding: 2rem 2rem; margin: 2.5rem 0; max-width: var(--max-wide);
+}
+.stat-box .stat-number { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1; margin-bottom: 0.6rem; }
+.stat-box .stat-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: oklch(75% 0.01 240); line-height: 1.6; }
+
+.exhibit { max-width: var(--max-wide); margin: 3rem auto; padding: 0 1.5rem; }
+.exhibit-label { font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.5rem; }
+.exhibit-title { font-family: var(--sans); font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; line-height: 1.3; }
+.exhibit-sub { font-family: var(--sans); font-size: 13px; color: var(--ink-3); margin-bottom: 1.2rem; }
+.exhibit-box { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; padding: 1.5rem; }
+.exhibit-note { font-family: var(--sans); font-size: 11px; color: var(--ink-3); margin-top: 0.625rem; font-style: italic; }
+.mermaid { display: flex; justify-content: center; }
+
+.cta-section { background: var(--ink); color: oklch(98% 0.004 240); padding: 4.5rem 2rem; margin: 5rem 0 0; }
+.cta-inner { max-width: var(--max-prose); margin: 0 auto; }
+.cta-eyebrow { font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: oklch(65% 0.008 240); margin-bottom: 1.2rem; }
+.cta-section h2 { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500; color: oklch(98% 0.004 240); line-height: 1.25; margin-top: 0; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.cta-section p { font-family: var(--sans); font-size: 15px; font-weight: 300; color: oklch(72% 0.008 240); line-height: 1.7; margin-bottom: 2rem; max-width: 540px; }
+.cta-btn {
+  display: inline-block; background: oklch(98% 0.004 240); color: var(--ink); font-family: var(--sans);
+  font-size: 13px; font-weight: 500; letter-spacing: 0.03em; padding: 11px 24px; text-decoration: none;
+  border-radius: var(--radius-pill); transition: opacity 0.18s ease, transform 0.12s ease;
+}
+.cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.cta-proof { margin-top: 1.4rem; font-family: var(--sans); font-size: 12px; color: oklch(50% 0.008 240); }
+
+.footer { display: flex; align-items: center; justify-content: space-between; padding: 26px 40px; background: var(--surface-2); border-top: 0.5px solid var(--border); flex-wrap: wrap; gap: 16px; }
+.footer-brand { font-family: var(--serif); font-size: 14px; color: var(--ink-2); }
+.footer-links { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.footer-link { font-family: var(--sans); font-size: 13px; color: var(--ink-3); transition: color 0.18s ease; }
+.footer-link:hover { color: var(--ink); }
+.footer-copy { font-family: var(--sans); font-size: 12px; color: var(--ink-3); }
+
+.section-rule { max-width: var(--max-prose); margin: 3.5rem auto 0; padding: 0 1.5rem; border: none; border-top: 0.5px solid var(--border); }
+.fourmat-marker { max-width: var(--max-prose); margin: 4rem auto 0; padding: 0 1.5rem; }
+.fourmat-tag {
+  display: inline-block; font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; border: 0.5px solid var(--border); color: var(--ink-3); padding: 4px 10px; border-radius: var(--radius-sm);
+}
+
+.roadmap-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 2.5rem; font-family: var(--sans); font-size: 14px; }
+.roadmap-table th { text-align: left; font-weight: 500; color: var(--ink-3); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.roadmap-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); color: var(--ink-2); vertical-align: top; }
+.status-pill { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+.status-done { background: oklch(93% 0.05 145); color: oklch(35% 0.10 145); }
+.status-progress { background: var(--gold-light); color: var(--gold-dark); }
+.status-planned { background: var(--teal-light); color: var(--teal-dark); }
+.status-vision { background: oklch(93% 0.01 300); color: oklch(45% 0.05 300); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .will-animate { opacity: 0; transform: translateY(16px); transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  .will-animate.in-view { opacity: 1; transform: none; }
+}
+
+@media (max-width: 700px) {
+  .site-nav { padding: 16px 20px; }
+  .site-nav-link:not(.site-nav-cta) { display: none; }
+  .hero, .prose, .fourmat-marker { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .exhibit { padding: 0 1.25rem; }
+  .footer { padding: 22px 20px; flex-direction: column; align-items: flex-start; }
+  .roadmap-table { font-size: 12.5px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="../index.html" class="site-nav-logo">Deep Bando</a>
+    <div class="site-nav-links">
+      <a href="../products.html" class="site-nav-link">Products</a>
+      <a href="../about.html"    class="site-nav-link">About</a>
+      <a href="https://www.linkedin.com/in/deepban/" target="_blank" rel="noopener noreferrer" class="site-nav-link site-nav-cta">Work with me</a>
+    </div>
+  </nav>
+</header>
+
+<header class="hero">
+  <div class="eyebrow">For Leaders · AI &amp; Analytics</div>
+  <h1>How to build a self-serve analytics team with AI agents: a four-phase roadmap</h1>
+  <p class="deck">The objective is not one clever AI feature. It is a coordinated set of agents that together do the work an entire analytics function does today, queries, dashboards, statistical models, and a proactive weekly narrative, each phase built on a governed foundation proven before the next one starts.</p>
+  <div class="byline">
+    <span>By <strong>Deep Bando</strong></span>
+    <span>·</span>
+    <span>Jul 2026</span>
+    <span>·</span>
+    <span>16 min read</span>
+    <span>·</span>
+    <span>AI &amp; ML</span>
+  </div>
+</header>
+
+<!-- WHY -->
+<div class="fourmat-marker"><span class="fourmat-tag">Why</span></div>
+
+<article class="prose">
+
+  <p>Most conversations about AI and analytics stop at one question: can a model answer a business question correctly? That is a real question, and worth solving well. But it is also the smallest possible version of a much bigger objective, one I have been building toward deliberately, one governed phase at a time.</p>
+
+  <p>The objective is this: build a self-serve analytics team, powered entirely by coordinated AI agents, that does not just answer questions when asked, but proactively understands an organization's goals, investigates what is happening and why, projects what happens next, and delivers a decision-ready narrative on its own schedule. Not a chatbot bolted onto a warehouse. A team, with each member replacing a specific, real function a human analytics team performs today.</p>
+
+  <p>I want to be direct about the ambition here, because softening it would be dishonest. The goal is to replace the manual work of an analytics team with agents capable enough that a single leader can steer the whole function, while making that leader's own decision-making sharper and faster than any team of humans alone could make it. That is not a claim I am making lightly. It is a claim I am building toward, proving one phase at a time, in public, with the failures included.</p>
+
+  <div class="pull">"The goal was never a chatbot that answers questions. It is a team of agents that does the work an analytics function does today, and tells you what you actually need to know before you think to ask."</div>
+
+  <p>Anthropic's own account of how they built internal self-service analytics, <a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude" target="_blank" rel="noopener">How Anthropic enables self-service data analytics with Claude</a>, gave me the architecture for the first phase: governed data, a semantic layer, procedural skills, and evals. What follows is what I built on top of that foundation, and where it goes from here.</p>
+
+</article>
+
+<!-- WHAT -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">What</span></div>
+
+<article class="prose">
+  <h2>The four agents, and what each one actually replaces</h2>
+
+  <p>Each phase depends on the one before it, deliberately. Skipping ahead means every later agent invents its own version of "revenue" or "active customer," recreating the exact ambiguity the whole system exists to remove.</p>
+</article>
+
+<div class="exhibit">
+  <div class="exhibit-label">Exhibit 1 of 2</div>
+  <div class="exhibit-title">The four-agent roadmap</div>
+  <div class="exhibit-sub">Each agent builds on the governed foundation the one before it proved out</div>
+  <div class="exhibit-box">
+    <div class="mermaid">
+flowchart TD
+    A["Analyst Agent<br/>governed SQL, validated answers<br/>STATUS: complete"] --> B["Dashboard Agent<br/>build your own dashboard,<br/>same governed metrics<br/>STATUS: in progress"]
+    B --> C["Model Agent<br/>segmentation, forecasting<br/>on the same canonical data<br/>STATUS: planned"]
+    C --> D["Consultant Agent<br/>goals-aware synthesis,<br/>proactive weekly narrative<br/>STATUS: vision"]
+
+    style A fill:#d4edda,stroke:#28a745
+    style B fill:#fff3cd,stroke:#ffc107
+    style C fill:#d1ecf1,stroke:#17a2b8
+    style D fill:#e2d9f3,stroke:#8a63d2
+    </div>
+  </div>
+  <p class="exhibit-note">Note: the Consultant Agent is not a fifth capability bolted on top, it is an orchestrator that calls the other three, plus a fourth input no agent can generate on its own, the organization's actual goals and OKRs.</p>
+</div>
+
+<article class="prose">
+
+  <table class="roadmap-table">
+    <tr><th>Agent</th><th>Replaces</th><th>Status</th></tr>
+    <tr><td><strong>Analyst Agent</strong></td><td>An analyst answering ad hoc business questions with governed SQL</td><td><span class="status-pill status-done">Complete</span></td></tr>
+    <tr><td><strong>Dashboard Agent</strong></td><td>A BI developer building and maintaining dashboards</td><td><span class="status-pill status-progress">In progress</span></td></tr>
+    <tr><td><strong>Model Agent</strong></td><td>A data scientist running segmentation and forecasting</td><td><span class="status-pill status-planned">Planned</span></td></tr>
+    <tr><td><strong>Consultant Agent</strong></td><td>A strategy consultant synthesizing findings into a narrative</td><td><span class="status-pill status-vision">Vision</span></td></tr>
+  </table>
+
+  <h3 class="question">Isn't "replacing the team" just a buzzword?</h3>
+
+  <p>Not in how I mean it. I am not claiming judgment about what an organization should prioritize can be automated, that stays with a human leader, and it is the one input the whole system depends on, the goals and OKRs the Consultant Agent needs to know what actually matters. What I am claiming can be automated is the manual, repeatable execution underneath that judgment, writing the query, building the chart, running the regression, assembling the deck. That is most of what a traditional analytics team spends its week doing. Automate that faithfully, and one leader with a well-built agent team can move at a pace no human team of the same size could match.</p>
+
+  <h3 class="question">Why build the Analyst Agent first, not the flashiest capability?</h3>
+
+  <p>Because every other agent needs the same governed foundation to avoid becoming a second, drifting source of truth. I proved this out with synthetic e-commerce data: a canonical warehouse, a semantic layer defining each metric exactly once, a skill teaching an agent how to use it, and a pinned eval suite grading its answers. That is Phase 1, and it is done, not theorized, built, debugged, and tested.</p>
+
+  <div class="stat-box">
+    <div class="stat-number">4 tools, 1 number</div>
+    <div class="stat-desc">The same $12,816.83 net revenue figure was independently produced by a DuckDB sanity check, a Claude and free-model AI agent, a dbt-tested canonical model, and a Metabase dashboard. Four different tools, one number, because all four trace back to one governed definition instead of four separate guesses.</div>
+  </div>
+
+  <h3 class="question">What actually broke while proving Phase 1, and why does that matter for Phase 2 onward?</h3>
+
+  <p>A free model wrote SQL in the wrong dialect until told explicitly which one. It fabricated a plausible-looking "data freshness" date instead of checking the real one, even after being told not to, fixed only by computing that fact in code and handing it to the model as ground truth, not a prompt reminder. An automated grader built from the same small model rubber-stamped an answer that contained no real number in it at all. And, across three completely independent systems built during this project, the agent's SQL, the eval grading logic, and eventually a BI tool's own visual date picker, the identical one-character bug appeared: using <code>&gt;=</code> instead of <code>&gt;</code> on a date boundary, silently including one extra day of data.</p>
+
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <p>The same class of bug will find every tool you add to this stack, not just the model. That is not a reason to stop adding tools. It is the reason every phase needs its own pinned, tolerance-checked test suite, not a one-time review.</p>
+  </div>
+
+  <h3 class="question">What does the Dashboard Agent add that the Analyst Agent doesn't already do?</h3>
+
+  <p>The Analyst Agent answers one question at a time, in text. Most business users think visually and want to explore a metric across time, segment, or category themselves, without typing a new question for every cut. The Dashboard Agent phase is exactly that, self-service visual exploration, built on the same semantic layer so a user picks "Net Revenue" from a governed list instead of a BI tool's SQL editor reinventing what that phrase means.</p>
+
+</article>
+
+<!-- HOW -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">How</span></div>
+
+<article class="prose">
+  <h2>How the Consultant Agent actually works, end to end</h2>
+
+  <p>This is the phase that makes the whole roadmap worth building, not just a convenience layer, a genuinely different kind of output: a proactive narrative instead of a reactive answer.</p>
+</article>
+
+<div class="exhibit">
+  <div class="exhibit-label">Exhibit 2 of 2</div>
+  <div class="exhibit-title">The Friday briefing cycle</div>
+  <div class="exhibit-sub">How the Consultant Agent turns three other agents' output into one narrative, on a fixed schedule, without being asked</div>
+  <div class="exhibit-box">
+    <div class="mermaid">
+sequenceDiagram
+    participant G as Goals and OKRs
+    participant D as Dashboard Agent
+    participant An as Analyst Agent
+    participant M as Model Agent
+    participant C as Consultant Agent
+    participant U as User's inbox
+
+    C->>G: What actually matters this quarter?
+    G-->>C: Priority metrics and targets
+    C->>D: What is happening against these targets?
+    D-->>C: Current state, trends, anomalies
+    C->>An: Why is this metric moving?
+    An-->>C: Governed deep-dive query results
+    C->>M: What happens next if this continues?
+    M-->>C: Forecast, segmentation insight
+    C->>U: McKinsey-grade narrative deck, every Friday
+    </div>
+  </div>
+  <p class="exhibit-note">Note: the Consultant Agent does not run new analysis itself, it orchestrates the other three and adds the one thing none of them have on their own, judgment about what's worth saying.</p>
+</div>
+
+<article class="prose">
+
+  <p>Walk through what each step actually requires, since the hard part is not the final PowerPoint, it is everything before it. The Consultant Agent needs to understand an organization's goals and OKRs well enough to know which metrics matter this week, not just which ones are available. It reads the Dashboard Agent's current state to answer "what is happening," a surface-level read no different from what a human glancing at a dashboard would do. Then it engages the Analyst Agent for a deeper, governed query, the "why," the same disciplined query-and-validate loop proven in Phase 1, not a new invention. It calls the Model Agent for "what's next," a forecast or a segment shift worth flagging. And only at the end does it assemble all of it into a narrative built for a human decision-maker, not a data dump, a McKinsey-level document delivered into an inbox every Friday, without anyone having to ask.</p>
+
+  <h3 class="question">Where should someone building this actually start?</h3>
+
+  <p>Exactly where I did, not with the Consultant Agent's ambition, with the Analyst Agent's discipline. Build the canonical data layer first. Define every metric once. Write a skill that teaches an agent the specific gotchas in your own data. Then build a pinned eval suite before scaling usage, not after, since the eval suite is what turns "we think this is accurate" into "we can show it is." Every later phase inherits that foundation or inherits its absence.</p>
+
+</article>
+
+<!-- WHAT IF -->
+<hr class="section-rule" />
+<div class="fourmat-marker"><span class="fourmat-tag">What If</span></div>
+
+<article class="prose">
+  <h2>What I would tell anyone building toward this</h2>
+
+  <p>Model choice is a real, separate variable from architecture quality, a well-designed skill and semantic layer reduce the space for error considerably, but do not replace the need for a genuinely reliable model underneath. Some failure modes need to be solved in code, not in prompts, for any fact where being wrong is costly, compute it once and hand it to the agent as ground truth rather than trusting recall. Evals and data quality tests must be adversarially reviewed, not just run, a grader or a test suite built from the same class of system it is checking can share its blind spots.</p>
+
+  <div class="pull">"The bug that broke one eval question was the same bug that broke a BI dashboard, in a completely different tool, weeks later. Governance discipline compounds. So does the lack of it."</div>
+
+  <h3 class="question">Strategic next steps</h3>
+
+  <p>Finish the Dashboard Agent phase with the same rigor as the first, one governed number reproduced identically across every tool that touches it, not just a pretty chart. Build the Model Agent on the same canonical marts, so a forecast or a segmentation is grounded in the identical governed data an analyst or a dashboard user already trusts, not a separate, ungoverned dataset assembled just for modeling. Design the Consultant Agent's goals-and-OKR intake before its narrative generation, the synthesis is only as good as its understanding of what actually matters to the reader. And keep every phase's failures as visible as its successes, the debugging story is the credibility, not a footnote to it.</p>
+
+</article>
+
+<section class="cta-section" aria-label="Call to action">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Phase 1, open source and working</div>
+    <h2>See the Analyst Agent, including everything that broke building it</h2>
+    <p>The full Phase 1 project, canonical warehouse, semantic layer, skill, debugged agent, eval suite, dbt quality tests, and a working dashboard, is public on GitHub. This is the foundation every later phase in this roadmap builds on.</p>
+    <a href="https://github.com/quizzito/self-serve-analytics-demo" class="cta-btn" target="_blank" rel="noopener">View the project on GitHub →</a>
+    <p class="cta-proof">Open source · Built and debugged step by step · Four independent tools, one governed number</p>
+  </div>
+</section>
+
+<article class="prose" style="padding-top:3.5rem;">
+  <h2>Common questions</h2>
+
+  <h3 class="question">Can AI agents replace an analytics team?</h3>
+  <p>AI agents can replace the manual, repeatable work, governed queries, dashboards, standard statistical models, and a proactive weekly briefing, provided the underlying data is governed and every agent's output is tested before it is trusted. What stays with a human leader is deciding what the organization's goals and OKRs actually are, the one input the whole system depends on.</p>
+
+  <h3 class="question">What are the phases of building an AI-native analytics team?</h3>
+  <p>Four, each depending on the one before it: an Analyst Agent running governed SQL queries, a Dashboard Agent enabling self-service visual exploration on the same governed metrics, a Model Agent performing statistical work like segmentation and forecasting on the same canonical data, and a Consultant Agent that proactively synthesizes all three into a decision-ready narrative tied to actual goals.</p>
+
+  <h3 class="question">Why build the Analyst Agent first, before the dashboard or the model?</h3>
+  <p>Every later phase depends on the same governed data foundation, canonical tables, a semantic layer, quality tests, the Analyst Agent is built on. Skipping ahead means each new agent invents its own definition of the same business terms, recreating the exact ambiguity the whole system is meant to remove.</p>
+
+  <h3 class="question">What is a Consultant Agent in AI-driven analytics?</h3>
+  <p>A proactive layer that reads an organization's goals and OKRs, uses a Dashboard Agent's output to understand what is happening, engages an Analyst Agent for deeper queries to understand why, uses a Model Agent to project what happens next, and assembles all of it into a decision-ready narrative on a fixed cadence, without anyone asking for it first.</p>
+
+  <h3 class="question">How do you know an AI analytics agent's answer is actually correct?</h3>
+  <p>Test it the way you would test any production system: a pinned set of questions with independently computed correct answers, run automatically, graded programmatically wherever possible rather than by another AI's judgment call, with every failure traced to a specific, fixable cause instead of accepted as an unexplained score.</p>
+
+</article>
+
+<hr class="section-rule" style="margin-bottom:3rem;" />
+
+<article class="prose">
+  <h3 class="question">About the author</h3>
+  <p>Deep Bando led pricing and analytics teams at major Canadian financial institutions for over a decade, managing $20B+ in credit card portfolios at Citi and building the analytics function at EQ Bank from zero. He is now building that same function again, differently, as a coordinated team of AI agents, in public, failures included. <a href="https://quizzito.github.io/deepbando.github.io/about.html">Full story →</a></p>
+</article>
+
+<footer class="footer">
+  <span class="footer-brand">Deep Bando &middot; Decision Management</span>
+  <nav class="footer-links" aria-label="Social and contact links">
+    <a href="https://www.linkedin.com/in/deepban/" class="footer-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/quizzito"          class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="#" class="footer-link">Twitter / X</a>
+    <a href="#" class="footer-link">Subscribe</a>
+  </nav>
+  <span class="footer-copy">&copy; 2026</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      background: '#f7f6f4',
+      primaryColor: '#f0ede6',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#c9a83a',
+      lineColor: '#8a8a8a',
+      secondaryColor: '#e3f1f0',
+      tertiaryColor: '#ffffff',
+      fontFamily: 'DM Sans, system-ui, sans-serif'
+    },
+    flowchart: { curve: 'basis' },
+    securityLevel: 'loose'
+  });
+</script>
+
+<script>
+(function () {
+  var bar = document.createElement('div');
+  bar.setAttribute('aria-hidden', 'true');
+  bar.style.cssText = 'position:fixed;top:0;left:0;height:2px;background:oklch(62% 0.12 85);width:0%;z-index:9999;pointer-events:none;transition:width 0.1s linear';
+  document.body.appendChild(bar);
+  window.addEventListener('scroll', function () {
+    var s = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    bar.style.width = Math.min(100, s * 100) + '%';
+  }, { passive: true });
+
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+  document.querySelectorAll('h2, .pull, .exhibit, .fourmat-marker, .stat-box, .callout, .actionable, .roadmap-table').forEach(function (el) {
+    el.classList.add('will-animate');
+    obs.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
