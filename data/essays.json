@@ -2,6 +2,15 @@
   {
   "audience": "executive",
   "product": null,
+  "topic": "data",
+  "date": "Jul 2026",
+  "title": "The LTV Model Almost Every Digital Bank Gets Wrong",
+  "excerpt": "Most banks size acquisition budgets off a churn-rate LTV model that assumes customers cancel like a subscription. They don't — they fade. Here's the state-based, product-level model that gets it right.",
+  "url": "essays/ltv-model-digital-banks-get-wrong.html"
+  },
+  {
+  "audience": "executive",
+  "product": null,
   "topic": "ai-ml",
   "date": "Jul 2026",
   "title": "How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap",

@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ✏️  EDIT 1 — Your essay title -->
+<title>The LTV Model Almost Every Digital Bank Gets Wrong — Deep Bando</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+<style>
+/* ── TOKENS (match index.html exactly) ──────────────────────────────── */
+:root {
+  --ink:         oklch(14% 0.012 240);
+  --ink-2:       oklch(35% 0.015 240);
+  --ink-3:       oklch(55% 0.01  240);
+  --surface:     oklch(98% 0.004 240);
+  --surface-2:   oklch(95% 0.006 240);
+  --gold:        oklch(62% 0.12  85);
+  --gold-light:  oklch(93% 0.03  85);
+  --gold-dark:   oklch(40% 0.10  85);
+  --teal:        oklch(52% 0.11  195);
+  --teal-light:  oklch(93% 0.03  195);
+  --teal-dark:   oklch(34% 0.09  195);
+  --border:      oklch(88% 0.008 240);
+  --serif:       'Playfair Display', Georgia, serif;
+  --sans:        'DM Sans', system-ui, sans-serif;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-pill: 40px;
+  --max-prose:   68ch;
+}
+
+/* ── RESET ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── NAV (identical to index.html) ──────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-link {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+  transition: color 0.18s ease;
+}
+.nav-link:hover { color: var(--ink); }
+.nav-cta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-dark);
+  border: 1px solid var(--gold);
+  padding: 7px 20px;
+  border-radius: var(--radius-pill);
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+.nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* ── BREADCRUMB ──────────────────────────────────────────────────────── */
+.breadcrumb {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0.5rem;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.breadcrumb a { color: var(--ink-3); transition: color 0.15s; }
+.breadcrumb a:hover { color: var(--ink-2); }
+.breadcrumb span { color: var(--border); }
+
+/* ── ESSAY HEADER ────────────────────────────────────────────────────── */
+.essay-header {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.essay-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.pill {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+.pill-audience-c { background: var(--teal-light); color: var(--teal-dark); }
+.pill-audience-e { background: var(--gold-light); color: var(--gold-dark); }
+.pill-product    { background: var(--surface-2); color: var(--ink-2); }
+.pill-topic      { background: var(--surface-2); color: var(--ink-2); }
+
+.essay-title {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 0.875rem;
+}
+.essay-subtitle {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-2);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.essay-byline {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.byline-name { font-weight: 500; color: var(--ink-2); }
+.byline-sep  { color: var(--border); }
+
+/* ── ESSAY BODY ──────────────────────────────────────────────────────── */
+.essay-body {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 1rem;
+}
+
+/* Typography — Impeccable: body 65-75ch, hierarchy via scale + weight */
+.essay-body p {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+.essay-body p:first-of-type {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.essay-body h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.28;
+  margin: 3rem 0 1rem;
+}
+.essay-body h3 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 2rem 0 0.625rem;
+}
+.essay-body ul, .essay-body ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+.essay-body li {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+.essay-body li strong { font-weight: 500; color: var(--ink); }
+.essay-body strong { font-weight: 500; color: var(--ink); }
+.essay-body em { font-style: italic; }
+.essay-body hr { border: none; border-top: 0.5px solid var(--border); margin: 3rem 0; }
+.essay-body a { color: var(--teal-dark); text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; }
+.essay-body a:hover { color: var(--teal); }
+.essay-body code {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+
+/* BLOCKQUOTE — Impeccable compliant: full border, no side-stripe */
+.essay-body blockquote {
+  background: var(--gold-light);
+  border: 0.5px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+}
+.essay-body blockquote p {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.65;
+  margin: 0;
+}
+.essay-body blockquote p:first-of-type { font-size: 1.15rem; }
+
+/* CALLOUT — Impeccable compliant: full border, no side-stripe */
+.callout {
+  background: var(--teal-light);
+  border: 0.5px solid var(--teal);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin: 2.5rem 0;
+}
+.callout-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+  margin-bottom: 0.4rem;
+}
+.callout p {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--teal-dark);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* ACTIONABLE (fraudlens) — Impeccable compliant: full border */
+.actionable {
+  background: oklch(96% 0.012 140);
+  border: 0.5px solid oklch(72% 0.09 140);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  margin: 1rem 0 2rem;
+}
+.actionable-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(34% 0.09 140);
+  margin-bottom: 0.35rem;
+}
+.actionable p {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 300;
+  color: oklch(34% 0.09 140);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* STAT BOX (media budget) */
+.stat-box {
+  background: var(--ink);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.stat-number {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: oklch(98% 0.004 240);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.stat-number span { font-size: 1.4rem; font-weight: 400; font-style: italic; color: oklch(70% 0.008 240); }
+.stat-desc {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: oklch(75% 0.008 240);
+  line-height: 1.65;
+}
+
+/* FORMULA (media budget) */
+.formula {
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: ui-monospace, monospace;
+  font-size: 15px;
+  color: var(--ink);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.formula strong { color: var(--teal-dark); font-family: var(--sans); font-weight: 500; }
+
+/* STAGE CARDS (media budget) — NOT nested cards, so OK */
+.stages { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+.stage {
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  transition: border-color 0.2s ease, transform 0.18s ease;
+}
+.stage:hover { border-color: var(--gold); transform: translateY(-1px); }
+.stage-num {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.35rem;
+}
+.stage h3 {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+.stage p {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* IMAGES */
+figure { margin: 2.5rem 0; }
+figure img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border);
+  display: block;
+}
+figcaption {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+  margin-top: 0.625rem;
+  line-height: 1.5;
+}
+.figure-wide { max-width: 900px; margin: 2rem auto 2.5rem; padding: 0 1.5rem; }
+.figure-wide img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 0.5px solid var(--border);
+  display: block;
+  box-shadow: 0 12px 40px -12px oklch(14% 0.012 240 / 0.15);
+}
+.figure-wide figcaption { padding: 0 1.5rem; text-align: center; margin-top: 0.75rem; }
+
+/* CTA INLINE BUTTONS — contrast fix per Impeccable */
+.cta-inline,
+.essay-body a.cta-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: oklch(98% 0.004 140) !important;
+  background: oklch(34% 0.09 140);
+  padding: 11px 24px;
+  border-radius: var(--radius-pill);
+  text-decoration: none !important;
+  margin: 0.5rem 0.75rem 0.5rem 0;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 4px 14px -4px oklch(34% 0.09 140 / 0.35);
+}
+.cta-inline:hover,
+.essay-body a.cta-inline:hover {
+  background: oklch(42% 0.1 140);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -4px oklch(34% 0.09 140 / 0.45);
+  color: oklch(98% 0.004 140) !important;
+}
+.cta-inline:visited, .essay-body a.cta-inline:visited { color: oklch(98% 0.004 140) !important; }
+.cta-inline.executive, .essay-body a.cta-inline.executive {
+  background: oklch(40% 0.10 85);
+  box-shadow: 0 4px 14px -4px oklch(40% 0.10 85 / 0.35);
+  color: oklch(98% 0.004 85) !important;
+}
+.cta-inline.executive:hover, .essay-body a.cta-inline.executive:hover {
+  background: oklch(50% 0.12 85);
+  box-shadow: 0 8px 20px -4px oklch(40% 0.10 85 / 0.45);
+  color: oklch(98% 0.004 85) !important;
+}
+
+/* FAQ */
+.faq-section {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 1rem;
+  border-top: 0.5px solid var(--border);
+}
+.faq-eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 1.5rem;
+}
+.faq-item { margin-bottom: 1.75rem; }
+.faq-item h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+.faq-item p {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.7;
+  margin: 0;
+}
+.faq-item a { color: var(--teal-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ESSAY END */
+.essay-end {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+.back-link {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.18s ease, gap 0.18s ease;
+}
+.back-link:hover { color: var(--ink-2); gap: 10px; }
+
+/* FOOTER (match index.html) */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 40px;
+  background: var(--surface-2);
+  border-top: 0.5px solid var(--border);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand { font-family: var(--serif); font-size: 14px; color: var(--ink-2); }
+.footer-links { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.footer-link { font-family: var(--sans); font-size: 13px; color: var(--ink-3); transition: color 0.18s ease; }
+.footer-link:hover { color: var(--ink); }
+.footer-copy { font-family: var(--sans); font-size: 12px; color: var(--ink-3); }
+
+/* SCROLL ANIMATIONS (/impeccable animate) */
+@media (prefers-reduced-motion: no-preference) {
+  .will-animate {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .will-animate.in-view { opacity: 1; transform: none; }
+  .will-animate-delay-1 { transition-delay: 0.08s; }
+  .will-animate-delay-2 { transition-delay: 0.16s; }
+  .will-animate-delay-3 { transition-delay: 0.24s; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .nav { padding: 16px 20px; }
+  .nav-link:not(.nav-cta) { display: none; }
+  .essay-header, .essay-body, .faq-section, .essay-end, .breadcrumb { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .figure-wide { padding: 0 1.25rem; }
+  .stat-box { flex-direction: column; gap: 1rem; }
+  .footer { padding: 22px 20px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="../index.html" class="nav-logo">Deep Bando</a>
+    <div class="nav-links">
+      <a href="../products.html" class="nav-link">Products</a>
+      <a href="../about.html"    class="nav-link">About</a>
+      <a href="https://www.linkedin.com/in/deepban/" target="_blank" rel="noopener noreferrer" class="nav-link nav-cta">Work with me</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ✏️  EDIT 2 — Breadcrumb: change "For Leaders" or "For Consumers", and the product name -->
+<div class="breadcrumb">
+  <a href="../index.html">Home</a>
+  <span>/</span>
+  <a href="../index.html">For Leaders</a>
+  <span>/</span>
+  <span>Data Strategy</span>
+</div>
+
+<!-- ✏️  EDIT 3 — Pills, title, subtitle, date, read time -->
+<header class="essay-header">
+  <div class="essay-pills">
+    <!-- Use pill-audience-e for executive, pill-audience-c for consumer -->
+    <span class="pill pill-audience-e">For Leaders</span>
+    <span class="pill pill-topic">Data Strategy</span>
+  </div>
+  <h1 class="essay-title">The LTV Model Almost Every Digital Bank Gets Wrong</h1>
+  <p class="essay-subtitle">Churn isn't a cancel button — it's a slow fade. Get that wrong and every CAC decision downstream is wrong too.</p>
+  <div class="essay-byline">
+    <span class="byline-name">Deep Bando</span>
+    <span class="byline-sep">&middot;</span>
+    <span>Jul 2026</span>
+    <span class="byline-sep">&middot;</span>
+    <span>6 min read</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ✏️  EDIT 4 — WRITE YOUR ESSAY BELOW
+
+     TEXT ELEMENTS:
+       <p>                    paragraph (first <p> renders larger)
+       <h2>                   main section heading
+       <h3>                   sub-heading
+       <ul><li>               bullet list
+       <ol><li>               numbered list
+       <blockquote><p>        pull quote (gold left border)
+       <strong>               bold
+       <em>                   italic
+       <hr>                   section divider
+
+     CALLOUT BOX (key insight):
+       <div class="callout">
+         <div class="callout-label">Key Insight</div>
+         <p>Your insight here.</p>
+       </div>
+
+     CTA BUTTON (download, view on GitHub, try it, etc.):
+       <a class="cta-inline" href="https://your-link.com" target="_blank">Button Text &#x2192;</a>
+       Add class="cta-inline executive" instead for the navy variant on leader-facing essays.
+
+     IMAGES:
+       Standard (fits text column):
+         <figure>
+           <img src="../images/essays/your-image.png" alt="Description">
+           <figcaption>Caption explaining what the image shows.</figcaption>
+         </figure>
+
+       Wide (breaks out of column for impact):
+         <figure class="figure-wide">
+           <img src="../images/essays/your-wide-image.png" alt="Description">
+           <figcaption>Caption here.</figcaption>
+         </figure>
+
+       Two images side by side:
+         <div class="figure-2col">
+           <figure>
+             <img src="../images/essays/before.png" alt="Before">
+             <figcaption>Before</figcaption>
+           </figure>
+           <figure>
+             <img src="../images/essays/after.png" alt="After">
+             <figcaption>After</figcaption>
+           </figure>
+         </div>
+
+     CHARTS (from Datawrapper — free at datawrapper.de):
+       1. Build your chart on Datawrapper
+       2. Click Publish → copy the embed code (it starts with <iframe)
+       3. Paste it inside the .chart-embed div below:
+         <div class="chart-embed">
+           PASTE YOUR DATAWRAPPER IFRAME HERE
+         </div>
+         <p class="chart-label">Source: Your data source here</p>
+
+     DATA TABLE:
+       <div class="data-table">
+         <table>
+           <thead>
+             <tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr>
+           </thead>
+           <tbody>
+             <tr><td>Row data</td><td>Row data</td><td>Row data</td></tr>
+             <tr class="highlight"><td>Key row</td><td>stands out</td><td>in gold</td></tr>
+           </tbody>
+         </table>
+         <p class="table-caption">Table: Description of what this shows.</p>
+       </div>
+═══════════════════════════════════════════════════════════════════ -->
+
+<article class="essay-body">
+
+  <p>Every digital bank runs the same equation to decide how much it can afford to spend acquiring a customer: LTV divided by CAC. Get LTV wrong and the ratio is fiction — you'll overpay for the wrong segments, underinvest in the right ones, and not find out for years, because the mistake is baked into a number, not a visible error.</p>
+
+  <h2>The model almost everyone borrows, and why it's the wrong one</h2>
+
+  <p>Most growth teams import an LTV model built for subscription software: a flat monthly price, a single churn rate, additive revenue per seat. None of that describes a bank. Revenue isn't additive across products — a customer holding checking, a card, and a mortgage isn't three separate LTVs stacked together, because the deposit funds the bank's cost of capital elsewhere, the card carries credit risk, and relationship depth itself lowers attrition on everything else that customer holds. And churn isn't an event. Nobody cancels a checking account. Balances drift down, the paycheck gets redirected elsewhere, logins stop, the card becomes a backup card sitting in a drawer.</p>
+
+  <blockquote>
+    <p>By the time an account is formally closed, the economic value left months earlier. A churn-rate model measures the funeral. It never measures the illness.</p>
+  </blockquote>
+
+  <p>That gap — between when value actually leaves and when the account technically closes — is where most digital banks are quietly mispricing acquisition. Below are the three ways to model this, in increasing order of how well they capture what's actually happening, followed by the one combination top-tier banks actually run.</p>
+
+  <h2>Approach 1 — Cohort retention curves</h2>
+
+  <p>The simplest fix: stop assuming a constant churn rate and instead track what actually happened to a real acquisition cohort — empirical survival percentage and average margin per active customer, year by year.</p>
+
+  <div class="formula">LTV = &sum;<sub>t</sub> (survival%<sub>t</sub> &times; margin<sub>t</sub>) &divide; (1 + r)<sup>t</sup></div>
+
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Year</th><th>Survival</th><th>Avg. margin</th><th>PV @ 10%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>90%</td><td>$200</td><td>$163.6</td></tr>
+        <tr><td>2</td><td>75%</td><td>$220</td><td>$136.4</td></tr>
+        <tr><td>3</td><td>65%</td><td>$240</td><td>$117.2</td></tr>
+        <tr><td>4</td><td>58%</td><td>$250</td><td>$99.0</td></tr>
+        <tr class="highlight"><td>5</td><td>52%</td><td>$260</td><td>$84.0</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 1. Five-year cohort LTV &asymp; $600. Grounded in real behavior, easy to defend to a CFO — but "active" here just means the account is technically open.</p>
+  </div>
+
+  <p>This is a real improvement over a flat assumed churn rate, and it's where most banks stop. It's also still measuring the funeral, not the illness — a customer with a declining balance and a customer logging in daily both count as "active" as long as neither account is closed.</p>
+
+  <h2>Approach 2 — State-transition (behavioral survival) models</h2>
+
+  <p>This is the direct fix for silent churn. Instead of Active/Closed, define engagement states from observable behavior — balance trend, login frequency, direct-deposit presence — not from whether the account happens to still be open: <strong>Engaged</strong>, <strong>Declining</strong>, <strong>Dormant</strong>, <strong>Closed</strong>. A transition probability matrix, fit with logistic regression or a Cox hazard model, governs how customers move between them.</p>
+
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <p>The engagement state a customer is in today — not whether their account is open — is the real leading indicator of value at risk. This is also what makes proactive retention pricing possible: you can see the fade starting before the balance hits zero.</p>
+  </div>
+
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Starting state</th><th>3-yr PV of margin</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Engaged</td><td>$609.0</td></tr>
+        <tr class="highlight"><td>Declining</td><td>$281.4</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 2. Same customer, same product economics — the only difference is the engagement state they start in.</p>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-number">2.2<span>&times;</span></div>
+    <div class="stat-desc">A customer starting Engaged is worth more than double one starting in Decline, over the identical three years. That gap <em>is</em> the retention budget you can justify spending — and it's a number a flat churn rate can never produce, because it never knew the customer was slipping.</div>
+  </div>
+
+  <h2>Approach 3 — Bottom-up economic profit (RAROC)</h2>
+
+  <p>Approach 2 fixes the "how long" question but usually runs on a thin, single-product margin. Approach 3 fixes the dollars: build the customer's actual P&L, product by product, then subtract a capital charge — the same RAROC/EVA logic most banks already run for regulatory capital allocation.</p>
+
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Product</th><th>Net margin / year</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Deposits ($15k balance, FTP spread)</td><td>$450</td></tr>
+        <tr><td>Credit card (interest + interchange &minus; rewards &minus; losses)</td><td>$440</td></tr>
+        <tr><td>Mortgage ($300k, NIM &minus; credit loss)</td><td>$3,150</td></tr>
+        <tr><td>Less: cost to serve</td><td>&minus;$250</td></tr>
+        <tr class="highlight"><td>Less: capital charge (RAROC) &rarr; Net economic profit</td><td>$3,590</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 3. Full 3-product household. Applying a relationship survival curve and discounting at 10% over 5 years: LTV &asymp; $11,030.</p>
+  </div>
+
+  <p>The jump from a few hundred dollars to eleven thousand isn't model sophistication — it's relationship depth. A mortgage anchors the relationship, carries the largest absolute margin, and makes the deposit and card margins stickier than they'd ever be standalone. This is also the approach's blind spot: a single flat survival curve applied on top still can't tell you which specific households are quietly drifting toward Decline right now.</p>
+
+  <h2>The hybrid — what the top 1% actually run</h2>
+
+  <p>The fix isn't picking between Approach 2 and Approach 3. It's running Approach 2's machinery — the state-transition matrix, projected year by year — filled in with Approach 3's dollars, so every engagement state carries its own real product-level economic profit instead of a single flat number.</p>
+
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Engagement state</th><th>Net economic profit / year</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Engaged</td><td>$3,590</td></tr>
+        <tr><td>Declining</td><td>$3,050</td></tr>
+        <tr><td>Dormant</td><td>$2,815</td></tr>
+        <tr><td>Closed</td><td>$0</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 4. Same household, same P&L build — but the mortgage stays contractual across states while deposit balances and card usage decay with engagement.</p>
+  </div>
+
+  <p>Run the same state distribution used in Approach 2, dot it against this state-specific economic-profit vector instead of a flat margin, discount, and sum:</p>
+
+  <div class="data-table">
+    <table>
+      <thead>
+        <tr><th>Model</th><th>5-yr LTV</th><th>What it's actually measuring</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1. Cohort retention curve</td><td>~$600</td><td>Average customer, blunt survival definition</td></tr>
+        <tr><td>2. State-transition (thin product)</td><td>~$796</td><td>Personalized engagement, weak unit economics</td></tr>
+        <tr><td>3. Bottom-up economic profit (flat survival)</td><td>~$11,030</td><td>Real unit economics, no behavioral granularity</td></tr>
+        <tr class="highlight"><td>Hybrid (2 &times; 3)</td><td>~$11,381</td><td>Real unit economics, weighted by personalized engagement state</td></tr>
+      </tbody>
+    </table>
+    <p class="table-caption">Table 5. The hybrid's total lands close to Approach 3 — that's a sanity check, not a coincidence, since both share the same P&L. What it adds is a state-by-state value-at-risk figure Approach 3 alone can never produce.</p>
+  </div>
+
+  <h2>Building it so it survives your own growth</h2>
+
+  <p>One more thing worth designing in from day one, even for a young digital bank: this model has to keep working as your own acquisition history stretches from 2 years to 20. A few structural fixes matter more than any modeling sophistication:</p>
+
+  <div class="actionable">
+    <div class="actionable-label">Do This</div>
+    <p>Normalize product depth by what was <em>eligible</em> at that customer's tenure, not a raw count — otherwise your longest, most loyal customers look "less engaged" than newer customers who simply had more products to choose from. Fit the transition matrix on a rolling recent window, not the full history — customer behavior in a different rate and digital-adoption era isn't the same population. And treat "still active, outcome unknown" as its own category (survival analysis, not a completed short lifetime) — otherwise every recent cohort silently understates true LTV.</p>
+  </div>
+
+  <h2>The one number that should change how you spend</h2>
+
+  <p>If your growth team is currently sizing CAC off a single blended LTV number, the honest question isn't "is our LTV:CAC above 3?" — it's "which of these three models produced that number, and does it know the difference between a customer who's engaged and one who's already fading?" A flat churn rate will keep telling you the relationship is fine right up until the day it closes. A state-based model tells you three months earlier, in dollars, exactly what's at stake — and that's the only version of this number worth building acquisition strategy around.</p>
+
+</article>
+<!-- ═══════════════════════════════ END OF ESSAY ═══════════════════════ -->
+
+<div class="essay-end">
+  <a class="back-link" href="../index.html">&#8592; Back to all essays</a>
+</div>
+
+<footer class="footer">
+  <span class="footer-brand">Deep Bando &middot; Decision Management</span>
+  <nav class="footer-links" aria-label="Social and contact links">
+    <a href="https://www.linkedin.com/in/deepban/" class="footer-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <a href="https://github.com/quizzito"          class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="#" class="footer-link">Twitter / X</a>
+    <a href="#" class="footer-link">Subscribe</a>
+  </nav>
+  <span class="footer-copy">&copy; 2025</span>
+</footer>
+
+<script>
+(function () {
+  /* ── DELIGHT: Reading progress bar ────────────────────────────────── */
+  var bar = document.createElement('div');
+  bar.setAttribute('aria-hidden', 'true');
+  bar.style.cssText = [
+    'position:fixed', 'top:0', 'left:0', 'height:2px',
+    'background:oklch(62% 0.12 85)', 'width:0%',
+    'z-index:9999', 'pointer-events:none',
+    'transition:width 0.1s linear'
+  ].join(';');
+  document.body.appendChild(bar);
+
+  window.addEventListener('scroll', function () {
+    var scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    bar.style.width = Math.min(100, scrolled * 100) + '%';
+  }, { passive: true });
+
+  /* ── ANIMATE: Scroll-triggered fade-up ─────────────────────────────
+     Easing: cubic-bezier(0.22, 1, 0.36, 1) = ease-out-quint
+     No bounce. No elastic. Impeccable compliant.                      */
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var targets = document.querySelectorAll(
+    '.essay-body h2, .essay-body h3, .callout, .actionable, ' +
+    '.essay-body blockquote, figure, .stat-box, .stage, ' +
+    '.faq-item, .cta-inline, .essay-body > ul, .essay-body > ol, .data-table'
+  );
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+
+  targets.forEach(function (el, i) {
+    el.classList.add('will-animate');
+    /* Stagger siblings within stage/faq groups */
+    if (el.closest('.stages') || el.closest('.faq-section')) {
+      var siblings = Array.from(el.parentNode.children);
+      var idx = siblings.indexOf(el);
+      if (idx > 0) el.classList.add('will-animate-delay-' + Math.min(idx, 3));
+    }
+    observer.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
