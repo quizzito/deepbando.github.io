@@ -143,23 +143,8 @@ img{max-width:100%;display:block;}
       <button class="chip" data-audience="consumer">For Consumers</button>
       <button class="chip" data-audience="executive">For Leaders</button>
     </div>
-    <div class="filter-row" id="topic-row">
-      <span class="filter-label">Topic</span>
-      <button class="chip active-topic" data-topic="all">All</button>
-      <button class="chip" data-topic="gic">GIC</button>
-      <button class="chip" data-topic="credit-card">Credit Card</button>
-      <button class="chip" data-topic="tfsa">TFSA</button>
-      <button class="chip" data-topic="payroll">Payroll</button>
-      <button class="chip" data-topic="money-movement">Money Movement</button>
-      <button class="chip" data-topic="pricing">Pricing Strategy</button>
-      <button class="chip" data-topic="ai-ml">AI &amp; ML</button>
-      <button class="chip" data-topic="data">Data Strategy</button>
-      <button class="chip" data-topic="team">Team Building</button>
-      <button class="chip" data-topic="productivity">Tools</button>
-      <button class="chip" data-topic="consumer-rights">Consumer Rights</button>
-      <button class="chip" data-topic="investing">Investing</button>
-      <button class="chip" data-topic="fees">Fees</button>
-      <button class="filter-clear" id="clear-btn" style="display:none" onclick="clearFilters()">Clear filters</button>
+    <div class="filter-row" id="topic-row" style="display:none">
+      <!-- Populated dynamically by JS — product chips for consumers, strategic categories for leaders -->
     </div>
   </div>
 </div>
@@ -180,10 +165,41 @@ img{max-width:100%;display:block;}
 </footer>
 
 <script>
-var PRODUCT_LABELS={'gic':'GIC','credit-card':'Credit Card','tfsa':'TFSA','payroll':'Payroll','money-movement':'Money Movement'};
-var TOPIC_LABELS={'pricing':'Pricing Strategy','ai-ml':'AI & ML','team':'Team Building','data':'Data Strategy','challenger':'Challenger Banks','consumer-rights':'Consumer Rights','investing':'Investing','fees':'Fees & Rates','productivity':'Tools & Productivity'};
+/* ─────────────────────────────────────────────────────────────────
+   TAXONOMY
+   Consumers: product-based (how they think about banking)
+   Leaders:   outcome-based, McKinsey MECE 3 categories
+   ───────────────────────────────────────────────────────────────── */
 
-var activeAudience='all', activeTopic='all';
+var CONSUMER_CHIPS = [
+  {v:'all',          l:'All'},
+  {v:'gic',          l:'GIC'},
+  {v:'credit-card',  l:'Credit Card'},
+  {v:'tfsa',         l:'TFSA'},
+  {v:'payroll',      l:'Payroll'},
+  {v:'money-movement',l:'Money Movement'},
+  {v:'consumer-rights',l:'Consumer Rights'},
+  {v:'investing',    l:'Investing'},
+  {v:'fees',         l:'Fees'},
+];
+
+/* McKinsey MECE — 3 strategic outcome categories */
+var LEADER_CHIPS = [
+  {v:'all',                   l:'All'},
+  {v:'customer-growth',       l:'Customer &amp; Growth'},
+  {v:'decision-intelligence', l:'Decision Intelligence'},
+  {v:'organisation-impact',   l:'Organisation &amp; Impact'},
+];
+
+/* Maps each leader category to a test function on an essay object */
+var LEADER_MATCH = {
+  'customer-growth':       function(a){ return a.topic==='challenger'||a.product==='credit-card'||(a.topic==='pricing'&&a.audience==='executive'); },
+  'decision-intelligence': function(a){ return a.topic==='ai-ml'||a.topic==='data'||a.topic==='productivity'; },
+  'organisation-impact':   function(a){ return a.topic==='team'||a.topic==='fees'; }
+};
+
+var PRODUCT_LABELS = {gic:'GIC','credit-card':'Credit Card',tfsa:'TFSA',payroll:'Payroll','money-movement':'Money Movement'};
+var TOPIC_LABELS   = {pricing:'Pricing Strategy','ai-ml':'AI & ML',team:'Team Building',data:'Data Strategy',challenger:'Challenger Banks','consumer-rights':'Consumer Rights',investing:'Investing',fees:'Fees & Rates',productivity:'Tools'};
 
 function tagLabel(a){
   if(a.product&&PRODUCT_LABELS[a.product])return PRODUCT_LABELS[a.product];
@@ -191,14 +207,64 @@ function tagLabel(a){
   return 'Essay';
 }
 
+/* State */
+var activeAudience='all', activeTopic='all', ALL_ARTICLES=[];
+
+/* ── RENDER TOPIC ROW ──────────────────────────────────────────── */
+function renderTopicRow(audience){
+  var row=document.getElementById('topic-row');
+  if(audience==='all'){row.style.display='none';activeTopic='all';return;}
+
+  var chips=audience==='executive'?LEADER_CHIPS:CONSUMER_CHIPS;
+  var label=audience==='executive'?'Theme':'Product';
+
+  row.innerHTML='<span class="filter-label">'+label+'</span>'+
+    chips.map(function(c){
+      return '<button class="chip'+(c.v==='all'?' active-topic':'')+'" data-topic="'+c.v+'">'+c.l+'</button>';
+    }).join('')+
+    '<button class="filter-clear" id="clear-btn" style="display:none" onclick="clearFilters()">Clear filters</button>';
+
+  row.style.display='flex';
+  activeTopic='all';
+
+  /* Wire new chips */
+  row.querySelectorAll('[data-topic]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      activeTopic=btn.dataset.topic;
+      row.querySelectorAll('[data-topic]').forEach(function(b){b.className='chip'+(b.dataset.topic==='all'?' active-topic':'');});
+      if(btn.dataset.topic!=='all')btn.className='chip active-topic';
+      filter();
+    });
+  });
+}
+
+/* ── FILTER + RENDER ───────────────────────────────────────────── */
+function applyFilters(articles){
+  return articles.filter(function(a){
+    var audMatch=activeAudience==='all'||a.audience===(activeAudience==='executive'?'executive':'consumer');
+    var topicMatch;
+    if(activeTopic==='all'){
+      topicMatch=true;
+    } else if(LEADER_MATCH[activeTopic]){
+      topicMatch=LEADER_MATCH[activeTopic](a);
+    } else {
+      topicMatch=a.product===activeTopic||a.topic===activeTopic;
+    }
+    return audMatch&&topicMatch;
+  });
+}
+
 function renderGrid(articles){
   var grid=document.getElementById('essay-grid');
-  if(!articles.length){grid.innerHTML='<div class="empty-state">No essays in this category.<button onclick="clearFilters()" style="display:block;margin:.75rem auto 0;font-family:var(--sans);font-size:13px;background:none;border:0.5px solid var(--border);border-radius:var(--r-pill);padding:6px 18px;color:var(--ink-3);cursor:pointer;">Clear filters</button></div>';return;}
+  if(!articles.length){
+    grid.innerHTML='<div class="empty-state">No essays in this category yet.<button onclick="clearFilters()" style="display:block;margin:.75rem auto 0;font-family:var(--sans);font-size:13px;background:none;border:0.5px solid var(--border);border-radius:var(--r-pill);padding:6px 18px;color:var(--ink-3);cursor:pointer;">Clear filters</button></div>';
+    return;
+  }
   grid.innerHTML=articles.map(function(a){
     var aud=a.audience==='consumer'?'consumer':'executive';
     var pillCls=aud==='consumer'?'pill-consumer':'pill-executive';
     var audLabel=aud==='consumer'?'For Consumers':'For Leaders';
-    return '<a href="'+a.url+'" class="essay-card '+aud+' anim" data-audience="'+aud+'" data-product="'+(a.product||'')+'" data-topic="'+(a.topic||'')+'">'+
+    return '<a href="'+a.url+'" class="essay-card '+aud+' anim">'+
       '<div class="card-meta">'+
         '<span class="pill '+pillCls+'">'+audLabel+'</span>'+
         '<span class="pill pill-neutral">'+tagLabel(a)+'</span>'+
@@ -208,7 +274,7 @@ function renderGrid(articles){
       '<div class="card-excerpt">'+a.excerpt+'</div>'+
     '</a>';
   }).join('');
-  /* Staggered card entrances — ease-out-quint, no bounce */
+
   var cards=grid.querySelectorAll('.anim');
   if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
     var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.06,rootMargin:'0px 0px -28px 0px'});
@@ -218,66 +284,42 @@ function renderGrid(articles){
   }
 }
 
-function applyFilters(articles){
-  return articles.filter(function(a){
-    var audMatch=activeAudience==='all'||a.audience===activeAudience;
-    var topicMatch=activeTopic==='all'||a.product===activeTopic||a.topic===activeTopic;
-    return audMatch&&topicMatch;
-  });
-}
-
-var ALL_ARTICLES=[];
-
-/* Smooth fade transition between filter states (Impeccable delight) */
 function filter(){
-  document.getElementById('clear-btn').style.display=(activeAudience!=='all'||activeTopic!=='all')?'inline':'none';
+  var clearBtn=document.getElementById('clear-btn');
+  if(clearBtn)clearBtn.style.display=(activeAudience!=='all'||activeTopic!=='all')?'inline':'none';
   var grid=document.getElementById('essay-grid');
-  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-    renderGrid(applyFilters(ALL_ARTICLES));
-    return;
-  }
-  grid.style.transition='opacity 0.18s ease, transform 0.18s ease';
-  grid.style.opacity='0';
-  grid.style.transform='translateY(6px)';
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){renderGrid(applyFilters(ALL_ARTICLES));return;}
+  grid.style.transition='opacity 0.18s ease,transform 0.18s ease';
+  grid.style.opacity='0';grid.style.transform='translateY(6px)';
   setTimeout(function(){
     renderGrid(applyFilters(ALL_ARTICLES));
-    grid.style.opacity='1';
-    grid.style.transform='none';
+    grid.style.opacity='1';grid.style.transform='none';
   },180);
 }
 
 function clearFilters(){
   activeAudience='all';activeTopic='all';
   document.querySelectorAll('[data-audience]').forEach(function(b){b.className='chip'+(b.dataset.audience==='all'?' active-audience':'');});
-  document.querySelectorAll('[data-topic]').forEach(function(b){b.className='chip'+(b.dataset.topic==='all'?' active-topic':'');});
+  renderTopicRow('all');
   filter();
 }
 
-/* Wire audience chips */
+/* ── WIRE AUDIENCE CHIPS ───────────────────────────────────────── */
 document.querySelectorAll('[data-audience]').forEach(function(btn){
   btn.addEventListener('click',function(){
     activeAudience=btn.dataset.audience;
     document.querySelectorAll('[data-audience]').forEach(function(b){b.className='chip';});
     btn.className='chip active-audience';
+    renderTopicRow(activeAudience);
     filter();
   });
 });
 
-/* Wire topic chips */
-document.querySelectorAll('[data-topic]').forEach(function(btn){
-  btn.addEventListener('click',function(){
-    activeTopic=btn.dataset.topic;
-    document.querySelectorAll('[data-topic]').forEach(function(b){b.className='chip'+(b.dataset.topic==='all'?' active-topic':'');});
-    if(btn.dataset.topic!=='all')btn.className='chip active-topic';
-    filter();
-  });
-});
-
-/* Fetch essays */
+/* ── FETCH ─────────────────────────────────────────────────────── */
 fetch('data/essays.json')
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){ALL_ARTICLES=data;renderGrid(data);})
-  .catch(function(e){
+  .catch(function(){
     document.getElementById('essay-grid').innerHTML='<div class="empty-state">Could not load essays.<br><small>If testing locally, open with VS Code Go Live.</small></div>';
   });
 </script>
