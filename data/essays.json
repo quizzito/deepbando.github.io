@@ -1,30 +1,12 @@
 [
   {
-  "audience": "executive",
-  "product": null,
-  "topic": "data",
-  "date": "Jul 2026",
-  "title": "The LTV Model Almost Every Digital Bank Gets Wrong",
-  "excerpt": "Most banks size acquisition budgets off a churn-rate LTV model that assumes customers cancel like a subscription. They don't — they fade. Here's the state-based, product-level model that gets it right.",
-  "url": "essays/ltv-model-digital-banks-get-wrong.html"
-  },
-  {
-  "audience": "executive",
-  "product": null,
-  "topic": "ai-ml",
-  "date": "Jul 2026",
-  "title": "How to Build a Self-Serve Analytics Team with AI Agents: A Four-Phase Roadmap",
-  "excerpt": "A working roadmap for replacing an analytics team's manual work with coordinated AI agents, an Analyst Agent, Dashboard Agent, Model Agent, and Consultant Agent, proven one phase at a time.",
-  "url": "essays/self-serve-analytics-team-four-agent-roadmap.html"
-  },
-  {
     "audience": "executive",
     "product": null,
-    "topic": "ai-ml",
-    "date": "Jul 2026",
-    "title": "How to Build an Agentic Analytics Team: The Failure Your Semantic Layer Won't Catch",
-    "excerpt": "I built a working agentic analytics stack and deliberately tested it on a free AI model before ever touching Claude. Here is exactly what broke, and the blueprint that held up anyway.",
-    "url": "essays/agentic-analytics-team-blueprint.html"
+    "topic": "pricing",
+    "date": "Aug 2026",
+    "title": "Canada\u2019s $6.6 Trillion Deposit Market Is Fragmenting Into Three Tiers",
+    "excerpt": "OSFI M4 reveals a structural divergence reshaping Canadian bank deposits: non-retail surged 9% while retail barely moved at 0.9%. The institutions that captured the most growth are the most exposed in the next rate cycle.",
+    "url": "essays/canadian-deposits-osfi-m4-competitive-strategy.html"
   },
   {
     "audience": "executive",
