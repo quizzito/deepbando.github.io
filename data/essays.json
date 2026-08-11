@@ -2,6 +2,15 @@
   {
     "audience": "executive",
     "product": null,
+    "topic": "ai-ml",
+    "date": "Aug 2026",
+    "title": "The LTV Model Almost Every Digital Bank Gets Wrong",
+    "excerpt": "Most digital banks calculate LTV from a flat churn rate on thin product margin. Here are three progressively better approaches \u2014 and the hybrid the top 1% of institutions actually run.",
+    "url": "essays/ltv-model-digital-banks-get-wrong.html"
+  },
+  {
+    "audience": "executive",
+    "product": null,
     "topic": "pricing",
     "date": "Aug 2026",
     "title": "Canada\u2019s $6.6 Trillion Deposit Market Is Fragmenting Into Three Tiers",

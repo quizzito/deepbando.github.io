@@ -5,10 +5,94 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ✏️  EDIT 1 — Your essay title -->
 <title>The LTV Model Almost Every Digital Bank Gets Wrong — Deep Bando</title>
+<meta name="description" content="Most digital banks calculate LTV from a flat churn rate on thin product margin. Here are three progressively better approaches — and the hybrid that the top 1% of institutions actually run.">
+<meta name="author" content="Deep Bando">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="LTV model digital banking, customer lifetime value banking, LTV CAC ratio fintech, state-transition LTV model, RAROC LTV banking, churn rate LTV digital bank, customer engagement banking analytics, deposit LTV model Canada">
+<link rel="canonical" href="https://quizzito.github.io/deepbando.github.io/essays/ltv-model-digital-banks-get-wrong.html">
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="The LTV Model Almost Every Digital Bank Gets Wrong">
+<meta property="og:description" content="Three progressively better approaches to customer LTV — and the hybrid that top-1% institutions actually run. A practitioner's build log.">
+<meta property="og:url" content="https://quizzito.github.io/deepbando.github.io/essays/ltv-model-digital-banks-get-wrong.html">
+<meta property="og:site_name" content="Deep Bando — Decision Management in Banking">
+<meta property="article:author" content="Deep Bando">
+<meta property="article:published_time" content="2026-08-10">
+
+<!-- AEO: FAQPage schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is wrong with how most digital banks calculate LTV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most digital banks build LTV from a flat cohort retention curve applied to a single blended product margin. The result is accurate on average but wrong in every individual case that matters. It cannot distinguish an engaged customer from one who is quietly drifting toward closure, and it cannot tell a growth team which customers are worth spending acquisition budget to retain. A flat churn rate will keep reporting the relationship is fine right up until the day the account closes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a state-transition LTV model in banking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A state-transition LTV model divides customers into engagement states — Engaged, Declining, Dormant, Closed — and estimates the probability of moving between states each period using a Markov transition matrix fitted on historical behavioral data. Rather than applying a single survival curve to all customers, the model projects each customer's expected state distribution forward and prices each state using its actual margin contribution. The result is a personalized LTV that reflects behavioral trajectory, not just current tenure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should a digital bank calculate customer lifetime value?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most accurate approach combines state-transition modeling with bottom-up economic profit (RAROC). Build the customer's actual P&L product by product — deposit spread, card net margin, mortgage NIM minus credit loss, cost to serve, capital charge — then run that real economic profit through a state-transition matrix that projects engagement trajectory over time. Discount at the cost of capital and sum. This hybrid produces a personalized LTV that reflects both real unit economics and behavioral risk."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is RAROC and how does it apply to LTV modeling in banking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RAROC (Risk-Adjusted Return on Capital) is the standard banking framework for measuring whether a customer relationship generates returns above the cost of capital. In LTV modeling, RAROC replaces thin product margin with true economic profit: net revenue minus credit losses minus cost to serve minus a capital charge proportional to the risk-weighted assets the customer consumes. Applying RAROC at the customer level transforms LTV from a revenue proxy into a genuine measure of value creation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What LTV:CAC ratio should a digital bank target?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The conventional target of LTV:CAC above 3x is not wrong — but it is only as useful as the LTV model underlying it. A flat cohort-based LTV can produce a ratio above 3x while masking a customer base where 40% are already in decline. The right question is not whether the blended ratio clears 3x, but whether the LTV model distinguishes engaged customers from declining ones — because a state-based model will show the ratio is meaningfully different depending on which population you are acquiring into."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- AEO: Article schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The LTV Model Almost Every Digital Bank Gets Wrong",
+  "description": "Three progressively better approaches to customer LTV in digital banking — from flat cohort curves to state-transition models to RAROC-based economic profit — and the hybrid the top 1% actually run.",
+  "author": {
+    "@type": "Person",
+    "name": "Deep Bando",
+    "url": "https://quizzito.github.io/deepbando.github.io/about.html",
+    "jobTitle": "Analytics and Decision Management Leader"
+  },
+  "publisher": {"@type": "Person", "name": "Deep Bando"},
+  "datePublished": "2026-08-10",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://quizzito.github.io/deepbando.github.io/essays/ltv-model-digital-banks-get-wrong.html"
+  },
+  "keywords": ["LTV model digital banking", "customer lifetime value banking", "state-transition LTV", "RAROC banking", "churn rate digital bank", "banking analytics", "LTV CAC ratio fintech"]
+}
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
 <style>
@@ -541,6 +625,7 @@ figcaption {
   <nav class="nav" aria-label="Main navigation">
     <a href="../index.html" class="nav-logo">Deep Bando</a>
     <div class="nav-links">
+      <a href="../essays.html"   class="nav-link">Essays</a>
       <a href="../products.html" class="nav-link">Products</a>
       <a href="../about.html"    class="nav-link">About</a>
       <a href="https://www.linkedin.com/in/deepban/" target="_blank" rel="noopener noreferrer" class="nav-link nav-cta">Work with me</a>
@@ -787,8 +872,37 @@ figcaption {
 </article>
 <!-- ═══════════════════════════════ END OF ESSAY ═══════════════════════ -->
 
+<section class="faq-section">
+  <div class="faq-eyebrow">Frequently Asked Questions</div>
+
+  <div class="faq-item">
+    <h3>What is wrong with how most digital banks calculate LTV?</h3>
+    <p>Most digital banks build LTV from a flat cohort retention curve applied to a single blended product margin. The result is accurate on average but wrong in every individual case that matters. It cannot distinguish an engaged customer from one who is quietly drifting toward closure, and it cannot tell a growth team which customers are worth spending retention budget on. A flat churn rate will keep reporting the relationship is fine right up until the day the account closes.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>What is a state-transition LTV model in banking?</h3>
+    <p>A state-transition LTV model divides customers into engagement states &mdash; Engaged, Declining, Dormant, Closed &mdash; and estimates the probability of moving between states each period using a Markov transition matrix fitted on historical behavioral data. Rather than applying a single survival curve to all customers, the model projects each customer&rsquo;s expected state distribution forward and prices each state using its actual margin contribution. The result is a personalized LTV that reflects behavioral trajectory, not just current tenure.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>How should a digital bank calculate customer lifetime value?</h3>
+    <p>The most accurate approach combines state-transition modeling with bottom-up economic profit. Build the customer&rsquo;s actual P&amp;L product by product &mdash; deposit spread, card net margin, mortgage NIM minus credit loss, cost to serve, capital charge &mdash; then run that real economic profit through a state-transition matrix that projects engagement trajectory over time. Discount at the cost of capital and sum. This hybrid produces a personalized LTV that reflects both real unit economics and behavioral risk.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>What is RAROC and how does it apply to LTV modeling in banking?</h3>
+    <p>RAROC (Risk-Adjusted Return on Capital) is the standard banking framework for measuring whether a customer relationship generates returns above the cost of capital. In LTV modeling, RAROC replaces thin product margin with true economic profit: net revenue minus credit losses minus cost to serve minus a capital charge proportional to the risk-weighted assets the customer consumes. Applying RAROC at the customer level transforms LTV from a revenue proxy into a genuine measure of value creation.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>What LTV:CAC ratio should a digital bank target?</h3>
+    <p>The conventional target of LTV:CAC above 3x is only as useful as the LTV model underlying it. A flat cohort-based LTV can produce a ratio above 3x while masking a customer base where 40% are already in decline. The right question is not whether the blended ratio clears 3x, but whether the LTV model distinguishes engaged customers from declining ones &mdash; because a state-based model will show the ratio is meaningfully different depending on which population you are acquiring into.</p>
+  </div>
+</section>
+
 <div class="essay-end">
-  <a class="back-link" href="../index.html">&#8592; Back to all essays</a>
+  <a class="back-link" href="../essays.html">&#8592; Back to all essays</a>
 </div>
 
 <footer class="footer">
